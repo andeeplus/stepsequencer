@@ -1,3 +1,3 @@
 ## Basic step sequencer
-Experimenting with Tone.jss and React.
+Experimenting with Tone.js and React.
 - Drum Sequencer 0.1
