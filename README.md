@@ -1,2 +1,3 @@
-## Doing some tests with Tone.js and React
-https://tonejs.github.io/
+## Basic step sequencer
+Experimenting with Tone.jss and React.
+- Drum Sequencer 0.1
