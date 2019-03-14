@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 
-const styledDiv = {width:"16px", height: "16px",border: "1px solid black"}
+const styledDiv = {width:"26px", height: "26px",border: "1px solid #ffe6e6"}
 const styledFlex = {display: "flex", flexDirection: "row"}
 
 class SamplerSeq extends Component {
@@ -17,12 +17,12 @@ class SamplerSeq extends Component {
           className={sound.type} 
           key={i} 
           data-checked={parseInt(on)}
-          style={{...styledDiv, background: on !== 0 ? "red" : "lightgrey"}}
+          style={{...styledDiv, background: on !== 0 ? "hotpink" : "lightgrey"}}
           onClick={() => handleChange(on,i,sound.type)} 
           />
         )
       }
-      <p>{sound.type.toUpperCase()}</p>
+      <p className="sound-type">{sound.type.toUpperCase()}</p>
     </div>
     )
   }

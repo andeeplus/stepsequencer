@@ -1,0 +1,19 @@
+.control-area {
+  display: flex;
+  flex-direction: row;
+  margin: 30px;
+}
+
+.full-knob{
+  display:flex;
+  flex-direction: column;
+  margin: 20px;
+
+  & p{
+    margin-top: 28px;
+  }
+}
+
+.sound-type{
+  padding-left: 8px;
+}

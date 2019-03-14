@@ -1,6 +1,7 @@
 import React, {Component} from 'react'
 import Tone from 'tone';
 import SamplerSeq from './SamplerSeq'
+import Knob from './Knob'
 import BD from '../sounds/BD_808_01.wav'
 import SN from '../sounds/Snare_808_01.wav'
 import HH from '../sounds/CH_808_01.wav'
@@ -41,6 +42,8 @@ class Sequencer extends Component {
     steps: 16,
     play: false,
     timing: "16n",
+    volumeKnob: 0,
+    swingKnob: 0,
     sequence:{
       "bd":[],
       "sn":[],
@@ -56,10 +59,8 @@ class Sequencer extends Component {
   handleChange = (on,i,sound) => {
     const {sequence} = this.state
     let sequenceUpdate = {...sequence}
-    console.log('BEFORE',on,sequenceUpdate,sequenceUpdate[sound][i])
     if (on === 0) {sequenceUpdate[sound][i] = 1 }
     else{sequenceUpdate[sound][i] = 0}
-    console.log('AFTER',sequenceUpdate,sequenceUpdate[sound][i])
     this.setState({sequence: sequenceUpdate})
   }
 
@@ -68,12 +69,19 @@ class Sequencer extends Component {
     Tone.Transport.bpm.value = bpmTiming;
     Tone.Transport.scheduleRepeat(this.repeat, this.state.timing);
     Tone.Transport.bpm.value = bpmTiming; 
+    Tone.Transport.swingSubdivision = '8n'
   }
-    
-  playStop = () => {
+
+  playPause = () => {
     this.transport()
     this.setState({play: !this.state.play},
-    () => this.state.play ? Tone.Transport.start() : Tone.Transport.stop())
+    () => this.state.play ? Tone.Transport.start() : Tone.Transport.pause() && Tone.Transport.cancel())
+  }
+
+  stopSound = () => {
+    if(this.state.play){this.playPause()}
+    Tone.Transport.cancel();
+    this.setState({index:0})
   }
 
   repeat = () =>{
@@ -111,9 +119,22 @@ class Sequencer extends Component {
     console.log(index)
   } 
 
+  handleVolume = newValue => {
+    this.setState({
+      volumeKnob: newValue - 60
+    },() => Tone.Master.volume.value = this.state.volumeKnob)
+  };
+
+  handleSwing = newValue => {
+    this.setState({
+      swingKnob: Math.round((newValue / 100)* 10) / 10
+    },() => Tone.Transport.swing = this.state.swingKnob);
+  };
+
+
   render(){
     const {sequence} = this.state
-
+    console.log(this.state.volumeKnob, this.state.swingKnob)
   return(
 
     <React.Fragment>
@@ -121,7 +142,36 @@ class Sequencer extends Component {
       <SamplerSeq sound={{sample: drumSamples.sn, type:"sn"}} sequence={sequence.sn} handleChange={this.handleChange}/>
       <SamplerSeq sound={{sample: drumSamples.hh, type:"hh"}} sequence={sequence.hh} handleChange={this.handleChange}/>
       <SamplerSeq sound={{sample: drumSamples.oh, type:"oh"}} sequence={sequence.oh} handleChange={this.handleChange}/>
-      <button onClick={this.playStop}>{!this.state.play ? "play" : "stop" }</button>
+      <button onClick={this.playPause}>{!this.state.play ? "play" : "pause" }</button>
+      <button onClick={this.stopSound}>stop</button>
+      <div className="control-area">
+        <div className="full-knob">
+          <Knob
+          size={30}
+          numTicks={25}
+          degrees={260}
+          min={1}
+          max={100}
+          value={30}
+          color={true}
+          onChange={this.handleVolume}
+          />
+          <p>Volume</p>
+        </div>
+        <div className="full-knob">
+          <Knob
+          size={30}
+          numTicks={25}
+          degrees={260}
+          min={1}
+          max={100}
+          value={30}
+          color={true}
+          onChange={this.handleSwing}
+          />
+          <p>Swing</p>
+        </div>
+      </div>
     </React.Fragment>
   )
   }

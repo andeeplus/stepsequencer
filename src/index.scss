@@ -1,11 +1,14 @@
-@import url('https://fonts.googleapis.com/css?family=VT323');
+@import url('https://fonts.googleapis.com/css?family=Palanquin+Dark');
+@import './components/styles/knob.scss';
+@import './components/styles/sequencer.scss';
 
 html, body, p {
   margin:0;
   padding:0;
-  font-family: 'VT323', monospace;
+  font-family: 'Palanquin Dark', sans-serif;
+  background: darkgrey;
 }
 
 button {
-  font-family: 'VT323', monospace;
+  font-family: 'Palanquin Dark', sans-serif;
 }
