@@ -5,11 +5,29 @@ const styledFlex = {display: "flex", flexDirection: "row"}
 
 class SamplerSeq extends Component {
 
+  state = {
+    sequence: null,
+    loading: true
+  }
+
+  componentDidMount(){
+    this.setState({sequence: this.props.sequence, loading: false})
+  }
+
+  handleChange = (on,i) => {
+    const {sequence} = this.state
+    let sequenceUpdate = [...sequence]
+    if (on === 0) {sequenceUpdate[i] = 1}
+    else{sequenceUpdate[i] = 0}
+    this.setState({sequence: sequenceUpdate})
+  }
 
   render (){
-    const {sound, sequence, handleChange} = this.props
+    const { sequence, loading } = this.state
+    const { sound } = this.props
 
   return(
+    !loading &&
     <div className={sound.type} style={styledFlex}>
       { sequence.map((on, i) => 
         <div 
@@ -18,7 +36,7 @@ class SamplerSeq extends Component {
           key={i} 
           data-checked={parseInt(on)}
           style={{...styledDiv, background: on !== 0 ? "hotpink" : "lightgrey"}}
-          onClick={() => handleChange(on,i,sound.type)} 
+          onClick={() => this.handleChange(on,i,sound.type)} 
           />
         )
       }
