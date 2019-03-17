@@ -58,6 +58,18 @@ class Sequencer extends Component {
       'rim':[],
       'cl':[],
       'tom1':[]
+    },
+    drumEffects: {},
+    fxPhaser: {
+      frequency  : 15,
+      octaves  : 3,
+      stages  : 5,
+      Q  : 10 ,
+      baseFrequency  : 350
+    },
+    fxDistortion : {
+      distortion  : 0.2,
+      oversample  : 'none' // The oversampling of the effect. Can either be “none”, “2x” or “4x”.
     }
   }
 
@@ -67,13 +79,20 @@ class Sequencer extends Component {
   }
 
   initSetup = () => {
-    const {volume, bpm} = this.state
+    const {bpm, volume, fxPhaser, fxDistortion} = this.state
+  
     Tone.Transport.bpm.value = bpm;
     Tone.context.latencyHint = 'fastest';
     Tone.Transport.start("+0.2")
-    const drums = new Tone.Volume(volume).toMaster()
-    drumSamples.connect(drums)
+
+    const drumDist = new Tone.Distortion(fxDistortion)
+    const drumPhaser = new Tone.Phaser(fxPhaser)
+    const drumVol = new Tone.Volume(volume)
+
+    this.setState({drumEffects: {drumDist, drumPhaser, drumVol}},
+      () => drumSamples.chain(drumDist, drumPhaser, drumVol, Tone.Master))
   }
+
 
   startSequence = () => {
 
@@ -103,23 +122,82 @@ class Sequencer extends Component {
   }
 
 
-  handleVolume = newValue => {
-    let newVolume = parseInt(newValue, 10);
+  handleValue = (newValue, value) => {
 
-    newVolume < 100
-      ? (newVolume = parseInt(-50 / (newVolume + 1) * 10, 10))
-      : (newVolume = 0);
-    Tone.Master.volume.value = newVolume;
+    switch(value){
 
-    this.setState({ volumeKnob: newVolume})
+      case 'VOLUME':
+
+        let newVolume = parseInt(newValue, 10);
+
+        newVolume < 100
+          ? (newVolume = parseInt(-50 / (newVolume + 1) * 10, 10))
+          : (newVolume = 0);
+        Tone.Master.volume.value = newVolume;
+        this.setState({ volumeKnob: newVolume})
+        break
+      
+      case 'BPM':
+        Tone.Transport.bpm.value = newValue
+        this.setState({ bpm: newValue})
+        break
+      
+      case 'DISTO1':
+        const prevDistro = this.state.fxDistorsion
+        const distortion = newValue /10
+        this.setState({fxDistortion:{...prevDistro, distortion: distortion}})
+        break
+      
+        default: return
+    }
   };
 
 
-  handleBpm = newValue => {
-    this.setState({
-      bpm: newValue
-    },() => Tone.Transport.bpm.value = this.state.bpm);
-  };
+  handlePhaser = (newValue, value) => {
+
+    const {fxPhaser} = this.state
+
+    switch(value){
+
+    case 'PHASER1':
+      const frequency = newValue
+      this.setState({
+        fxPhaser: {...fxPhaser, frequency}
+      });
+      break
+
+    case 'PHASER2':
+      const octaves = newValue
+      this.setState({
+        fxPhaser: {...fxPhaser, octaves}
+      });
+      break
+
+    case 'PHASER3':
+    const stages = newValue
+      this.setState({
+        fxPhaser: {...fxPhaser, stages}
+      });
+      break
+
+    case 'PHASER4':
+      const Q = newValue
+      this.setState({
+        fxPhaser: {...fxPhaser, Q}
+      });
+      break
+
+    case 'PHASER5':
+      const baseFrequency = newValue
+      this.setState({
+        fxPhaser: {...fxPhaser, baseFrequency}
+      });
+      break
+    
+    default: return
+  }
+}
+
 
 
   render(){
@@ -128,28 +206,48 @@ class Sequencer extends Component {
 
   return(
     !loading &&
+
     <React.Fragment>
     
       {sequence && Object.keys(sequence).map((sound) => 
         <SamplerChannel sound={sound} key={sound} sequence={sequence[sound]} updateGlobalSequence={this.updateGlobalSequence}/>)}
 
       <button onClick={this.playStop}>{!this.state.play ? "play" : "stop" }</button>
+
       <div className="control-area">
         <p>Master Control</p>
-        <div className="knobs-line">
-          <div className="full-knob">
-            <Knob size={30} numTicks={25} degrees={260} min={1} max={100} value={100} color={true} onChange={this.handleVolume}/>
-            <p>Volume</p>
-          </div>
-          <div className="full-knob">
-          <Knob size={30} numTicks={25} degrees={260} min={60} max={180} value={120} color={true} onChange={this.handleBpm}/>
-            <p>Bpm</p>
-          </div>
+          <div className="knobs-line">
+            <Knob size={30} numTicks={25} degrees={260} min={1} max={100} value={100} color={true} onChange={this.handleValue} typeValue={'VOLUME'}>Volume</Knob>
+            <Knob size={30} numTicks={25} degrees={260} min={60} max={180} value={120} color={true} onChange={this.handleValue} typeValue={'BPM'}>Bpm</Knob>
         </div>
       </div>
+
+      <div className="control-area">
+        <p>Distorsion</p>
+          <div className="knobs-line">
+            <Knob size={30} numTicks={25} degrees={260} min={0} max={10} value={0.3} color={true} onChange={this.handleValue} typeValue={'DISTO1'}>Distorsion</Knob>
+            </div>
+        </div>
+
+        <div className="control-area">
+          <p>Phaser</p>
+            <div className="knobs-line">
+              <Knob size={30} numTicks={25} degrees={260} min={0} max={9300} value={1000} color={true} onChange={this.handlePhaser} typeValue={'PHASER1'}>Frequency</Knob>
+              <Knob size={30} numTicks={25} degrees={260} min={0} max={10} value={5} color={true} onChange={this.handlePhaser} typeValue={'PHASER2'}>Octaves</Knob>
+              <Knob size={30} numTicks={25} degrees={260} min={0} max={10} value={10} color={true} onChange={this.handlePhaser} typeValue={'PHASER3'}>Stages</Knob>
+              <Knob size={30} numTicks={25} degrees={260} min={0} max={100} value={10} color={true} onChange={this.handlePhaser} typeValue={'PHASER4'}>Q</Knob>  
+              <Knob size={30} numTicks={25} degrees={260} min={0} max={1000} value={350} color={true} onChange={this.handlePhaser} typeValue={'PHASER5'}>BaseFreq</Knob>      
+          </div>
+        </div>
+
     </React.Fragment>
   )
   }
 }
 
 export default Sequencer
+
+/*  DISTO & PHASER
+
+
+*/
