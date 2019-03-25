@@ -39,7 +39,7 @@ class Knob extends Component {
         )
       );
       this.setState({ deg: this.currentDeg });
-      this.props.onChange(newValue);
+      this.props.onChange(newValue, this.props.typeValue);
     };
     document.addEventListener("mousemove", moveHandler);
     document.addEventListener("mouseup", e => {
@@ -96,41 +96,34 @@ class Knob extends Component {
     let iStyle = this.dcpy(kStyle);
     let oStyle = this.dcpy(kStyle);
     oStyle.margin = this.margin;
-    if (this.props.color) {
-      oStyle.backgroundImage =
-        "radial-gradient(100% 70%,hsl(210, " +
-        this.currentDeg +
-        "%, " +
-        this.currentDeg / 5 +
-        "%),hsl(" +
-        Math.random() * 100 +
-        ",20%," +
-        this.currentDeg / 36 +
-        "%))";
-    }
+    oStyle.background = this.props.color
     iStyle.transform = "rotate(" + this.state.deg + "deg)";
 
     return (
-      <div className="knob" style={kStyle}>
-        <div className="ticks">
-          {this.props.numTicks
-            ? this.renderTicks().map((tick, i) => (
-                <div
-                  key={i}
-                  className={
-                    "tick" + (tick.deg <= this.currentDeg ? " active" : "")
-                  }
-                  style={tick.tickStyle}
-                />
-              ))
-            : null}
-        </div>
-        <div className="knob outer" style={oStyle} onMouseDown={this.startDrag}>
-          <div className="knob inner" style={iStyle}>
-            <div className="grip" />
+      <div className="full-knob">
+        <div className="knob" style={kStyle}>
+          <div className="ticks">
+            {this.props.numTicks
+              ? this.renderTicks().map((tick, i) => (
+                  <div
+                    key={i}
+                    className={
+                      "tick" + (tick.deg <= this.currentDeg ? " active" : "")
+                    }
+                    style={tick.tickStyle}
+                  />
+                ))
+              : null}
+          </div>
+          <div className="knob outer" style={oStyle} onMouseDown={this.startDrag}>
+            <div className="knob inner" style={iStyle}>
+              <div className="grip" />
+            </div>
           </div>
         </div>
+        <p className="text-light-inset">{this.props.children}</p>
       </div>
+
     );
   }
 }
@@ -146,7 +139,7 @@ Knob.defaultProps = {
 export default Knob
 
 
-/* EXAMPLE USAGE: https://codepen.io/bbx/pen/QBKYOy?editors=0110
+/* USAGE EXAMPLE (forked by): https://codepen.io/bbx/pen/QBKYOy?editors=0110
 
 state = { value: 0 };
 
