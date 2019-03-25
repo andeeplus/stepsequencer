@@ -96,18 +96,7 @@ class Knob extends Component {
     let iStyle = this.dcpy(kStyle);
     let oStyle = this.dcpy(kStyle);
     oStyle.margin = this.margin;
-    if (this.props.color) {
-      oStyle.backgroundImage =
-        "radial-gradient(100% 70%,hsl(210, " +
-        this.currentDeg +
-        "%, " +
-        this.currentDeg / 5 +
-        "%),hsl(" +
-        Math.random() * 100 +
-        ",20%," +
-        this.currentDeg / 36 +
-        "%))";
-    }
+    oStyle.background = this.props.color
     iStyle.transform = "rotate(" + this.state.deg + "deg)";
 
     return (
@@ -132,7 +121,7 @@ class Knob extends Component {
             </div>
           </div>
         </div>
-        <p>{this.props.children}</p>
+        <p className="text-light-inset">{this.props.children}</p>
       </div>
 
     );
@@ -150,7 +139,7 @@ Knob.defaultProps = {
 export default Knob
 
 
-/* EXAMPLE USAGE: https://codepen.io/bbx/pen/QBKYOy?editors=0110
+/* USAGE EXAMPLE (forked by): https://codepen.io/bbx/pen/QBKYOy?editors=0110
 
 state = { value: 0 };
 
