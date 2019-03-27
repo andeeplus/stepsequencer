@@ -1,5 +1,6 @@
 ## Basic step sequencer
 Experimenting with Tone.js and React.
-- Drum Sequencer 0.2
+
+- [Demo Live](http://www.pitchdownrecords.com/andeeplus/dmachine/)
 
 ![Screen](drum_machine_02.png)

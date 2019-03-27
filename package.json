@@ -1,6 +1,7 @@
 {
   "name": "drum-machine-tone",
   "version": "0.1.0",
+  "homepage": "http://www.pitchdownrecords.com/andeeplus/dmachine",
   "private": true,
   "dependencies": {
     "react": "^16.8.4",
