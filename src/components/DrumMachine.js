@@ -64,7 +64,6 @@ class DrumMachine extends Component {
     const patterns = {...this.state.defaultPatterns}
     const newPattern = patterns[pattern]
     this.setState({sequence: newPattern})
-    this.initSetup()
   }
   
 
