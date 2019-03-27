@@ -1,6 +1,6 @@
 import React from 'react';
-import Sequencer from './Sequencer'
+import DrumMachine from './DrumMachine'
 
-const App = () => {return (<Sequencer />);}
+const App = () => {return (<DrumMachine />);}
 
 export default App;

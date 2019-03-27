@@ -1,10 +1,10 @@
 import React from 'react'
 
 const buttonDiv = {
-  width:"28px", 
-  height: "28px",
+  width:"34px", 
+  height: "34px",
   border: "1px solid #ffe6e6",
-  'box-sizing': 'border-box',
+  boxSizing: 'border-box',
   borderRadius: 3,
   margin: 5,
 }
@@ -12,14 +12,14 @@ const buttonDiv = {
 const styles = {
   basic:{
     ...buttonDiv,
-    'box-shadow': 'inset 2px 1px 1px #000', 
+    boxShadow: 'inset 2px 1px 1px #000', 
     background: 'lightgrey'
   },
   active: {
     ...buttonDiv,
-    'border-style': 'outset',
-    'border-width': 2,
-    'border-color': 'darkgrey', 
+    borderStyle: 'outset',
+    borderWidth: 2,
+    borderColor: 'darkgrey', 
     background: 'hotpink',
   },
 }
@@ -29,25 +29,8 @@ const styledFlex = {display: "flex", flexDirection: "row"}
 const SamplerChannel = (props) => {
 
 
-  const updateInternalSequence = (addRemove, i, sound) => {
+  const { sequence, sound, updateChannelSequence } = props
 
-    const {sequence} = props
-    const {updateGlobalSequence} = props
-    let individualSeq = sequence
-
-    if(addRemove === 'ADD'){
-      individualSeq.push(i)
-    } else {
-      const stepToRemove = individualSeq.indexOf(i)
-      individualSeq.splice(stepToRemove,1)
-    }
-    
-    updateGlobalSequence(sequence, sound)
-    
-  }
-
-  const { sound, sequence } = props
- 
   return(
     sequence &&
     <div className={sound} style={styledFlex}>
@@ -57,13 +40,17 @@ const SamplerChannel = (props) => {
           className={sound} 
           key={i} 
           style={sequence.includes(i) ? styles.active : styles.basic }
-          onClick={() => updateInternalSequence((sequence.includes(i) ? 'REMOVE' : 'ADD'), i, sound)} 
+          onClick={() => updateChannelSequence((sequence.includes(i) ? 'REMOVE' : 'ADD'), sound, i)} 
           />
         )
       }
-      <p className="text-light-inset">{sound.toUpperCase()}</p>
+      <div className="individual-seq-actions">
+        <button className="square-button" onClick={() => updateChannelSequence('CLEAR', sound)}>✕</button>
+        <p className="text-light-inset">{sound.toUpperCase()}</p>
+      </div>
     </div>
     )
+  // }
 }
 
 export default SamplerChannel
