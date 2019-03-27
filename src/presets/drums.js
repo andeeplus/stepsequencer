@@ -140,7 +140,7 @@ const defaultPatterns = [
   },
 ]
 
-const defaultFXStatus = {
+const initFX = {
   fxPhaser: {
     frequency: 15,
     octaves: 3,
@@ -152,9 +152,9 @@ const defaultFXStatus = {
     distortion: 0.1,
     oversample: 'none' // The oversampling of the effect. Can either be “none”, “2x” or “4x”.
   },
-  fxPPDElay: {
-    delayTime: 0.25 ,
-    maxDelayTime: 1,
+  fxPPDelay: {
+    delayTime: 0.25,
+    maxDelayTime: 10,
     wet: 0,
   },
   fxBitCrusher: {
@@ -164,5 +164,5 @@ const defaultFXStatus = {
 }
 
 export {
-  drumSamples, defaultDrumPattern, defaultFXStatus, emptyPattern, defaultPatterns
+  drumSamples, defaultDrumPattern, initFX, emptyPattern, defaultPatterns
 }
