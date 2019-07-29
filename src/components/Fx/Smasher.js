@@ -30,12 +30,12 @@ const Smasher = (props) => {
   ]
     return (
         <ModulePainter 
-			parameters={smasherParameters} 
-			handleValues={handleValues} 
-			name={'smasher'} 
-			knobColor={knobColor}
-			//moduleColor='linear-gradient(135deg, rgba(243,197,189,1) 0%,rgba(234,40,3,1) 13%,rgba(234,40,3,1) 13%,rgba(232,108,87,1) 50%,rgba(255,102,0,1) 75%,rgba(199,34,0,1) 100%)'	
-		/>
+					parameters={smasherParameters} 
+					handleValues={handleValues} 
+					name={'smasher'} 
+					knobColor={knobColor}
+					//moduleColor='linear-gradient(135deg, rgba(243,197,189,1) 0%,rgba(234,40,3,1) 13%,rgba(234,40,3,1) 13%,rgba(232,108,87,1) 50%,rgba(255,102,0,1) 75%,rgba(199,34,0,1) 100%)'	
+				/>
     )
 };
 

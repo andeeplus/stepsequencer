@@ -1,53 +1,50 @@
-import React, {useState} from 'react'
-import styled from 'styled-components'
-import plus from '../assets/plus.svg'
+import React, { useState, useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+
 import save from '../assets/save.svg'
 import pencil from '../assets/pencil.svg'
 
 import { FlexContainer } from '../styles'
-import { LabelName } from './Fx/ModulePainter.styles'
+import { InputStyle, ActionButton } from './styles/PatternControl.styles'
+import { SAVE_PATTERN, CHANGE_PATTERN_NAME } from '../store/actions/sequencerActions'
 
-const Squared = styled.button`
-	width: 24px;
-	height: 24px;
-	background-color: ${props => props.active ? 'mustard' : 'antiquewhite'};
-	border-radius: 4px;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	margin: 0 4px;
-	outline: 0;
-`
 
-const ButtonImage = styled.img`
-	height: 14px;
-`
+export const PatternControl = () => {
 
-const InputStyle = styled(LabelName)`
-	width: 80px;
-`
+	const actualPattern = useSelector(store => store.sequencer.sequence)
+	const patternName = useSelector(state => state.sequencer.patternName)
+	const index = useSelector(state => state.sequencer.index)
 
-const ActionButton = ({icon, editing, onClick}) => (
-	<Squared active={editing} onClick={onClick}>
-		<ButtonImage src={icon} alt='img' />
-	</Squared> 
-)
-
-export const PatternControl = ({savePattern, changeName, loadPattern, patternName}) => {
-	
 	const [isEdit, setEdit] = useState(false)
-	const [newName, setNewName] = useState()
+	const [newName, setNewName] = useState(patternName)
+
+	useEffect(() => {
+		setNewName(patternName)
+	}, [patternName]);
+	
+	const now = new Date()
+	const timestamp = now.getHours() + ":" + now.getMinutes() + ":" + now.getSeconds()
+
+	const patternToSave = {...actualPattern, name: patternName, timestamp, index}
+
+	const dispatch = useDispatch()
+	const savePattern = () => dispatch({type: SAVE_PATTERN, patternToSave})
+	const changePatternName = () => dispatch({type: CHANGE_PATTERN_NAME, patternName: newName})
+
+	const keyPressed = (event) => {
+		if (event.key === "Enter") changePatternName(newName) && setEdit(false)
+	}
 
 	return(
 		<FlexContainer column>
 			<InputStyle as='input' 
 				disabled={!isEdit} 
 				onChange={(e) => setNewName(e.target.value)}
-				value={isEdit ? newName : patternName}
+				value={newName}
+				onKeyPress={keyPressed}
 				/>
 			<FlexContainer justifyContent='center'>
-				<ActionButton icon={save} editing={isEdit} onClick={savePattern} />
-				<ActionButton icon={plus} onClick={isEdit ? changeName : loadPattern} />
+				<ActionButton icon={save} editing={isEdit} onClick={isEdit ? changePatternName : savePattern} />
 				<ActionButton icon={pencil} onClick={() => setEdit(!isEdit)} />
 			</FlexContainer>
 		</FlexContainer>

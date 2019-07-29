@@ -5,7 +5,8 @@ import { drumSamples, defaultDrumPattern,
     initFX, defaultPatterns } from '../presets/drums'
 import DrumMachine from  './DrumMachine'
 import { PureSpinner } from './htmlElements/PureSpinner';
-import { SET_INIT_STORE, SET_INIT_SEQUENCER, UPDATE_SEQUENCE, CHANGE_PATTERN } from '../store'
+import { SET_INIT_STORE, SET_INIT_SEQUENCER, UPDATE_SEQUENCE, CHANGE_PATTERN_NAME,
+    CHANGE_PATTERN, SET_INDEX } from '../store'
 
 const mapStateToProps = (store) => ({
     store: store,
@@ -21,6 +22,8 @@ const mapDispatchToProps = dispatch => ({
       setInitSequencer: sequencer => dispatch({type: SET_INIT_SEQUENCER, sequencer}),
       updateSequence: sequence => dispatch({type: UPDATE_SEQUENCE, sequence}),
       changePattern: pattern => dispatch({type: CHANGE_PATTERN, pattern}),
+      changePatternName: patternName => dispatch({type: CHANGE_PATTERN_NAME, patternName}),
+      setIndex: index => dispatch({type: SET_INDEX, index})
 })
 
 class SyncMachine extends Component {
@@ -59,7 +62,10 @@ class SyncMachine extends Component {
 
     initSetup = async () => {
 
-        const {name, timestamp, ...sequence} = defaultPatterns[0]
+        let userPatterns = await localStorage.getItem('userPatterns')
+        userPatterns = JSON.parse(userPatterns) 
+
+        const {name, timestamp, index, ...sequence} = (userPatterns && userPatterns[0]) || defaultPatterns[0]
 
         await this.props.setInitSequencer({
             steps: 16,
@@ -68,9 +74,10 @@ class SyncMachine extends Component {
             bpm: 120,
             masterVolume: -3,
             volumeKnob: 0,
+            index,
             sequence,
             patternName: name,
-            defaultPatterns
+            defaultPatterns: userPatterns ? userPatterns : defaultPatterns
             })
 
         Tone.Transport.bpm.value = this.props.sequencer.bpm;
@@ -96,9 +103,11 @@ class SyncMachine extends Component {
 
         const patterns = {...this.props.sequencer.defaultPatterns}
 
-        const {timestamp, name, ...sequence} = patterns[pattern]
+        const {timestamp, name, index, ...sequence} = patterns[pattern]
         this.setState({sequence, patternName: name})
         this.props.changePattern(sequence)
+        this.props.changePatternName(name)
+        this.props.setIndex(index)
         
     }
 

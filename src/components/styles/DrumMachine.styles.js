@@ -22,6 +22,7 @@ const ControlStation = styled(FlexContainer)`
     margin: 16px 16px;
     justify-content: flex-start;
     width: ${props => props.width ? props.width : '136px'};
+    height: fit-content;
 `
 
 const PlayButton = (props) => (

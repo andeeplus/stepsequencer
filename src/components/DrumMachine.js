@@ -1,5 +1,4 @@
 import React, { Fragment } from 'react'
-import styled from 'styled-components'
 
 import StepLine from './StepLine'
 
@@ -15,10 +14,17 @@ import { FlexContainer } from '../styles/index'
 
 const DrumMachine = (
     { sequence, patternName, changePattern, play, updateChannelSequence, playStop, handleVolume, handleBpm, handleValues}
-) => (
-    <Fragment>
-        <div className="full-drum-machine">
-        <div className='machine-div'>
+) => {
+
+    return(
+        <FlexContainer 
+            column 
+            justifyContent='center' 
+            alignItems='center' 
+            margin='20px 0 0 0' 
+            height='100%'
+            padding='0px'
+        >
             <ControlStation column width='auto'>
             { sequence && Object.keys(sequence).map((sound) => 
                 <StepLine 
@@ -28,7 +34,7 @@ const DrumMachine = (
                     updateChannelSequence={updateChannelSequence}
                     />)} 
             </ControlStation>
-            <FlexContainer justifyContent='center'>
+            <FlexContainer justifyContent='center' >
                 <FlexContainer column justifyContent='space-between'>
                     <ControlStation column>
                         <PatternSelector changePattern={changePattern}/> 
@@ -53,11 +59,10 @@ const DrumMachine = (
                     init={initFX.fxPhaser}
                 />
                 </FlexContainer>  
-            </div>
-        </div>
-    </Fragment>
-)
+        </FlexContainer>
 
+    )
+}
 
 export default DrumMachine
 

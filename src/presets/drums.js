@@ -37,20 +37,8 @@ const emptyPattern = {
 }
 
 const defaultPatterns = [
-  {
-    name: 'Default',
-    timestamp: 'default',
-    "bd":[0,10],
-    "sn":[4,12],
-    "hh":[0,2,4,6,8,10,12,14],
-    "oh":[14],
-    "cb":[],
-    "cn":[],
-    "rm":[],
-    "cl":[],
-    "tm":[]
-  },
  {
+    index: 0,
     name: 'Default1',
     timestamp: 'default',
     "bd":[0,10],
@@ -63,6 +51,7 @@ const defaultPatterns = [
     "cl":[],
     "tm":[]
   },{
+    index: 1,
     name: 'Default2',
     timestamp: 'default',
     "bd":[0,8],
@@ -75,6 +64,7 @@ const defaultPatterns = [
     "cl":[],
     "tm":[16]
   },{
+    index: 2,
     name: 'Default3',
     timestamp: 'default',
     "bd":[0,4,8,12],
@@ -87,6 +77,7 @@ const defaultPatterns = [
     "cl":[12],
     "tm":[]
   },{
+    index: 3,
     name: 'Default4',
     timestamp: 'default',
     "bd":[0,10],
@@ -99,18 +90,20 @@ const defaultPatterns = [
     "cl":[],
     "tm":[]
   },{
+    index: 4,
     name: 'Default5',
     timestamp: 'default',
-    "bd":[0,10],
-    "sn":[4,12],
-    "hh":[0,1,2,3,4,5,6,7,8,9,10,11,12,13,15],
-    "oh":[14],
-    "cb":[],
-    "cn":[],
-    "rm":[],
-    "cl":[],
-    "tm":[]
+    bd: [0],
+    cb: [],
+    cl: [],
+    cn: [],
+    hh: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15],
+    oh: [14],
+    rm: [],
+    sn: [4, 12],
+    tm: []
   },{
+    index: 5,
     name: 'Default6',
     timestamp: 'default',
     "bd":[0,10],
@@ -123,6 +116,7 @@ const defaultPatterns = [
     "cl":[],
     "tm":[]
   },{
+    index: 6,
     name: 'Default7',
     timestamp: 'default',
     "bd":[0,10],
@@ -135,6 +129,9 @@ const defaultPatterns = [
     "cl":[],
     "tm":[]
   },{
+    index: 7,
+    name: 'Default8',
+    timestamp: 'default',
     "bd":[0,10],
     "sn":[4,12],
     "hh":[0,1,2,3,4,5,6,7,8,9,10,11,12,13,15],
@@ -145,7 +142,8 @@ const defaultPatterns = [
     "cl":[],
     "tm":[]
   },{
-    name: 'Default8',
+    index: 8,
+    name: 'Default9',
     timestamp: 'default',
     "bd":[0,10],
     "sn":[4,12],
