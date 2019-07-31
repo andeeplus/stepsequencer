@@ -183,25 +183,23 @@ class SyncMachine extends Component {
 
     handleValues = (newValue, parameters = []) => {
 
+
         const effectKey = parameters[0]
         const effectValue = this.state[parameters[1]]
         
         const valuedParameters = ['frequency', 'Q', 'wet','feedback','delayTime']
         const centValue = ['distortion', 'wet','feedback', 'delayTime']
-        const bitcrush = [7,6,5,4,3,2,1,0]
-
 
         if (centValue.includes(effectKey)) {newValue = newValue / 100}
-        if (effectKey === 'bits') {newValue = bitcrush.indexOf(newValue) +1}
 
         const chooseNextAction = !valuedParameters.includes(effectKey) 
 
         chooseNextAction
         ? effectValue[effectKey] = newValue
         : effectValue[effectKey].value = newValue
-
+        console.log(effectKey, effectValue[effectKey] )
         this.setState({
-        [effectKey]: effectValue
+            [effectKey]: effectValue
         })
     }
 

@@ -8,7 +8,7 @@ const ControlArea = styled(ControlStation)`
 const LabelName = styled.h1`
     text-align: center;
     font-size: 12px;
-    margin: 16px 0;
+    margin: 0 0 16px;
     color: black;
     background-color: antiquewhite;
     border-radius: 4px;
