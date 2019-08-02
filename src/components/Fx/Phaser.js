@@ -46,7 +46,8 @@ const Phaser = (props) => {
             parameters: ['wet', instrument],
             minMax: [0,100],
             ticks: 0,
-            initValue: init.wet
+            initValue: init.wet,
+            wet: 0
         }
     ]
 

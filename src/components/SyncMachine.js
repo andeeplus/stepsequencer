@@ -1,8 +1,7 @@
 import React, {Component} from 'react'
 import { connect } from 'react-redux'
 import Tone from 'tone';
-import { drumSamples, defaultDrumPattern, 
-    initFX, defaultPatterns } from '../presets/drums'
+import { drumSamples, initFX, defaultPatterns } from '../presets/drums'
 import DrumMachine from  './DrumMachine'
 import { PureSpinner } from './htmlElements/PureSpinner';
 import { SET_INIT_STORE, SET_INIT_SEQUENCER, UPDATE_SEQUENCE, CHANGE_PATTERN_NAME,
@@ -55,7 +54,7 @@ class SyncMachine extends Component {
 
             this.setState({
                 sequence: this.props.sequence,
-                },() => Tone.Transport.cancel() & this.startSequence()
+                }
             )
         }
     }
@@ -98,6 +97,7 @@ class SyncMachine extends Component {
             this.state.drumDist, this.state.drumPhaser, this.state.drumVol, this.state.drumCrusher, this.state.drumPPDelay, Tone.Master))
     
     }
+
 
     changePattern = (pattern) => {
 
@@ -187,7 +187,7 @@ class SyncMachine extends Component {
         const effectKey = parameters[0]
         const effectValue = this.state[parameters[1]]
         
-        const valuedParameters = ['frequency', 'Q', 'wet','feedback','delayTime']
+        const valuedParameters = ['frequency', 'Q', 'wet','delayTime']
         const centValue = ['distortion', 'wet','feedback', 'delayTime']
 
         if (centValue.includes(effectKey)) {newValue = newValue / 100}
@@ -202,6 +202,7 @@ class SyncMachine extends Component {
             [effectKey]: effectValue
         })
     }
+
 
     render(){
 

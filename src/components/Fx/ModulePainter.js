@@ -1,14 +1,11 @@
 import React from 'react';
-import styled from 'styled-components'
 
 import Knob from '../Knob'
 import {ControlArea, LabelName} from './ModulePainter.styles'
 import { FlexContainer } from '../../styles';
-import { MultiToggle } from '../Elements/MultiToggle';
 
 
-
-const ModulePainter = ({name, multiToggle, parameters, knobColor, handleValues, moduleColor}) => {
+const ModulePainter = ({name, multiToggle, parameters, knobColor, handleValues, moduleColor, toggleSwitch}) => {
     return (
         <ControlArea moduleColor={moduleColor} column>
         <LabelName>{name.toUpperCase()}</LabelName>  
@@ -30,7 +27,7 @@ const ModulePainter = ({name, multiToggle, parameters, knobColor, handleValues, 
                     )
                     )
                 }
-            {multiToggle && multiToggle}
+                {multiToggle && multiToggle}
             </FlexContainer>
         </ControlArea>
     );

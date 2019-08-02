@@ -35,9 +35,14 @@ export const MultiToggle = ({parameters, steps, perRow, handleValues, name, size
         <LabelName>{name.toUpperCase()}</LabelName>
         <FlexContainer width={`${width}px`} flexWrap='wrap'>
             {parameters.map( (parameter, i) => parameter.steps.map((p, index) => 
-                <FlexContainer flex={`0 1 ${100 / perRow}%`} alignItems='center' justifyContent='center'>
+                <FlexContainer 
+                    key={i + index} 
+                    flex={`0 1 ${100 / perRow}%`} 
+                    alignItems='center' 
+                    justifyContent='center'
+                >
                     <ToggleButton
-                        key={index}
+                        key={`${parameter.value}-ToggleButton`}
                         size={size}
                         perRow={perRow}
                         onClick={() => action(steps[index], parameters[i].parameters, index)}

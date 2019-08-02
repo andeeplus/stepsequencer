@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react';
 import ModulePainter from './ModulePainter'
-import { MultiToggle } from '../Elements/MultiToggle';
+import { MultiToggle } from '../Elements/';
 
 const Smasher = (props) => {
 
@@ -29,6 +29,13 @@ const Smasher = (props) => {
             parameters: ['bits', instrument[1]],
             minMax: [1,8],
             steps: [8,7,6,5,4,3,2,1],
+            initValue: init.bits
+        },
+        {
+            shortName: 'wet',
+            parameters: ['wet', instrument[1]],
+            minMax: [0,1],
+            steps: [0,1],
             initValue: init.bits
         }
     ]
