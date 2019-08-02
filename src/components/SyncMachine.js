@@ -54,7 +54,7 @@ class SyncMachine extends Component {
 
             this.setState({
                 sequence: this.props.sequence,
-                }
+                },() => Tone.Transport.cancel() & this.startSequence()
             )
         }
     }

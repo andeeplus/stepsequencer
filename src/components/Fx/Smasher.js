@@ -30,13 +30,6 @@ const Smasher = (props) => {
             minMax: [1,8],
             steps: [8,7,6,5,4,3,2,1],
             initValue: init.bits
-        },
-        {
-            shortName: 'wet',
-            parameters: ['wet', instrument[1]],
-            minMax: [0,1],
-            steps: [0,1],
-            initValue: init.bits
         }
     ]
 
