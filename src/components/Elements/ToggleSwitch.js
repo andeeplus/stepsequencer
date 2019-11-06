@@ -14,7 +14,7 @@ const ReactSwitchCheckbox = styled.input.attrs(
     }
 `
 
-const ReactSwitchButton = styled.span`
+const ReactSwitchButton = styled.div`
   content: '';
   position: absolute;
   top: 2px;
@@ -46,11 +46,12 @@ const ReactSwitchLabel = styled(ReactSwitchButton)`
 
 
 const Switch = ({ isOn, handleToggle }) => {
+  console.log(isOn, handleToggle)
   return (
     <Fragment>
       <ReactSwitchCheckbox
-        checked={isOn}
-        onChange={() => handleToggle}
+        checked={true}
+        onChange={handleToggle}
       />
       <ReactSwitchLabel
         isOn={isOn}
@@ -66,14 +67,18 @@ const Switch = ({ isOn, handleToggle }) => {
 export const ToggleSwitch = ({handleValues}) => {
 
   const [value, setValue] = useState(false);
-  console.log('hola')
+
+  console.log(value, handleValues)
   return (
-    <div>
+    
       <Switch
         isOn={value}
         console={console.log(value)}
-        onChange={() => setValue(!value)}
+        handleToggle={() => {   
+            handleValues()
+            setValue(!value)
+          }
+        }
       />
-    </div>
   );
 }

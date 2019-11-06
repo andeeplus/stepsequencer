@@ -1,13 +1,23 @@
-import React from 'react';
+import React, {useState,useEffect} from 'react';
 
 import Knob from '../Knob'
 import {ControlArea, LabelName} from './ModulePainter.styles'
 import { FlexContainer } from '../../styles';
+import Toggle from '../Elements/Toggle/Toggle'
 
 
-const ModulePainter = ({name, multiToggle, parameters, knobColor, handleValues, moduleColor, toggleSwitch}) => {
+const ModulePainter = ({name, multiToggle, parameters, knobColor, handleValues, moduleColor, powerFX}) => {
+
+    const [on, setOn] = useState(true)
+
     return (
         <ControlArea moduleColor={moduleColor} column>
+        <Toggle onToggle={
+            () => {
+                setOn(!on)
+                powerFX({fx: name.toUpperCase(), value: on ? 'ADD' : 'REMOVE'})
+            }}
+            />
         <LabelName>{name.toUpperCase()}</LabelName>  
             <FlexContainer flexWrap='wrap' justifyContent ='space-evenly'> 
                 { parameters.map((param,i) => (

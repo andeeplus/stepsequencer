@@ -13,7 +13,8 @@ import { PlayButton, ControlStation } from './styles/DrumMachine.styles'
 import { FlexContainer } from '../styles/index'
 
 const DrumMachine = (
-    { sequence, patternName, changePattern, play, updateChannelSequence, playStop, handleVolume, handleBpm, handleValues}
+    { sequence, patternName, changePattern, play, updateChannelSequence, 
+        playStop, handleVolume, handleBpm, handleValues, powerFX}
 ) => {
 
     return(
@@ -45,16 +46,19 @@ const DrumMachine = (
                 </FlexContainer>
                 <Smasher 
                     handleValues={handleValues} 
+                    powerFX={powerFX}
                     instrument={['drumDist', 'drumCrusher']} 
                     init={{...initFX.fxDist, ...initFX.fxBitCrusher}}
                 />
                 <PingPongDelay 
                     handleValues={handleValues} 
+                    powerFX={powerFX}
                     instrument={'drumPPDelay'} 
                     init={initFX.fxPPDelay}
                 />
                 <Phaser 
                     handleValues={handleValues} 
+                    powerFX={powerFX}
                     instrument={'drumPhaser'} 
                     init={initFX.fxPhaser}
                 />

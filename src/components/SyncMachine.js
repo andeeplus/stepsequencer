@@ -44,29 +44,24 @@ class SyncMachine extends Component {
         await this.initFX()
         this.setState({
             loading: false,
-            sequence: this.props.sequence,
-            patternName: this.props.patternName
         })
+
     }
 
-    componentDidUpdate(prevProps){
-        if(prevProps.sequence !== this.props.sequence && this.state.loading === false && this.state.play){
+    componentDidUpdate(prevProps, prevState){
 
-            this.setState({
-                sequence: this.props.sequence,
-                },() => Tone.Transport.cancel() & this.startSequence()
-            )
-        }
     }
 
     initSetup = async () => {
+
+        const { sequencer, setInitSequencer } = this.props
 
         let userPatterns = await localStorage.getItem('userPatterns')
         userPatterns = JSON.parse(userPatterns) 
 
         const {name, timestamp, index, ...sequence} = (userPatterns && userPatterns[0]) || defaultPatterns[0]
 
-        await this.props.setInitSequencer({
+        await setInitSequencer({
             steps: 16,
             play: false,
             timing: "16n",
@@ -79,24 +74,65 @@ class SyncMachine extends Component {
             defaultPatterns: userPatterns ? userPatterns : defaultPatterns
             })
 
-        Tone.Transport.bpm.value = this.props.sequencer.bpm;
+        Tone.Transport.bpm.value = sequencer.bpm;
         Tone.context.latencyHint = 'fastest';
         Tone.Transport.start("+0.2")
+
+        Tone.context.resume();
+
     }
     
-    initFX = () => {
+    initFX = (fxToMount = ['SMASHER','PHASER','CRUSHER','PPDELAY']) => {
 
-        const drumDist = new Tone.Distortion(initFX.fxDistortion)
-        const drumPhaser = new Tone.Phaser(initFX.fxPhaser)
         const drumVol = new Tone.Volume(this.state.masterVolume)
-        const drumCrusher = new Tone.BitCrusher(initFX.fxBitCrusher)
-        const drumPPDelay = new Tone.PingPongDelay(initFX.fxPPDelay)
+        const SMASHER = new Tone.Distortion(initFX.fxDistortion)
+        const CRUSHER = new Tone.BitCrusher(initFX.fxBitCrusher)
+        const PHASER = new Tone.Phaser(initFX.fxPhaser)
+        const PPDELAY = new Tone.PingPongDelay(initFX.fxPPDelay)
 
-        this.setState({drumDist, drumPhaser, drumVol, drumCrusher, drumPPDelay},
+        const fxChainSetup = [
+            {id: 'SMASHER', fx: SMASHER, on: !fxToMount.includes('SMASHER')}, 
+            {id: 'CRUSHER', fx: CRUSHER, on: !fxToMount.includes('CRUSHER')}, 
+            {id: 'PHASER', fx: PHASER, on: !fxToMount.includes('PHASER')}, 
+            {id: 'PPDELAY', fx: PPDELAY, on: !fxToMount.includes('PPDELAY')}
+        ]
+
+        const actualChain = []
+        const chainToLoad = []
+
+        Object.keys(fxChainSetup.filter(fx => !fx.on).map(fx => actualChain.push(fx.id)))
+        Object.keys(fxChainSetup.filter(fx => chainToLoad.push(fx.fx)))
+        console.log(actualChain, chainToLoad)
+
+        this.setState({
+            ...fxChainSetup,
+            actualChain: Array.from(new Set(actualChain)),
+            drumVol
+        }, 
         () => drumSamples.chain(
-            this.state.drumDist, this.state.drumPhaser, this.state.drumVol, this.state.drumCrusher, this.state.drumPPDelay, Tone.Master))
+            ...chainToLoad,
+            this.state.drumVol, 
+            Tone.Master
+            )
+        )
     
     }
+
+    powerFX = async ({fx, value}) => {
+        
+        const fxChainUpdate =  [...this.state.actualChain]
+
+        if (value === 'ADD'){
+            fxChainUpdate.push(fx)
+        } else {
+            fxChainUpdate.filter(block => block !== fx)
+        }
+
+        console.log(fxChainUpdate)
+        this.setState({actualChain: fxChainUpdate}, () => this.initFX(fxChainUpdate))
+    }
+
+   
 
 
     changePattern = (pattern) => {
@@ -113,27 +149,26 @@ class SyncMachine extends Component {
 
     startSequence = (startAt = 0) => {
 
-        const {steps} = this.props.sequencer
-        const {sequence} = this.state
+        const {sequencer: { steps, sequence }} = this.props
         const sequencerTrigs = [...Array(steps).keys()]
-
 
         const drumSeq = new Tone.Sequence(function(time,i){
         Object.keys(sequence).map(drum => ( 
             [...sequence[drum]].indexOf(i) >= 0 && drumSamples.get(drum).start())) 
         }, sequencerTrigs, "16n")
 
-        this.setState({drumSeq},
-        () => this.state.drumSeq.start(startAt))
+        this.setState({drumSeq}, () => this.state.drumSeq.start(startAt))
     }
+    
 
     updateChannelSequence = (addRemove, sound, i, actualPosition) => {
 
-        const {sequence} = this.state 
+        const {sequencer: {sequence}} = this.props 
         let individualSeq = [...sequence[sound]]
 
         if (addRemove === 'ADD') {
             individualSeq.push(i)
+
         } else if (addRemove === 'REMOVE') {
             const stepToRemove = individualSeq.indexOf(i)
             individualSeq.splice(stepToRemove,1)
@@ -187,8 +222,8 @@ class SyncMachine extends Component {
         const effectKey = parameters[0]
         const effectValue = this.state[parameters[1]]
         
-        const valuedParameters = ['frequency', 'Q', 'wet','delayTime']
-        const centValue = ['distortion', 'wet','feedback', 'delayTime']
+        const valuedParameters = ['frequency', 'Q', 'wet', 'feedback', 'delayTime']
+        const centValue = ['distortion', 'wet', 'delayTime']
 
         if (centValue.includes(effectKey)) {newValue = newValue / 100}
 
@@ -197,7 +232,7 @@ class SyncMachine extends Component {
         chooseNextAction
         ? effectValue[effectKey] = newValue
         : effectValue[effectKey].value = newValue
-        console.log(effectKey, effectValue[effectKey] )
+        console.log(effectKey, effectValue[effectKey])
         this.setState({
             [effectKey]: effectValue
         })
@@ -221,6 +256,7 @@ class SyncMachine extends Component {
                     handleVolume={this.handleVolume}
                     handleBpm={this.handleBpm}
                     handleValues={this.handleValues}
+                    powerFX={this.powerFX}
                 />
             :   <PureSpinner />
         )

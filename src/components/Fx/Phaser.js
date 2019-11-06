@@ -3,7 +3,7 @@ import ModulePainter from './ModulePainter'
 
 const Phaser = (props) => {
 
-    const {instrument, init, handleValues, knobColor} = props
+    const {instrument, init, handleValues, knobColor, powerFX} = props
 
     const phaserParameters = [
         {
@@ -56,6 +56,7 @@ const Phaser = (props) => {
         <ModulePainter 
             parameters={phaserParameters} 
             handleValues={handleValues} 
+            powerFX={powerFX}
             name={'phaser'} 
             knobColor={knobColor}
             //moduleColor='linear-gradient(135deg, rgba(30,87,153,1) 0%,rgba(136,252,238,1) 100%)'

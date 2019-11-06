@@ -4,7 +4,7 @@ import { MultiToggle } from '../Elements/';
 
 const Smasher = (props) => {
 
-  	const {instrument, init, handleValues, knobColor} = props
+  	const {instrument, init, handleValues, knobColor, powerFX} = props
 
   	const smasherParameters = [
         { 
@@ -37,6 +37,7 @@ const Smasher = (props) => {
         <Fragment>
             <ModulePainter 
                 parameters={smasherParameters} 
+                powerFX={powerFX}
                 handleValues={handleValues} 
                 name={'smasher'} 
                 knobColor={knobColor}
