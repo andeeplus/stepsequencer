@@ -5,7 +5,7 @@ import { TextLightInset, IndividualSeqActions,
 import { FlexContainer } from '../styles/index'
 
 
-const StepLine = memo((props) => {
+const StepLine = (props) => {
 
     const { sequence, sound, updateChannelSequence } = props
 
@@ -35,6 +35,6 @@ const StepLine = memo((props) => {
         </FlexContainer>
         )
     }
-  )
+
 
 export default StepLine

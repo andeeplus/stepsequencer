@@ -17,6 +17,9 @@ const DrumMachine = (
         playStop, handleVolume, handleBpm, handleValues, powerFX}
 ) => {
 
+    console.log({ sequence, patternName, changePattern, play, updateChannelSequence, 
+        playStop, handleVolume, handleBpm, handleValues, powerFX})
+
     return(
         <FlexContainer 
             column 
