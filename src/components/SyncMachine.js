@@ -29,7 +29,6 @@ class SyncMachine extends Component {
 
     state = {
         loading: true,
-        sequence: null,
         name: null,
         drumDist: null,
         drumPhaser: null,
@@ -44,19 +43,19 @@ class SyncMachine extends Component {
         await this.initFX()
         this.setState({
             loading: false,
-            sequence: this.props.sequence,
             patternName: this.props.patternName
         })
     }
 
     componentDidUpdate(prevProps){
-        if(prevProps.sequence !== this.props.sequence && this.state.loading === false && this.state.play){
+        const sequenceChanged = prevProps.sequence !== this.props.sequence 
+        const isNotLoadingAndPlay = this.state.loading === false && this.state.play
 
-            this.setState({
-                sequence: this.props.sequence,
-                },() => Tone.Transport.cancel() & this.startSequence()
-            )
+        if(sequenceChanged && isNotLoadingAndPlay) {
+            Tone.Transport.cancel() 
+            this.startSequence()
         }
+
     }
 
     initSetup = async () => {
@@ -104,7 +103,6 @@ class SyncMachine extends Component {
         const patterns = {...this.props.sequencer.defaultPatterns}
 
         const {timestamp, name, index, ...sequence} = patterns[pattern]
-        this.setState({sequence, patternName: name})
         this.props.changePattern(sequence)
         this.props.changePatternName(name)
         this.props.setIndex(index)
@@ -114,14 +112,15 @@ class SyncMachine extends Component {
     startSequence = (startAt = 0) => {
 
         const {steps} = this.props.sequencer
-        const {sequence} = this.state
+        const {sequence} = this.props
         const sequencerTrigs = [...Array(steps).keys()]
 
 
         const drumSeq = new Tone.Sequence(function(time,i){
-        Object.keys(sequence).map(drum => ( 
-            [...sequence[drum]].indexOf(i) >= 0 && drumSamples.get(drum).start())) 
-        }, sequencerTrigs, "16n")
+            Object.keys(sequence).map(drum => ( 
+                [...sequence[drum]].indexOf(i) >= 0 && drumSamples.get(drum).start())) 
+            }, sequencerTrigs, "16n"
+        )
 
         this.setState({drumSeq},
         () => this.state.drumSeq.start(startAt))
@@ -129,32 +128,23 @@ class SyncMachine extends Component {
 
     updateChannelSequence = (addRemove, sound, i, actualPosition) => {
 
-        const {sequence} = this.state 
-        let individualSeq = [...sequence[sound]]
+        const {sequence} = this.props 
+        let soundToUpdate = [...sequence[sound]]
 
         if (addRemove === 'ADD') {
-            individualSeq.push(i)
+            soundToUpdate.push(i)
         } else if (addRemove === 'REMOVE') {
-            const stepToRemove = individualSeq.indexOf(i)
-            individualSeq.splice(stepToRemove,1)
+            const stepToRemove = soundToUpdate.indexOf(i)
+            soundToUpdate.splice(stepToRemove,1)
         } else {
-            individualSeq.length = 0
+            soundToUpdate.length = 0
         }
 
-        this.setState(prevState => ({
-            sequence: {
-                ...prevState.sequence, 
-                [sound]:individualSeq
-                },
-            actualPosition
-            })
-        )
-        
         this.props.updateSequence({
             key: sound, 
-            steps: individualSeq
+            steps: soundToUpdate
         })
-
+        
     }
 
     playStop = () => {
@@ -206,7 +196,8 @@ class SyncMachine extends Component {
 
     render(){
 
-        const {loading, play, sequence, patternName } = this.state
+        const {loading, play, patternName } = this.state
+        const { sequence,  } = this.props
 
         return(
 

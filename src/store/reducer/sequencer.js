@@ -8,7 +8,7 @@ import {
 } from '../actions/sequencerActions'
 
 const sequencer = (state = {}, action) => {
-    
+    console.log(action)
     switch (action.type) {
 
         case SET_INIT_SEQUENCER:
