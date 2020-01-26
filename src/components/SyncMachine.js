@@ -33,7 +33,7 @@ class SyncMachine extends Component {
             bpm: 120,
             masterVolume: -3,
             volumeKnob: 0,
-            sequence:this.props.sequence,
+            sequence: this.props.sequence,
             defaultPatterns: null,
             drumDist: null,
             drumPhaser: null,
@@ -80,7 +80,7 @@ class SyncMachine extends Component {
                 this.state.drumPhaser, 
                 this.state.drumVol, 
                 this.state.drumCrusher, 
-                //this.state.drumPPDelay, 
+                this.state.drumPPDelay, 
                 Tone.Master
             ))
         
