@@ -5,7 +5,7 @@ import { drumSamples, initFX, defaultPatterns } from '../presets/drums'
 import DrumMachine from  './DrumMachine'
 import { PureSpinner } from './htmlElements/PureSpinner';
 import { SET_INIT_STORE, SET_INIT_SEQUENCER, UPDATE_SEQUENCE, CHANGE_PATTERN_NAME,
-    CHANGE_PATTERN, SET_INDEX } from '../store'
+    CHANGE_PATTERN, SET_INDEX, UPDATE_SEQUENCER_STATUS } from '../store'
 
 const mapStateToProps = (store) => ({
     store: store,
@@ -22,7 +22,8 @@ const mapDispatchToProps = dispatch => ({
       updateSequence: sequence => dispatch({type: UPDATE_SEQUENCE, sequence}),
       changePattern: pattern => dispatch({type: CHANGE_PATTERN, pattern}),
       changePatternName: patternName => dispatch({type: CHANGE_PATTERN_NAME, patternName}),
-      setIndex: index => dispatch({type: SET_INDEX, index})
+      setIndex: index => dispatch({type: SET_INDEX, index}),
+      updateSequencerStatus: payload => dispatch(({type:UPDATE_SEQUENCER_STATUS, payload}))
 })
 
 class SyncMachine extends Component {
@@ -59,24 +60,6 @@ class SyncMachine extends Component {
     }
 
     initSetup = async () => {
-
-        let userPatterns = await localStorage.getItem('userPatterns')
-        userPatterns = JSON.parse(userPatterns) 
-
-        const {name, timestamp, index, ...sequence} = (userPatterns && userPatterns[0]) || defaultPatterns[0]
-
-        await this.props.setInitSequencer({
-            steps: 16,
-            play: false,
-            timing: "16n",
-            bpm: 120,
-            masterVolume: -3,
-            volumeKnob: 0,
-            index,
-            sequence,
-            patternName: name,
-            defaultPatterns: userPatterns ? userPatterns : defaultPatterns
-            })
 
         Tone.Transport.bpm.value = this.props.sequencer.bpm;
         Tone.context.latencyHint = 'fastest';

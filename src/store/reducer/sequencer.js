@@ -4,11 +4,34 @@ import {
     CHANGE_PATTERN,
     SAVE_PATTERN,
     SET_INDEX,
-    CHANGE_PATTERN_NAME
+    CHANGE_PATTERN_NAME,
+    UPDATE_SEQUENCER_STATUS
 } from '../actions/sequencerActions'
+import { defaultPatterns } from '../../presets/drums'
 
-const sequencer = (state = {}, action) => {
-    console.log(action)
+const initialState = () => {
+
+    let userPatterns = localStorage.getItem('userPatterns')
+    userPatterns = JSON.parse(userPatterns) 
+
+    const {name, timestamp, index, ...sequence} = (userPatterns && userPatterns[0]) || defaultPatterns[0]
+
+    return({
+        steps: 16,
+        play: false,
+        timing: "16n",
+        bpm: 120,
+        masterVolume: -3,
+        volumeKnob: 0,
+        index,
+        sequence,
+        patternName: name,
+        defaultPatterns: userPatterns ? userPatterns : defaultPatterns
+    })
+}
+
+const sequencer = (state = initialState(), action) => {
+
     switch (action.type) {
 
         case SET_INIT_SEQUENCER:
@@ -19,6 +42,12 @@ const sequencer = (state = {}, action) => {
                 ...state,
                 index: action.index
             };
+
+        case UPDATE_SEQUENCER_STATUS:
+            return {
+                ...state,
+                ...action.payload
+            }
 
         case UPDATE_SEQUENCE:
             return { 

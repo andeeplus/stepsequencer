@@ -5,7 +5,8 @@ export {
   SET_INDEX,
   SAVE_PATTERN,
   LOAD_PATTERN, 
-  CHANGE_PATTERN_NAME 
+  CHANGE_PATTERN_NAME ,
+  UPDATE_SEQUENCER_STATUS
 } from './actions/sequencerActions'
 
 export { SET_INIT_STORE } from './actions/setupActions'

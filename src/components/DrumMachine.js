@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 
 import StepLine from './StepLine'
 
@@ -32,7 +32,7 @@ const DrumMachine = (
                     key={sound} 
                     sequence={sequence[sound]} 
                     updateChannelSequence={updateChannelSequence}
-                    />)} 
+                />)} 
             </ControlStation>
             <FlexContainer justifyContent='center' >
                 <FlexContainer column justifyContent='space-between'>
