@@ -4,7 +4,7 @@ import Tone from 'tone';
 import { drumSamples, initFX, defaultPatterns } from '../presets/drums'
 import DrumMachine from  './DrumMachine'
 import { PureSpinner } from './htmlElements/PureSpinner';
-import { SET_INIT_STORE, SET_INIT_SEQUENCER, UPDATE_SEQUENCE, CHANGE_PATTERN_NAME,
+import { UPDATE_SEQUENCE, CHANGE_PATTERN_NAME,
     CHANGE_PATTERN, SET_INDEX, UPDATE_SEQUENCER_STATUS } from '../store'
 
 const mapStateToProps = (store) => ({
@@ -12,13 +12,11 @@ const mapStateToProps = (store) => ({
     setup: store.setup,
     sequencer: store.sequencer,
     sequence: store.sequencer.sequence,
-    patternName: store.sequencer.patternName
-
+    patternName: store.sequencer.patternName,
+    index: store.sequencer.index
 })
 
 const mapDispatchToProps = dispatch => ({
-      setInitSetup: store => dispatch({type: SET_INIT_STORE, store}),
-      setInitSequencer: sequencer => dispatch({type: SET_INIT_SEQUENCER, sequencer}),
       updateSequence: sequence => dispatch({type: UPDATE_SEQUENCE, sequence}),
       changePattern: pattern => dispatch({type: CHANGE_PATTERN, pattern}),
       changePatternName: patternName => dispatch({type: CHANGE_PATTERN_NAME, patternName}),
@@ -27,165 +25,164 @@ const mapDispatchToProps = dispatch => ({
 })
 
 class SyncMachine extends Component {
+        state = {
+            loading: true,
+            steps: 16,
+            play: false,
+            timing: "16n",
+            bpm: 120,
+            masterVolume: -3,
+            volumeKnob: 0,
+            sequence:this.props.sequence,
+            defaultPatterns: null,
+            drumDist: null,
+            drumPhaser: null,
+            drumvol: null,
+            drumCrusher: null,
+            drumPPDelay: null,
+            drumSeq: null
+        }
+    
+        componentDidMount (){
+            this.initSetup()
+            this.initFX()
+            this.setState({defaultPatterns, loading: false})
+        }
+        
+        componentDidUpdate(prevProps){
+            const patternHasChanged = prevProps.index !== this.props.index 
 
-    state = {
-        loading: true,
-        name: null,
-        drumDist: null,
-        drumPhaser: null,
-        drumvol: null,
-        drumCrusher: null,
-        drumPPDelay: null,
-        actualPosition: 0
-      }
+            if(patternHasChanged) {
+                Tone.Transport.cancel() 
+                this.startSequence()
+            }
+        }
+        
+        initSetup = () => {
+        
+            Tone.Transport.bpm.value = this.state.bpm;
+            Tone.context.latencyHint = 'fastest';
+            Tone.Transport.start("+0.2")
 
-    componentDidMount = async () => {
-        await this.initSetup()
-        await this.initFX()
-        this.setState({
-            loading: false,
-            patternName: this.props.patternName
-        })
-    }
+        }
+        
+        initFX = () => {
+        
+            const drumDist = new Tone.Distortion(initFX.fxDistortion)
+            const drumPhaser = new Tone.Phaser(initFX.fxPhaser)
+            const drumVol = new Tone.Volume(this.state.masterVolume)
+            const drumCrusher = new Tone.BitCrusher(initFX.fxBitCrusher)
+            const drumPPDelay = new Tone.PingPongDelay(initFX.fxPPDelay)
+        
+            this.setState({drumDist, drumPhaser, drumVol, drumCrusher, drumPPDelay},
+            () => drumSamples.chain(
+                this.state.drumDist, 
+                this.state.drumPhaser, 
+                this.state.drumVol, 
+                this.state.drumCrusher, 
+                //this.state.drumPPDelay, 
+                Tone.Master
+            ))
+        
+        }
+    
+        startSequence = (startAt=0) => {
+        
+            const {sequence, steps} = this.state
+        
+            const sequencerTrigs = [...Array(steps).keys()]
+        
+            const drumSeq = new Tone.Sequence(function(time,i){
+                Object.keys(sequence).map(drum => ( 
+                [...sequence[drum]].indexOf(i) >= 0 && drumSamples.get(drum).start()))
+            }, sequencerTrigs, "16n")
+        
+            drumSeq.start(startAt)
+        }
+    
+        changePattern = (pattern) => {
 
-    componentDidUpdate(prevProps){
-        const sequenceChanged = prevProps.sequence !== this.props.sequence 
-        const isNotLoadingAndPlay = this.state.loading === false && this.state.play
+            const patterns = {...this.props.sequencer.defaultPatterns}
 
-        if(sequenceChanged && isNotLoadingAndPlay) {
-            Tone.Transport.cancel() 
+            const {timestamp, name, index, ...sequence} = patterns[pattern]
+            this.setState({sequence})
+            this.props.setIndex(index)
+            
+        }
+
+        updateChannelSequence = (action, sound, i) => {
+        
+            const {sequence} = this.state
+            let individualSeq = sequence[sound]
+        
+            if (action === 'ADD') {
+            individualSeq.push(i)
+            } else if (action === 'REMOVE') {
+            const stepToRemove = individualSeq.indexOf(i)
+            individualSeq.splice(stepToRemove,1)
+            } else {
+            individualSeq.length = 0
+            }
+            
+            this.setState({sequence: {...sequence, [sound]:individualSeq}})
+        }
+    
+        playStop = () => {
             this.startSequence()
+            this.setState({play: !this.state.play},
+            () => this.state.play ? Tone.Transport.start() : Tone.Transport.stop())
         }
-
-    }
-
-    initSetup = async () => {
-
-        Tone.Transport.bpm.value = this.props.sequencer.bpm;
-        Tone.context.latencyHint = 'fastest';
-        Tone.Transport.start("+0.2")
-    }
-    
-    initFX = () => {
-
-        const drumDist = new Tone.Distortion(initFX.fxDistortion)
-        const drumPhaser = new Tone.Phaser(initFX.fxPhaser)
-        const drumVol = new Tone.Volume(this.state.masterVolume)
-        const drumCrusher = new Tone.BitCrusher(initFX.fxBitCrusher)
-        const drumPPDelay = new Tone.PingPongDelay(initFX.fxPPDelay)
-
-        this.setState({drumDist, drumPhaser, drumVol, drumCrusher, drumPPDelay},
-        () => drumSamples.chain(
-            this.state.drumDist, this.state.drumPhaser, this.state.drumVol, this.state.drumCrusher, this.state.drumPPDelay, Tone.Master))
-    
-    }
-
-
-    changePattern = (pattern) => {
-
-        const patterns = {...this.props.sequencer.defaultPatterns}
-
-        const {timestamp, name, index, ...sequence} = patterns[pattern]
-        this.props.changePattern(sequence)
-        this.props.changePatternName(name)
-        this.props.setIndex(index)
         
-    }
-
-    startSequence = (startAt = 0) => {
-
-        const {steps} = this.props.sequencer
-        const {sequence} = this.props
-        const sequencerTrigs = [...Array(steps).keys()]
-
-
-        const drumSeq = new Tone.Sequence(function(time,i){
-            Object.keys(sequence).map(drum => ( 
-                [...sequence[drum]].indexOf(i) >= 0 && drumSamples.get(drum).start())) 
-            }, sequencerTrigs, "16n"
-        )
-
-        this.setState({drumSeq},
-        () => this.state.drumSeq.start(startAt))
-    }
-
-    updateChannelSequence = (addRemove, sound, i, actualPosition) => {
-
-        const {sequence} = this.props 
-        let soundToUpdate = [...sequence[sound]]
-
-        if (addRemove === 'ADD') {
-            soundToUpdate.push(i)
-        } else if (addRemove === 'REMOVE') {
-            const stepToRemove = soundToUpdate.indexOf(i)
-            soundToUpdate.splice(stepToRemove,1)
-        } else {
-            soundToUpdate.length = 0
+        handleVolume = (newValue) => {
+        
+            let newVolume = parseInt(newValue, 10);
+        
+            newVolume < 100
+            ? (newVolume = parseInt(-50 / (newVolume + 1) * 10, 10))
+            : (newVolume = 0);
+        
+            Tone.Master.volume.value = newVolume;
+            this.setState({ volumeKnob: newVolume})
+        
         }
-
-        this.props.updateSequence({
-            key: sound, 
-            steps: soundToUpdate
-        })
         
-    }
-
-    playStop = () => {
-        this.startSequence()
-        this.setState({play: !this.state.play},
-        () => this.state.play ? Tone.Transport.start() : Tone.Transport.stop() && Tone.Transport.cancel())
-    }
-
-    handleVolume = (newValue) => {
-
-        let newVolume = parseInt(newValue, 10);
-
-        newVolume < 100
-        ? (newVolume = parseInt(-50 / (newVolume + 1) * 10, 10))
-        : (newVolume = 0);
-
-        Tone.Master.volume.value = newVolume;
-        this.setState({ volumeKnob: newVolume})
-
-    };
-
-    handleBpm = (newValue) =>{ 
-        Tone.Transport.bpm.value = newValue
-        this.setState({ bpm: newValue})
-    }
-
-    handleValues = (newValue, parameters = []) => {
-
-
-        const effectKey = parameters[0]
-        const effectValue = this.state[parameters[1]]
+        handleBpm = (newValue) =>{ 
+            Tone.Transport.bpm.value = newValue
+            this.setState({ bpm: newValue})
+        }
         
-        const valuedParameters = ['frequency', 'Q', 'wet','delayTime']
-        const centValue = ['distortion', 'wet','feedback', 'delayTime']
-
-        if (centValue.includes(effectKey)) {newValue = newValue / 100}
-
-        const chooseNextAction = !valuedParameters.includes(effectKey) 
-
-        chooseNextAction
-        ? effectValue[effectKey] = newValue
-        : effectValue[effectKey].value = newValue
-        console.log(effectKey, effectValue[effectKey] )
-        this.setState({
+        handleValues = (newValue, parameters = []) => {
+        
+            const effectKey = parameters[0]
+            const effectValue = this.state[parameters[1]]
+            
+            const valuedParameters = ['frequency', 'Q', 'wet','feedback','delayTime']
+            const centValue = ['distortion', 'wet','feedback', 'delayTime']
+            const bitcrush = [7,6,5,4,3,2,1,0]
+        
+        
+            if (centValue.includes(effectKey)) {newValue = newValue / 100}
+            if (effectKey === 'bits') {newValue = bitcrush.indexOf(newValue) +1}
+        
+            const chooseNextAction = !valuedParameters.includes(effectKey) 
+        
+            chooseNextAction
+            ? effectValue[effectKey] = newValue
+            : effectValue[effectKey].value = newValue
+        
+            this.setState({
             [effectKey]: effectValue
-        })
-    }
-
+            })
+        }
 
     render(){
 
-        const {loading, play, patternName } = this.state
-        const { sequence,  } = this.props
+        const { loading } = this.state
+        const { sequence, play, patternName  } = this.state
 
         return(
-
-            !loading && sequence 
-            ?   <DrumMachine 
+            loading ? <PureSpinner />
+            :   <DrumMachine 
                     play={play}
                     sequence={sequence}
                     patternName={patternName}
@@ -196,7 +193,7 @@ class SyncMachine extends Component {
                     handleBpm={this.handleBpm}
                     handleValues={this.handleValues}
                 />
-            :   <PureSpinner />
+            
         )
 
     }

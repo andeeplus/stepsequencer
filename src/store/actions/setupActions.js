@@ -1,1 +1,0 @@
-export const SET_INIT_STORE = 'SET_INIT_STORE'

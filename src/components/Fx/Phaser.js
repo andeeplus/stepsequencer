@@ -58,7 +58,7 @@ const Phaser = (props) => {
             handleValues={handleValues} 
             name={'phaser'} 
             knobColor={knobColor}
-            //moduleColor='linear-gradient(135deg, rgba(30,87,153,1) 0%,rgba(136,252,238,1) 100%)'
+            moduleColor='linear-gradient(135deg, rgba(30,87,153,1) 0%,rgba(136,252,238,1) 100%)'
         />
     )
 }

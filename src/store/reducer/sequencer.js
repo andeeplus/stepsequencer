@@ -1,6 +1,5 @@
 import { 
     UPDATE_SEQUENCE, 
-    SET_INIT_SEQUENCER ,
     CHANGE_PATTERN,
     SAVE_PATTERN,
     SET_INDEX,
@@ -33,9 +32,6 @@ const initialState = () => {
 const sequencer = (state = initialState(), action) => {
 
     switch (action.type) {
-
-        case SET_INIT_SEQUENCER:
-            return { ...state, ...action.sequencer};
 
         case SET_INDEX:
             return {
