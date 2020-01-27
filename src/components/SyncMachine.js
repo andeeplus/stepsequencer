@@ -1,4 +1,4 @@
-import React, {Component} from 'react'
+import React, {Component, Fragment} from 'react'
 import { connect } from 'react-redux'
 import Tone from 'tone';
 import { drumSamples, initFX, defaultPatterns } from '../presets/drums'
@@ -6,7 +6,7 @@ import DrumMachine from  './DrumMachine'
 import { PureSpinner } from './htmlElements/PureSpinner';
 import { UPDATE_SEQUENCE, CHANGE_PATTERN_NAME,
     CHANGE_PATTERN, SET_INDEX, UPDATE_SEQUENCER_STATUS } from '../store'
-import { StepButton } from './styles/SamplerChannel.style';
+import ModalSetup from './tools/Modal';
 
 const mapStateToProps = (store) => ({
     store: store,
@@ -15,7 +15,8 @@ const mapStateToProps = (store) => ({
     sequence: store.sequencer.sequence,
     patternName: store.sequencer.patternName,
     index: store.sequencer.index,
-    play: store.sequencer.play
+    play: store.sequencer.play,
+    bpm: store.sequencer.bpm
 })
 
 const mapDispatchToProps = dispatch => ({
@@ -41,7 +42,8 @@ class SyncMachine extends Component {
             drumvol: null,
             drumCrusher: null,
             drumPPDelay: null,
-            drumSeq: null
+            drumSeq: null,
+            audioContextIsActive: false
         }
     }
 
@@ -58,11 +60,13 @@ class SyncMachine extends Component {
             Tone.Transport.cancel() 
             this.startSequence()
         }
+
+       if (Tone.context.state !== 'running') Tone.context.resume()
     }
 
     initSetup = () => {
     
-        Tone.Transport.bpm.value = this.state.bpm;
+        Tone.Transport.bpm.value = this.props.bpm;
         Tone.context.latencyHint = 'fastest';
         Tone.Transport.start("+0.2")
 
@@ -101,7 +105,8 @@ class SyncMachine extends Component {
             [...sequence[drum]].indexOf(i) >= 0 && drumSamples.get(drum).start()))
         }, sequencerTrigs, "16n")
     
-        drumSeq.start(startAt)
+        this.setState({drumSeq}, () => this.state.drumSeq.start(startAt))
+        
     }
 
     changePattern = (pattern) => {
@@ -138,7 +143,7 @@ class SyncMachine extends Component {
     playStop = () => {
 
         this.startSequence()
-        this.props.play ? Tone.Transport.start() : Tone.Transport.stop()  
+        !this.props.play ? Tone.Transport.start() : Tone.Transport.stop()  
         this.props.updateSequencerStatus({play: !this.props.play})
     }
     
@@ -179,6 +184,11 @@ class SyncMachine extends Component {
         this.setState({[effectKey]: effectValue })
     }
 
+    activateAudioContext = () => {
+        Tone.Transport.start()
+        this.setState({audioContextIsActive: true})
+    }
+
     render(){
 
         const { loading } = this.state
@@ -186,17 +196,27 @@ class SyncMachine extends Component {
 
         return(
             loading ? <PureSpinner />
-            :   <DrumMachine 
-                    play={play}
-                    sequence={this.props.sequence}
-                    patternName={patternName}
-                    changePattern={this.changePattern}
-                    updateChannelSequence={this.updateChannelSequence}
-                    playStop={this.playStop}
-                    handleVolume={this.handleVolume}
-                    handleBpm={this.handleBpm}
-                    handleValues={this.handleValues}
-                />   
+            :   <Fragment>
+                    <DrumMachine 
+                        play={play}
+                        sequence={this.props.sequence}
+                        patternName={patternName}
+                        changePattern={this.changePattern}
+                        updateChannelSequence={this.updateChannelSequence}
+                        playStop={this.playStop}
+                        handleVolume={this.handleVolume}
+                        handleBpm={this.handleBpm}
+                        handleValues={this.handleValues}
+                        patternIndex={this.props.index}
+                    />   
+                    <ModalSetup
+                        visible={!this.state.audioContextIsActive}
+                        dismiss={this.activateAudioContext}
+                        children={<button onClick={() => this.setState({audioContextIsActive: true})}>Click to activate audio</button>} 
+                    />
+                </Fragment>
+            
+
         )
 
     }

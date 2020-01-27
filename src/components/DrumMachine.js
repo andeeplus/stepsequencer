@@ -13,7 +13,7 @@ import { PlayButton, ControlStation } from './styles/DrumMachine.styles'
 import { FlexContainer } from '../styles/index'
 
 const DrumMachine = (
-    { sequence, patternName, changePattern, play, updateChannelSequence, playStop, handleVolume, handleBpm, handleValues}
+    { sequence, patternName, changePattern, play, updateChannelSequence, playStop, handleVolume, handleBpm, handleValues, patternIndex}
 ) => {
 
     return(
@@ -25,6 +25,9 @@ const DrumMachine = (
             height='100%'
             padding='0px'
         >
+        <FlexContainer margin='0' justifyContent='flex-end' width='660px'>
+            <MasterControl handleBpm={handleBpm} handleVolume={handleVolume}/>
+        </FlexContainer>
             <ControlStation column width='auto'>
             { sequence && Object.keys(sequence).map((sound) => 
                 <StepLine 
@@ -41,7 +44,6 @@ const DrumMachine = (
                         <PlayButton as="button" onClick={playStop}>{play ? "◼" : "►"}</PlayButton>
                         <PatternControl patternName={patternName} />
                     </ControlStation>
-                    <MasterControl handleBpm={handleBpm} handleVolume={handleVolume}/>
                 </FlexContainer>
                 <Smasher 
                     handleValues={handleValues} 

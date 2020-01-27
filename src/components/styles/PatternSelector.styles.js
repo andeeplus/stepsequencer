@@ -16,7 +16,11 @@ let PatternButton = styled(StepButton)`
   margin: 5px;
   width: 30px;
   height: 30px;
-  line-height: 14px;
+  line-height: 30px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
   &:hover{
     background-color: #f59542;
   }

@@ -2,7 +2,7 @@ import styled from 'styled-components'
 import { ControlStation } from '../styles/DrumMachine.styles'
 
 const ControlArea = styled(ControlStation)`
-    background: ${props => props.moduleColor};
+    //background: ${props => props.moduleColor};
 `
 
 const LabelName = styled.h1`
