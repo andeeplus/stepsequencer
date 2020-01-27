@@ -7,6 +7,7 @@ import {
     UPDATE_SEQUENCER_STATUS
 } from '../actions/sequencerActions'
 import { defaultPatterns } from '../../presets/drums'
+import cloneDeep from 'lodash/cloneDeep'
 
 const initialState = () => {
 
@@ -23,7 +24,7 @@ const initialState = () => {
         masterVolume: -3,
         volumeKnob: 0,
         index,
-        sequence,
+        sequence: cloneDeep(sequence),
         patternName: name,
         defaultPatterns: userPatterns ? userPatterns : defaultPatterns
     })

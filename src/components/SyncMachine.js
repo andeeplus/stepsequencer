@@ -1,5 +1,6 @@
 import React, {Component, Fragment} from 'react'
 import { connect } from 'react-redux'
+import cloneDeep from 'lodash/cloneDeep'
 import Tone from 'tone';
 import { drumSamples, initFX, defaultPatterns } from '../presets/drums'
 import DrumMachine from  './DrumMachine'
@@ -111,8 +112,8 @@ class SyncMachine extends Component {
 
     changePattern = (pattern) => {
 
-        const patterns = {...this.props.sequencer.defaultPatterns}
-
+        const defaultPatterns = cloneDeep(this.props.sequencer.defaultPatterns)
+        const patterns = {...defaultPatterns}
         const {timestamp, name, index, ...sequence} = patterns[pattern]
         this.props.changePattern(sequence)
         this.props.setIndex(index)
