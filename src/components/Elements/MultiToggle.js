@@ -13,6 +13,7 @@ const ToggleButton = styled(PatternButton)`
     background: ${props => props.isActive ? '#ed8f37' : 'lightgrey' };
     p{
         margin: 2px;
+        font-size: ${props => props.isActive ? '12px' : '12px'};
     }
 `
 

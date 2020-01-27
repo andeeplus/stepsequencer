@@ -5,7 +5,7 @@ import { PatternButton } from './PatternSelector.styles'
 import { FlexContainer } from '../../styles/index'
 
 const PlayButtonStyled = styled(PatternButton)`
-    margin: 20px; 
+    margin: 16px; 
     padding: 7px 0; 
     width: 110px; 
     height: 30px;
@@ -13,13 +13,12 @@ const PlayButtonStyled = styled(PatternButton)`
 `
 
 const ControlStation = styled(FlexContainer)`
-    margin: 16px 0;
+    margin: 12px;
     align-items: center;
     background-color: lightgrey;
     padding: 16px 4px;
     border-radius: 4px 4px 16px;
     box-shadow: 1px 3px 5px #000;
-    margin: 16px 16px;
     justify-content: flex-start;
     width: ${props => props.width ? props.width : '136px'};
     height: fit-content;

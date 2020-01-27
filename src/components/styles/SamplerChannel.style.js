@@ -20,8 +20,8 @@ const IndividualSeqActions = styled.div`
 `
 
 const StepButton = styled.div`
-  width: 36px;
-  height: 36px;
+  width: 30px;
+  height: 30px;
   border: ${props => props.isActive ? '2px outset darkgrey' : '2px solid #ffe6e6;'};
   box-sizing: border-box;
   border-radius: 4px;
