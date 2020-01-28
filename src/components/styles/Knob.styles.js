@@ -4,8 +4,8 @@ import imgMetal from '../../assets/img_metal.jpeg'
 const FullKnob = styled.div`
   display:flex;
   flex-direction: column;
-  width: 35px;
-  height: 75px;
+  width: 30px;
+  height: 60px;
   margin: 15px;
   margin-bottom: 5px;
   justify-content: center;

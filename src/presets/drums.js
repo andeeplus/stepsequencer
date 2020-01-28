@@ -9,6 +9,9 @@ import RIM from '../sounds/Rim_808_01.wav'
 import CL from '../sounds/Clap_808_01.wav'
 import TOM1 from '../sounds/Tom_808_01.wav'
 
+
+let drumIds = ["bd", "sn", "hh", "oh", "cb", "cn", "rm", "cl", "tm"]
+
 const drumSamples = new Tone.Players({
   "bd" : BD,
   "sn" : SN,
@@ -181,5 +184,5 @@ const initFX = {
 }
 
 export {
-  drumSamples, initFX, emptyPattern, defaultPatterns
+  drumSamples, initFX, emptyPattern, defaultPatterns, drumIds
 }

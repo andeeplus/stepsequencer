@@ -2,7 +2,7 @@ import React, {Component, Fragment} from 'react'
 import { connect } from 'react-redux'
 import cloneDeep from 'lodash/cloneDeep'
 import Tone from 'tone';
-import { drumSamples, initFX, defaultPatterns } from '../presets/drums'
+import { drumSamples, initFX, defaultPatterns, drumIds } from '../presets/drums'
 import DrumMachine from  './DrumMachine'
 import { PureSpinner } from './htmlElements/PureSpinner';
 import { UPDATE_SEQUENCE, CHANGE_PATTERN_NAME,
@@ -32,9 +32,10 @@ const mapDispatchToProps = dispatch => ({
 
 
 
+
 class SyncMachine extends Component {
     constructor(props) {
-        super(props);
+        super(props)
         this.state = {
             loading: true,
             timing: "16n",
@@ -48,8 +49,10 @@ class SyncMachine extends Component {
             drumCrusher: null,
             drumPPDelay: null,
             drumSeq: null,
-            audioContextIsActive: false
+            audioContextIsActive: false,
+            indexSeq: 0
         }
+        this.drumSamples = cloneDeep(drumSamples)
     }
 
     componentDidMount (){
@@ -66,7 +69,28 @@ class SyncMachine extends Component {
             this.startSequence()
         }
 
-       if (Tone.context.state !== 'running') Tone.context.resume()
+        //if (Tone.context.state !== 'running') Tone.context.resume()
+
+        //if(this.state.indexSeq === 15) this.randomizeSequence()
+    }
+
+    randomizeSequence() {
+        let randomizer = (patterns) => {
+            const shuffle = (array) => array.sort(() => Math.random() - 0.5);
+            let patternsToShuffle = cloneDeep(patterns)
+            let soundsKey = [...drumIds]
+            let shuffledOrder = shuffle([0,1,2,3,4,5,6,7,8])
+            let shuffledValues = Object.values(patternsToShuffle)
+            let newSequence = {}
+            soundsKey.map((key, index) => newSequence[key] = shuffledValues[shuffledOrder[index]][key])
+            return newSequence
+        }
+
+        this.setState({indexSeq: 0})
+        let sequence = randomizer(this.props.sequencer.defaultPatterns)
+        this.props.changePattern(sequence)
+        Tone.Transport.cancel() 
+        this.startSequence()
     }
 
     initSetup = () => {
@@ -85,21 +109,21 @@ class SyncMachine extends Component {
         const drumCrusher = new Tone.BitCrusher(initFX.fxBitCrusher)
         const drumPPDelay = new Tone.PingPongDelay(initFX.fxPPDelay)
     
-        await this.setState({drumDist, drumPhaser, drumVol, drumCrusher, drumPPDelay})
-        this.setState({drumSamples: drumSamples.chain(
-            this.state.drumDist, 
-            this.state.drumPhaser, 
-            this.state.drumCrusher, 
-            this.state.drumPPDelay, 
-            this.state.drumVol, 
-            Tone.Master
+        this.setState({drumDist, drumPhaser, drumVol, drumCrusher, drumPPDelay}, 
+            () => this.drumSamples = drumSamples.chain(
+                this.state.drumDist, 
+                this.state.drumPhaser, 
+                this.state.drumCrusher, 
+                this.state.drumPPDelay, 
+                this.state.drumVol, 
+                Tone.Master
+            )
         )
-        })
     }
 
     startSequence = (startAt=0) => {
-    
-        const { drumSamples} = this.state
+
+        const { drumSamples} = this
         const { steps } = this.props.sequencer
         const { sequence }  = this.props
     
