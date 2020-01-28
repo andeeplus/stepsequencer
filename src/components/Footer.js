@@ -18,17 +18,21 @@ const Rotate = styled.div`
     font-size:10px;
 `
 
-const Paragraph = styled.p`
+const FooterStyled = styled(FlexContainer)`
     font-size: 10px;
     font-weight: 100;
-    & a{
+    & a {
         font-weight: 400;
+        margin-left: 5px;
     }
 `
 
 const Footer = () => 
-    <FlexContainer alignItems='center' justifyContent='center' width='100%'>
-        <Paragraph>made with <Rotate>☯</Rotate> by <a href='https://github.com/andeeplus'>@andeeplus</a></Paragraph>
-    </FlexContainer>
+        <FooterStyled alignItems='center' justifyContent='center' width='100%'>
+            <p>made with</p>
+            <Rotate>☯</Rotate>
+            <p>by</p><a href='https://github.com/andeeplus'>@andeeplus</a>
+        </FooterStyled>
+
     
 export default Footer

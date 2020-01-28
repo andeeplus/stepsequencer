@@ -12,10 +12,10 @@ const LedColor = styled.div`
     margin: 0 auto;
     width: 20px;
     height: 10px;
-    background-color: ${({theme, isActive}) => isActive ? theme.colors.main : theme.colors.grey100 };
+    background-color: ${({theme, isActive}) => isActive ? theme.colors.mustard100 : theme.colors.grey100 };
     border-radius: 2px;
     box-shadow: rgba(0, 0, 0, 0.2) 0 -1px 7px 1px, inset #304701 0 -1px 9px, 
-        ${({theme, isActive}) => isActive ? theme.colors.main : theme.colors.grey100 } 0 2px 12px;
+        ${({theme, isActive}) => isActive ? theme.colors.mustard100 : theme.colors.grey100 } 0 2px 12px;
 }
 `
 
