@@ -214,7 +214,8 @@ class SyncMachine extends Component {
         this.setState({[effectKey]: effectValue })
     }
 
-    activateAudioContext = () => {  
+    activateAudioContext = () => { 
+        Tone.start() 
         this.setState({audioContextIsActive: true})
     }
 
@@ -263,7 +264,7 @@ class SyncMachine extends Component {
                         dismiss={this.activateAudioContext}
                         children={
                             <FlexContainer justifyContent='center'>
-                                <Button onClick={() => this.setState({audioContextIsActive: true})}>Enable Audio</Button>
+                                <Button onClick={this.activateAudioContext}>Enable Audio</Button>
                             </FlexContainer>} 
                     />
                 </Fragment>
