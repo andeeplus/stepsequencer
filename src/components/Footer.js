@@ -35,7 +35,7 @@ const Footer = () =>
         <FooterStyled alignItems='center' justifyContent='center' width='100%'>
             <p>made with</p>
             <Rotate>☯</Rotate>
-            <p>by</p><a href='https://github.com/andeeplus'>@andeeplus</a>
+            <p>by</p><a href='https://github.com/andeeplus' rel='noopener noreferrer' target="_blank">@andeeplus</a>
         </FooterStyled>
 
     
