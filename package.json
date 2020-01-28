@@ -1,7 +1,7 @@
 {
   "name": "andeeplus-drum-machine",
   "version": "0.2.0",
-  "homepage": "http://www.pitchdownrecords.com/andeeplus/metaldrums",
+  "homepage": "http://www.pitchdownrecords.com/andeeplus/d-machine",
   "private": true,
   "dependencies": {
     "node-sass": "^4.12.0",
