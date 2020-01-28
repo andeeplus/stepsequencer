@@ -7,6 +7,7 @@ const TextLightInset = styled.p`
   font-size: 12px;
   background-color: #565656;
   color: black;
+  width: 2rem;
   text-shadow: 1px 2px 10px rgb(184, 212, 212);
   -webkit-background-clip: text;
      -moz-background-clip: text;
@@ -21,9 +22,8 @@ const IndividualSeqActions = styled.div`
 `
 
 const StepButton = styled.div`
-  width: 30px;
-  height: 30px;
-  border: ${props => props.isActive ? '2px outset darkgrey' : '2px solid #54849285;'};
+  width: 25px;
+  height: 25px;
   box-sizing: border-box;
   border-radius: 4px;
   margin: 4px;

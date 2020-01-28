@@ -13,7 +13,7 @@ const ModulePainter = ({name, multiToggle, parameters, knobColor, handleValues, 
                 { parameters.map((param,i) => (
                     <Knob 
                         key={i}
-                        size={25} 
+                        size={20} 
                         numTicks={param.ticks} 
                         min={param.minMax[0]} 
                         max={param.minMax[1]} 

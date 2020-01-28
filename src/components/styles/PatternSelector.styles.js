@@ -14,9 +14,9 @@ let PatternSelect = styled.div`
 let PatternButton = styled(StepButton)`
   flex: 1 0 20%; 
   margin: 5px;
-  width: 30px;
-  height: 30px;
-  line-height: 30px;
+  width: 22px;
+  height: 22px;
+  line-height: 22px;
   display: flex;
   flex-direction: column;
   justify-content: center;

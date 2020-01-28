@@ -5,6 +5,7 @@ const ControlArea = styled(ControlStation)`
     //background: ${props => props.moduleColor};
 `
 
+
 const LabelName = styled.h1`
     text-align: center;
     font-size: 12px;

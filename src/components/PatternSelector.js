@@ -4,7 +4,7 @@ import { LabelName } from './Fx/ModulePainter.styles'
 
 const buttons = [1,2,3,4,5,6,7,8,9]
 
-const PatternSelector = ({ changePattern }) => {
+const PatternSelector = ({ changePattern, patternIndex, isPlaying }) => {
   return (
     <PatternBlock>
     <LabelName>PATTERN</LabelName>
@@ -12,7 +12,8 @@ const PatternSelector = ({ changePattern }) => {
         {buttons.map((item, index) => (
           <PatternButton 
             key={index} 
-            onClick={() => changePattern(index)}
+            onClick={() => isPlaying && changePattern(index)}
+            isActive={patternIndex === index}
           >
             <p>{item}</p>
           </PatternButton>

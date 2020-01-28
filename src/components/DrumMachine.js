@@ -11,9 +11,11 @@ import { PatternControl } from './PatternControl'
 import { initFX } from '../presets/drums'
 import { PlayButton, ControlStation } from './styles/DrumMachine.styles'
 import { FlexContainer } from '../styles/index'
+import { Timeline } from './Timeline'
 
 const DrumMachine = (
-    { sequence, patternName, changePattern, play, updateChannelSequence, playStop, handleVolume, handleBpm, handleValues, patternIndex}
+    { sequence, patternName, changePattern, play, updateChannelSequence, 
+        playStop, handleVolume, handleBpm, handleValues, indexSeq, patternIndex }
 ) => {
 
     return(
@@ -25,9 +27,6 @@ const DrumMachine = (
             height='100%'
             padding='0px'
         >
-        <FlexContainer margin='0' justifyContent='flex-end' width='660px'>
-            <MasterControl handleBpm={handleBpm} handleVolume={handleVolume}/>
-        </FlexContainer>
             <ControlStation column width='auto'>
             { sequence && Object.keys(sequence).map((sound) => 
                 <StepLine 
@@ -36,14 +35,16 @@ const DrumMachine = (
                     sequence={sequence[sound]} 
                     updateChannelSequence={updateChannelSequence}
                 />)} 
+            <Timeline indexSeq={indexSeq} steps={[...Array(16)]}/>
             </ControlStation>
             <FlexContainer justifyContent='center' >
                 <FlexContainer column justifyContent='space-between'>
                     <ControlStation column>
-                        <PatternSelector changePattern={changePattern}/> 
+                        <PatternSelector changePattern={changePattern} patternIndex={patternIndex} isPlaying={play}/> 
                         <PlayButton as="button" onClick={playStop}>{play ? "◼" : "►"}</PlayButton>
                         <PatternControl patternName={patternName} />
                     </ControlStation>
+                    <MasterControl handleBpm={handleBpm} handleVolume={handleVolume}/>
                 </FlexContainer>
                 <Smasher 
                     handleValues={handleValues} 

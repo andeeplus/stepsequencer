@@ -8,6 +8,8 @@ import { PureSpinner } from './htmlElements/PureSpinner';
 import { UPDATE_SEQUENCE, CHANGE_PATTERN_NAME,
     CHANGE_PATTERN, SET_INDEX, UPDATE_SEQUENCER_STATUS } from '../store'
 import ModalSetup from './tools/Modal';
+import styled from 'styled-components';
+import { FlexContainer } from '../styles';
 
 const mapStateToProps = (store) => ({
     store: store,
@@ -27,6 +29,8 @@ const mapDispatchToProps = dispatch => ({
       setIndex: index => dispatch({type: SET_INDEX, index}),
       updateSequencerStatus: payload => dispatch(({type:UPDATE_SEQUENCER_STATUS, payload}))
 })
+
+
 
 class SyncMachine extends Component {
     constructor(props) {
@@ -73,7 +77,7 @@ class SyncMachine extends Component {
 
     }
     
-    initFX = async() => {
+    initFX = async () => {
     
         const drumDist = new Tone.Distortion(initFX.fxDistortion)
         const drumPhaser = new Tone.Phaser(initFX.fxPhaser)
@@ -101,9 +105,11 @@ class SyncMachine extends Component {
     
         const sequencerTrigs = [...Array(steps).keys()]
     
-        const drumSeq = new Tone.Sequence(function(time,i){
-            Object.keys(sequence).map(drum => ( 
-            [...sequence[drum]].indexOf(i) >= 0 && drumSamples.get(drum).start()))
+        const drumSeq = new Tone.Sequence((time,i) => {
+            Tone.Draw.schedule(() => {
+                this.setState({indexSeq: i})
+            }, time) 
+            Object.keys(sequence).map(drum => [...sequence[drum]].indexOf(i) >= 0 && drumSamples.get(drum).start())
         }, sequencerTrigs, "16n")
     
         this.setState({drumSeq}, () => this.state.drumSeq.start(startAt))
@@ -195,6 +201,24 @@ class SyncMachine extends Component {
         const { loading } = this.state
         const { play, patternName  } = this.props
 
+        const Button = styled.button`
+            padding: 11px 42px;
+            background-color: #1DB954;
+            color: white;
+            border-radius: 50px;
+            text-decoration: none;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-weight: 500;
+            transition: all 0.4s ease-in-out;
+            :hover{
+                background-color: #1ed760;
+                transform: scale(1.06, 1.06);
+                transition: background-color, transform 0.2s ease-in-out;
+            }
+        `
+
         return(
             loading ? <PureSpinner />
             :   <Fragment>
@@ -209,15 +233,17 @@ class SyncMachine extends Component {
                         handleBpm={this.handleBpm}
                         handleValues={this.handleValues}
                         patternIndex={this.props.index}
+                        indexSeq={this.state.indexSeq}
                     />   
                     <ModalSetup
                         visible={!this.state.audioContextIsActive}
                         dismiss={this.activateAudioContext}
-                        children={<button onClick={() => this.setState({audioContextIsActive: true})}>Click to activate audio</button>} 
+                        children={
+                            <FlexContainer justifyContent='center'>
+                                <Button onClick={() => this.setState({audioContextIsActive: true})}>Enable Audio</Button>
+                            </FlexContainer>} 
                     />
                 </Fragment>
-            
-
         )
 
     }

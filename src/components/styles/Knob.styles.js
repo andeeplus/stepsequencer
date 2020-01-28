@@ -1,4 +1,5 @@
 import styled from 'styled-components'
+import imgMetal from '../../assets/img_metal.jpeg'
 
 const FullKnob = styled.div`
   display:flex;
@@ -41,6 +42,7 @@ const Outer = styled.div`
 `
 const Inner =styled.div`
   border-radius: 50%;
+  background-image: linear-gradient(315deg, #2f435390 0%, #d2ccc490 74%), url(${imgMetal});
 `
 
 const Grip = styled.div`

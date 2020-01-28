@@ -14,15 +14,15 @@ const PlayButtonStyled = styled(PatternButton)`
 `
 
 const ControlStation = styled(FlexContainer)`
-    margin: 12px;
+    margin: 6px;
     align-items: center;
     background-color: #2f4353;
     background-image: linear-gradient(315deg, #2f435390 0%, #d2ccc490 74%), url(${imgMetal});
-    padding: 16px 4px;
+    padding: 8px 4px;
     border-radius: 4px 4px 16px;
     box-shadow: 1px 3px 5px #000;
     justify-content: flex-start;
-    width: ${props => props.width ? props.width : '136px'};
+    width: ${props => props.width ? props.width : '130px'};
     height: fit-content;
 `
 
