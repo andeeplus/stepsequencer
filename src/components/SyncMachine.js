@@ -10,6 +10,7 @@ import { UPDATE_SEQUENCE, CHANGE_PATTERN_NAME,
 import ModalSetup from './tools/Modal';
 import styled from 'styled-components';
 import { FlexContainer } from '../styles';
+import Footer from './Footer';
 
 const mapStateToProps = (store) => ({
     store: store,
@@ -70,7 +71,6 @@ class SyncMachine extends Component {
         }
 
         //if (Tone.context.state !== 'running') Tone.context.resume()
-
         //if(this.state.indexSeq === 15) this.randomizeSequence()
     }
 
@@ -259,6 +259,7 @@ class SyncMachine extends Component {
                         patternIndex={this.props.index}
                         indexSeq={this.state.indexSeq}
                     />   
+                    <Footer />
                     <ModalSetup
                         visible={!this.state.audioContextIsActive}
                         dismiss={this.activateAudioContext}
