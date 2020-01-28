@@ -53,7 +53,7 @@ class SyncMachine extends Component {
             audioContextIsActive: false,
             indexSeq: 0
         }
-        this.drumSamples = cloneDeep(drumSamples)
+        this.drumSamples = drumSamples
     }
 
     componentDidMount (){
@@ -94,7 +94,6 @@ class SyncMachine extends Component {
     }
 
     initSetup = () => {
-    
         Tone.Transport.bpm.value = this.props.bpm;
         Tone.context.latencyHint = 'fastest';
         Tone.Transport.start("+0.2")
@@ -215,8 +214,7 @@ class SyncMachine extends Component {
         this.setState({[effectKey]: effectValue })
     }
 
-    activateAudioContext = () => {
-        Tone.Transport.start()
+    activateAudioContext = () => {  
         this.setState({audioContextIsActive: true})
     }
 

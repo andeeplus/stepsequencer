@@ -9,7 +9,7 @@ html, body {
   width: 100%;
   height: 100%;
   font-family: 'IBM Plex Mono', monospace;
-  background: linear-gradient(315deg, #d9d9d9 0%, #f6f2f2 74%) no-repeat center center fixed;
+  background-color: rgb(33, 33, 33);
   background-size: cover;
 }
 `

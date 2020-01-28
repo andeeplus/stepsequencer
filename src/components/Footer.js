@@ -21,9 +21,13 @@ const Rotate = styled.div`
 const FooterStyled = styled(FlexContainer)`
     font-size: 10px;
     font-weight: 100;
+    position: absolute;
+    bottom: 0;
+    color: white;
     & a {
         font-weight: 400;
         margin-left: 5px;
+        color: aquamarine;
     }
 `
 
