@@ -16,23 +16,26 @@ const PlayButtonStyled = styled(PatternButton)`
 const ControlStation = styled(FlexContainer)`
     margin: 6px;
     align-items: center;
-    background-color: #2f4353;
-    background-image: linear-gradient(315deg, #2f435390 0%, #d2ccc490 74%), url(${imgMetal});
     padding: 8px 4px;
     border-radius: 4px 4px 16px;
     box-shadow: 1px 3px 5px #000;
     justify-content: flex-start;
     width: ${props => props.width ? props.width : '130px'};
     height: fit-content;
+    //background-color: #2f4353;
+    //background-image: linear-gradient(315deg, #2f435390 0%, #d2ccc490 74%), url(${imgMetal});
+
+    background-color:#E0E5EC;
+    box-shadow: 9px 9px 16px rgb(163,177,198,0.6), -9px -9px 16px    rgba(255,255,255, 0.5);
 `
 
 const PlayButton = (props) => (
-  <FlexContainer>
-    <PlayButtonStyled {...props}/>
-  </FlexContainer>
+    <FlexContainer>
+      <PlayButtonStyled {...props}/>
+    </FlexContainer>
 )
 
 export {
-  PlayButton,
-  ControlStation
+    PlayButton,
+    ControlStation
 }

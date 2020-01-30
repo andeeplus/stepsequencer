@@ -42,7 +42,9 @@ const Outer = styled.div`
 `
 const Inner =styled.div`
   border-radius: 50%;
-  background-image: linear-gradient(315deg, #2f435390 0%, #d2ccc490 74%), url(${imgMetal});
+  //background-image: linear-gradient(315deg, #2f435390 0%, #d2ccc490 74%), url(${imgMetal});
+  background-color:#E0E5EC;
+  box-shadow: inset 1px 5px 12px -1px #E0E5EC;
 `
 
 const Grip = styled.div`

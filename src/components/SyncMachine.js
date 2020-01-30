@@ -226,19 +226,21 @@ class SyncMachine extends Component {
 
         const Button = styled.button`
             padding: 11px 42px;
-            background-color: #1DB954;
+            background-color: #E0E5EC;
             color: white;
             border-radius: 50px;
+            cursor: pointer;
             text-decoration: none;
             font-size: 0.8rem;
             text-transform: uppercase;
             letter-spacing: 2px;
             font-weight: 500;
             transition: all 0.4s ease-in-out;
+            box-shadow: 0px 0px 12px rgb(163,177,198,0.6), -9px -9px 16px rgba(255,255,255, 0.5);
             :hover{
-                background-color: #1ed760;
-                transform: scale(1.06, 1.06);
-                transition: background-color, transform 0.2s ease-in-out;
+                border: ${props => props.active && '2px solid antiquewhite'};
+                transform: scale(0.96, 0.96);
+                transition: background-color, box-shadow, transform 0.2s ease-in-out;
             }
         `
 
@@ -264,7 +266,7 @@ class SyncMachine extends Component {
                         dismiss={this.activateAudioContext}
                         children={
                             <FlexContainer justifyContent='center'>
-                                <Button onClick={this.activateAudioContext}>Enable Audio</Button>
+                                <Button  onClick={this.activateAudioContext}>Enable Audio</Button>
                             </FlexContainer>} 
                     />
                 </Fragment>

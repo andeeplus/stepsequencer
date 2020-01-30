@@ -23,11 +23,11 @@ const FooterStyled = styled(FlexContainer)`
     font-weight: 100;
     position: absolute;
     bottom: 0;
-    color: white;
+    //color: white;
     & a {
         font-weight: 400;
         margin-left: 5px;
-        color: aquamarine;
+        color: #93521f;
     }
 `
 

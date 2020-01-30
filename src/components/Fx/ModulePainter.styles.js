@@ -15,6 +15,7 @@ const LabelName = styled.h1`
     border-radius: 4px;
     padding: 4px 16px;    
     background-clip: text;
+    box-shadow: 0px 0px 12px rgb(163,177,198,0.6), -9px -9px 16px rgba(255,255,255, 0.5);
 `
 
 export {

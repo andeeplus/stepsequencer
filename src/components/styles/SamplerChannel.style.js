@@ -27,9 +27,11 @@ const StepButton = styled.div`
   box-sizing: border-box;
   border-radius: 4px;
   margin: 4px;
-  box-shadow: ${props => !props.isActive ? '1px 3px 2px #000' : 'inset 1px 3px 5px #000'};
-  background-image: linear-gradient(315deg, ${props => props.isActive ? '#ed8f37' : '#2f435360'} 0%, #d2ccc460 74%), url(${imgMetal});
+  box-shadow: ${props => !props.isActive ? '3px 6px 12px rgb(163,177,198,0.6), -5px -5px 14px rgba(255,255,255, 0.5)' : 'inset 3px 6px 12px rgb(163,177,198,0.6), -5px -5px 14px rgba(255,255,255, 0.5)'};
+  //background-image: linear-gradient(315deg, ${props => props.isActive ? '#bfe7d3c9' : '#2f435360'} 0%, #d2ccc460 74%), url(${imgMetal});
   transition: all .2s ease-out;
+  background-color: ${props => props.isActive ? '#E0E5EC' : '#E0E5EC'};
+  //box-shadow: 7px 7px 12px rgb(163,177,198,0.6), -9px -9px 16px    rgba(255,255,255, 0.5);
 `
 
 
