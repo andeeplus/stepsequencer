@@ -22,7 +22,7 @@ let PatternButton = styled(StepButton)`
   justify-content: center;
   align-items: center;
   &:hover{
-    background-color: #f59542;
+    background-color: #f5954270;
   }
   &:active{
     background-color: #eff598;
