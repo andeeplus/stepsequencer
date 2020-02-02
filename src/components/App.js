@@ -9,22 +9,28 @@ import SyncMachine from './SyncMachine'
 import { GlobalStyle } from '../styles/GloblaStyle';
 import GlobalFont from '../styles/GlobalFont';
 
-const App = () => {
+const WrapperApp = ({children}) => 
+    <React.Fragment>
+        <GlobalFont/>
+        <GlobalStyle/>
+            <Provider store={store}>
+                {children}
+            </Provider>
+    </React.Fragment>
 
+
+const App = () => {
     const [theme, setTheme] = useState('clear')
     const toggleTheme = () => theme === 'clear' ?setTheme('dark') : setTheme('clear')
 
     return(
-        <React.Fragment>
-            <GlobalFont/>
-            <GlobalStyle/>
-                <Provider store={store}>
-                    <ThemeProvider theme={styledTheme(theme)}>
-                        <SyncMachine toggleTheme={toggleTheme}/>
-                    </ThemeProvider>
-                </Provider>
-        </React.Fragment>
+        <WrapperApp>
+            <ThemeProvider theme={styledTheme(theme)}>
+                <SyncMachine toggleTheme={toggleTheme}/>
+            </ThemeProvider>
+        </WrapperApp>
     )
 }
+
 
 export default App;
