@@ -42,9 +42,8 @@ const Outer = styled.div`
 `
 const Inner =styled.div`
   border-radius: 50%;
-  //background-image: linear-gradient(315deg, #2f435390 0%, #d2ccc490 74%), url(${imgMetal});
-  background-color:#E0E5EC;
-  box-shadow: inset 1px 5px 12px -1px #E0E5EC;
+  background-color: ${({theme}) => theme.colors.main};
+  transition: all .4s ease-out;
 `
 
 const Grip = styled.div`
@@ -64,8 +63,8 @@ const KnobLabel = styled.p`
   text-align: center;
   font-size: 9px;
   min-width: 50px;
-  background-color: ${props => props.color || 'darkgrey'};
-  color: white;    
+  background-color: ${({theme}) => theme.colors.main200};
+  color: ${({theme}) => theme.colors.text};   
   margin-top: 16px;
 `
 

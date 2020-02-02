@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 
-import save from '../assets/save.svg'
-import pencil from '../assets/pencil.svg'
+import { Save, Pencil} from '../components/tools/svgCreator'
 
 import { FlexContainer } from '../styles'
 import { InputStyle, ActionButton } from './styles/PatternControl.styles'
@@ -44,8 +43,8 @@ export const PatternControl = () => {
 				onKeyPress={keyPressed}
 				/>
 			<FlexContainer justifyContent='center'>
-				<ActionButton icon={save} editing={isEdit} onClick={isEdit ? changePatternName : savePattern} />
-				<ActionButton icon={pencil} onClick={() => setEdit(!isEdit)} />
+				<ActionButton icon={Save} editing={isEdit} onClick={isEdit ? changePatternName : savePattern} />
+				<ActionButton icon={Pencil} onClick={() => setEdit(!isEdit)} />
 			</FlexContainer>
 		</FlexContainer>
 	)
