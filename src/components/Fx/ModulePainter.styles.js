@@ -17,6 +17,7 @@ const LabelName = styled.h1`
     background-clip: text;
     box-shadow: ${({theme}) => theme.shadows.small};
     transition: all .4s ease-out;
+    width:90px;
 `
 
 export {
