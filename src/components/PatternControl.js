@@ -22,7 +22,7 @@ export const PatternControl = () => {
 		setNewName(patternName)
 	}, [patternName]);
 	
-	const now = new Date()
+	const now = new Date() 
 	const timestamp = now.getHours() + ":" + now.getMinutes() + ":" + now.getSeconds()
 
 	const patternToSave = {...actualPattern, name: patternName, timestamp, index}
