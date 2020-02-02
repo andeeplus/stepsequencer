@@ -6,11 +6,10 @@ export const GlobalStyle = createGlobalStyle`
 html, body {
     margin:0;
     padding:0;
-    width: 100%;
-    height: 100%;
     font-family: 'IBM Plex Mono', monospace;
     //background-color: rgb(33, 33, 33);
     background-size: cover;
-    background-color: #E0E5EC;
+    background-color: ${({theme}) => theme.colors.main};
+    transition: all .4s ease-out;
 }
 `

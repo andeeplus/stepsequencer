@@ -3,7 +3,6 @@ import styled from 'styled-components'
 
 import { PatternButton } from './PatternSelector.styles' 
 import { FlexContainer } from '../../styles/index'
-import imgMetal from '../../assets/img_metal.jpeg'
 
 const PlayButtonStyled = styled(PatternButton)`
     margin: 16px; 
@@ -11,22 +10,27 @@ const PlayButtonStyled = styled(PatternButton)`
     width: 110px; 
     height: 30px;
     outline: none;
+    color: ${({theme}) => theme.colors.text};
 `
 
 const ControlStation = styled(FlexContainer)`
     margin: 6px;
+    margin-bottom: 32px;
     align-items: center;
     padding: 8px 4px;
     border-radius: 4px 4px 16px;
-    box-shadow: 1px 3px 5px #000;
     justify-content: flex-start;
     width: ${props => props.width ? props.width : '130px'};
     height: fit-content;
-    //background-color: #2f4353;
-    //background-image: linear-gradient(315deg, #2f435390 0%, #d2ccc490 74%), url(${imgMetal});
+    background-color:${({theme}) => theme.colors.main};
+    box-shadow: ${({theme}) => theme.shadows.large};
+    transition: all .4s ease-out;
+`
 
-    background-color:#E0E5EC;
-    box-shadow: 9px 9px 16px rgb(163,177,198,0.6), -9px -9px 16px    rgba(255,255,255, 0.5);
+const ToggleDiv = styled.div`
+    position: absolute;
+    left: 16px;
+    top: 0;
 `
 
 const PlayButton = (props) => (
@@ -37,5 +41,6 @@ const PlayButton = (props) => (
 
 export {
     PlayButton,
-    ControlStation
+    ControlStation,
+    ToggleDiv
 }

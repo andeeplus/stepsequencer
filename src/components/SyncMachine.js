@@ -63,7 +63,7 @@ class SyncMachine extends Component {
     }
     
     componentDidUpdate(prevProps){
-        const patternHasChanged = prevProps.index !== this.props.index 
+        const patternHasChanged = this.props.play && prevProps.index !== this.props.index 
 
         if(patternHasChanged) {
             Tone.Transport.cancel() 
@@ -260,7 +260,7 @@ class SyncMachine extends Component {
                         patternIndex={this.props.index}
                         indexSeq={this.state.indexSeq}
                     />   
-                    <Footer />
+                    <Footer toggleTheme={this.props.toggleTheme}/>
                     <ModalSetup
                         visible={!this.state.audioContextIsActive}
                         dismiss={this.activateAudioContext}

@@ -12,7 +12,7 @@ const PatternSelector = ({ changePattern, patternIndex, isPlaying }) => {
         {buttons.map((item, index) => (
           <PatternButton 
             key={index} 
-            onClick={() => isPlaying && patternIndex !== index && changePattern(index)}
+            onClick={() => patternIndex !== index && changePattern(index)}
             isActive={patternIndex === index}
           >
             <p>{item}</p>

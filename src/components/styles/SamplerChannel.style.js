@@ -1,51 +1,48 @@
 import styled from 'styled-components'
-import imgMetal from '../../assets/img_metal.jpeg'
 
 const TextLightInset = styled.p`
-  text-align: center;
-  margin: 0;
-  font-size: 12px;
-  background-color: #565656;
-  color: black;
-  width: 2rem;
-  text-shadow: 1px 2px 10px rgb(184, 212, 212);
-  -webkit-background-clip: text;
-     -moz-background-clip: text;
-          background-clip: text;
+    text-align: center;
+    margin: 0;
+    font-size: 12px;
+    background-color: #565656;
+    color: ${({theme}) => theme.colors.text};
+    width: 2rem;
+    text-shadow: inset 1px 1px 1px  rgb(184, 212, 212);
+    -webkit-background-clip: text;
+      -moz-background-clip: text;
+            background-clip: text;
 `
 
 const IndividualSeqActions = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
 `
 
 const StepButton = styled.div`
-  width: 25px;
-  height: 25px;
-  box-sizing: border-box;
-  border-radius: 4px;
-  margin: 4px;
-  box-shadow: ${props => !props.isActive ? 'rgba(163, 177, 198, 0.6) 2px 4px 6px, rgba(255, 255, 255, 0.5) -4px -3px 10px' : 'inset 2px 4px 6px rgb(163,177,198,0.6), -4px -3px 10px rgba(255,255,255, 0.5)'};
-  //background-image: linear-gradient(315deg, ${props => props.isActive ? '#bfe7d3c9' : '#2f435360'} 0%, #d2ccc460 74%), url(${imgMetal});
-  background-color: ${props => props.isActive ? '#d8dee8' : '#E0E5EC'};
-  transition: all .2s ease-out;
-  //box-shadow: 7px 7px 12px rgb(163,177,198,0.6), -9px -9px 16px    rgba(255,255,255, 0.5);
-  &:hover {
-      background-color: #f5954270;
-  }
-  &:active {
-      background-color: #f5f57870;
-  }
-  
+    width: 25px;
+    height: 25px;
+    box-sizing: border-box;
+    border-radius: 4px;
+    margin: 4px;
+    box-shadow: ${({theme, isActive}) => !isActive ? theme.shadows.medium : theme.shadows.insetMedium};
+    background-color: ${({theme, isActive}) => isActive ? theme.colors.main200 : theme.colors.main};
+    transition: all .2s ease-out;
+    &:hover {
+        background-color: ${({theme}) => theme.colors.mainHover};
+    }
+    &:active {
+      background-color: ${({theme}) => theme.colors.mainActive};
+    }
+    
 `
 
 
 const SquareButton = styled.div`
     margin: 5px; 
-    color: white;
-    background-color: black;
+    color: ${({theme}) => theme.colors.text};
+    background-color: ${({theme}) => theme.colors.mainContrast}30;
     width: 12px; 
     height: 12px;
     border-radius: 50%;
@@ -55,6 +52,7 @@ const SquareButton = styled.div`
     justify-content: center;
     align-items: initial;
     outline: none;
+	transition: all .4s ease-out;
     &:hover {
       background-color: red;
       color: #f5f578;
@@ -65,5 +63,14 @@ const SquareButton = styled.div`
     }
 `
 
+const SquareButtonLed = styled.div`
+    margin: 0 auto;
+    width: 25px;
+    height: 25px;
+    background-color: ${({theme, isActive}) => isActive ? `${theme.colors.mustard100}30` : null };
+    border-radius: 2px;
+    box-shadow: ${({theme, isActive}) => isActive ? `rgba(0, 0, 0, 0.2) 0 -1px 7px 1px, inset #304701 0 -1px 9px ${theme.colors.mustard100}` : null};
+`
 
-export { StepButton, TextLightInset, IndividualSeqActions, SquareButton }
+
+export { StepButton, TextLightInset, IndividualSeqActions, SquareButton, SquareButtonLed }

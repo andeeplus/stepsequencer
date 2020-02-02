@@ -1,37 +1,70 @@
 import { device } from './device'
 
-const colors = {
-    colors: {
-        main: '#e08484',
-        main400: '#e0b1b1',
-        red100: '#d62728',
-        orange100: '#bf452f',
-        orange300: '#ffa54e',
-        mustard100: '#ffc107',
-        lemon100: '#f9f905',
-        blue100: '#2d5185',
-        blue300: '#c3f1f5',
-        blue500: '#F1F2F3',
-        green100: '#288403',
-        green200: '#309c30',
-        grey100: '#777',
-        grey300: '#C9C9C9',
-        grey500: '#dddddd',
-        grey700: '#f7f7f7',
-        black: '#000',
-        black100: '#333',
-        white: '#fff',
+export const colors = {
+    clear: {
+        main: '#E0E5EC',
+        main200: '#f0f0f0',
+        main400: '#b6caec',
+        mainContrast: '#728db4',
+        mainContrastInverted: '#ffffff',
+        mainHover: '#b8c6da',
+        mainActive: '#4c95d224',
+        mustard100: '#F6C244',
+        text: '#212121',
+        invertedText: 'white'
+    },
+    dark: {
+        main: '#212121',
+        main200: '#783a3a',
+        main400: '#4d4d4d',
+        mainContrast: '#040000',
+        mainContrastInverted: '#4d4d4d',
+        mainHover: '#f5954270',
+        mainActive: '#f5f57870',
+        mustard100: '#F6C244',
+        text: 'white',
+        invertedText: '#212121'
     }
 }
 
-const shadows = {
-    shadows: {
-        menu: '0px 2px 11px 0px rgba(0,0,0,0.25)',
-        alert: '0px 2px 8px 1px rgba(0,0,0,0.16)',
-        button: '0px 1px 5px 0px rgba(0, 0, 0, 0.2), 0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 3px 1px -2px rgba(0, 0, 0, 0.12)',
-        buttonHover: '0px 2px 10px 0px rgba(0, 0, 0, 0.2), 0px 4px 4px 0px rgba(0, 0, 0, 0.14), 0px 6px 2px -4px rgba(0, 0, 0, 0.12)'
-    }
+const sharedColors = {
+    red100: '#d62728',
+    orange100: '#bf452f',
+    orange300: '#ffa54e',
+    mustard100: '#ffc107',
+    lemon100: '#f9f905',
+    blue100: '#2d5185',
+    blue300: '#c3f1f5',
+    blue500: '#F1F2F3',
+    green100: '#288403',
+    green200: '#309c30',
+    grey100: '#777',
+    grey300: '#C9C9C9',
+    grey500: '#dddddd',
+    grey700: '#f7f7f7',
+    black: '#000',
+    black100: '#333',
+    white: '#fff',
+    transparent: 'transparent'
 }
+
+
+const shadows = (theme) => ({
+    clear: {
+        large: `4px 4px 13px ${colors[theme].mainContrast}60, -4px -4px 13px ${colors[theme].mainContrastInverted}`,
+        medium: `${colors[theme].mainContrast}60 2px 2px 6px, ${colors[theme].mainContrastInverted} -2px -2px 10px`,
+        small: `0px 0px 12px ${colors[theme].mainContrast}60), -3px -6px 11px ${colors[theme].mainContrastInverted}`,
+        insetMedium: `inset 2px 4px 8px ${colors[theme].mainContrast}60, -1px -2px 4px ${colors[theme].main400}`
+    },
+    dark: {
+        large: `4px 4px 5px ${colors[theme].mainContrast}60, -2px -2px 3px ${colors[theme].mainContrastInverted}`,
+        medium: `${colors[theme].mainContrast}60 2px 2px 3px, ${colors[theme].mainContrastInverted} -1px -1px 3px`,
+        small: `0px 0px 12px ${colors[theme].mainContrast}60), -3px -6px 11px ${colors[theme].mainContrastInverted}`,
+        insetMedium: `inset 2px 2px 4px ${colors[theme].mainContrast}60, -1px -2px 4px ${colors[theme].mainContrastInverted}50`
+    }
+})
+
+
 
 const typography = {
     typography: {
@@ -52,7 +85,7 @@ const typography = {
         },
         titleH4: {
             fontSize: '16px', 
-            fontWeight: '300',
+            fontWeight: '700',
             textTransform: 'capitalize'
         },
         titleH5: {
@@ -75,7 +108,7 @@ const typography = {
             fontWeight: '300'
         },
         paragraph: {
-            fontSize: '16px', 
+            fontSize: '14px', 
             fontWeight: '300'
         },
         paragraphLight: {
@@ -118,37 +151,47 @@ const devices = {
     }
 }
 
-const buttons = {
+const buttons = (theme) => ({
     buttons: {
         fontSize: {
             small: '12px',
-            medium: '16px',
-            large: '20px'
+            medium: '14px',
+            large: '18px'
         },
         backgroundColor: {
-            'default': colors.colors.main,
-            'info': colors.colors.blue100,
-            'warning': colors.colors.mustard100,
-            'error': colors.colors.red100,
-            'success': colors.colors.green100,
-            'disabled': colors.colors.grey500,
-            'light': colors.colors.white,
-            'light-hover': colors.colors.main400,
-            'black': colors.colors.black
+            'default': colors[theme].main,
+            'info': colors[theme].blue100,
+            'warning': colors[theme].mustard100,
+            'error': colors[theme].red100,
+            'success': colors[theme].green100,
+            'disabled': colors[theme].grey500,
+            'light': colors[theme].transparent,
+            'light-hover': colors[theme].main500,
+            'black': colors[theme].black,
+            'white': colors[theme].white
         },
         color: {
-            'default': colors.colors.white,
-            'info': colors.colors.white,
-            'warning': colors.colors.white,
-            'error': colors.colors.white,
-            'success': colors.colors.white,
-            'disabled': colors.colors.grey100,
-            'light': colors.colors.main,
-            'black': colors.colors.white
+            'default': colors[theme].white,
+            'info': colors[theme].white,
+            'warning': colors[theme].main,
+            'error': colors[theme].white,
+            'success': colors[theme].white,
+            'disabled': colors[theme].grey100,
+            'light': colors[theme].main,
+            'black': colors[theme].white,
+            'white': colors[theme].main
         }
     }
-}
+})
 
-const theme = {...colors, ...shadows, ...typography, ...layout, ...devices, ...buttons}
 
-export {theme}
+const styledTheme = (theme = 'clear') =>  ({
+    ...{colors: {...colors[theme], ...sharedColors}}, 
+    shadows: shadows(theme)[theme], 
+    ...typography, 
+    ...layout, 
+    ...devices, 
+    ...buttons(theme)
+})
+
+export { styledTheme }

@@ -30,7 +30,7 @@ let PatternButton = styled(StepButton)`
   & p {
     margin: 6px;
     background-color: #6e1414;
-    color: transparent;
+    color: ${({theme}) => theme.colors.text};
     text-align: center;
     text-shadow: 1px 2px 10px rgb(125, 151, 151);
     -webkit-background-clip: text;

@@ -8,9 +8,6 @@ import { FlexContainer } from '../../styles';
 const ToggleButton = styled(PatternButton)`
     width:${props => `${props.size}px`};
     height:${props => `${props.size}px`};
-    border: ${props => props.isActive ? '2px outset darkgrey' : '2px outset #ffe6e6;'};
-    box-shadow: ${props => !props.isActive ? '1px 3px 5px #000' : 'inset 4px 3px 5px #000'};
-    background: ${props => props.isActive ? '#ed8f37' : 'lightgrey' };
     p{
         margin: 2px;
         font-size: ${props => props.isActive ? '12px' : '12px'};
