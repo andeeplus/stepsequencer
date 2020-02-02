@@ -31,8 +31,9 @@ const CheckBox = styled.input`
   border-radius: 15px;
   width: 42px;
   height: 26px;
+  background: ${({theme}) => theme.colors.main200};
   &:checked + ${CheckBoxLabel} {
-    background: ${({theme}) => theme.colors.mainContrast};
+    background: ${({theme}) => theme.colors.main200};
     &::after {
       content: "";
       display: block;

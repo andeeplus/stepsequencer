@@ -67,9 +67,9 @@ const SquareButtonLed = styled.div`
     margin: 0 auto;
     width: 25px;
     height: 25px;
-    background-color: ${({theme, isActive}) => isActive ? `${theme.colors.mustard100}30` : null };
+    background-color: ${({theme, isActive}) => isActive ? `${theme.colors.mainActive}40` : null };
     border-radius: 2px;
-    box-shadow: ${({theme, isActive}) => isActive ? `rgba(0, 0, 0, 0.2) 0 -1px 7px 1px, inset #304701 0 -1px 9px ${theme.colors.mustard100}` : null};
+    box-shadow: ${({theme, isActive}) => isActive ? `rgba(0, 0, 0, 0.2) 0 -1px 7px 1px, #304701 0 -1px 9px ${theme.colors.mustard100}` : null};
 `
 
 

@@ -7,6 +7,7 @@ import store from '../store/store';
 import { styledTheme } from '../styles/'
 import SyncMachine from './SyncMachine'
 import { GlobalStyle } from '../styles/GloblaStyle';
+import GlobalFont from '../styles/GlobalFont';
 
 const App = () => {
 
@@ -15,12 +16,13 @@ const App = () => {
 
     return(
         <React.Fragment>
-        <GlobalStyle/>
-            <Provider store={store}>
-                <ThemeProvider theme={styledTheme(theme)}>
-                    <SyncMachine toggleTheme={toggleTheme}/>
-                </ThemeProvider>
-            </Provider>
+            <GlobalFont/>
+            <GlobalStyle/>
+                <Provider store={store}>
+                    <ThemeProvider theme={styledTheme(theme)}>
+                        <SyncMachine toggleTheme={toggleTheme}/>
+                    </ThemeProvider>
+                </Provider>
         </React.Fragment>
     )
 }
