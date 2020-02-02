@@ -8,6 +8,7 @@ const ControlArea = styled(ControlStation)`
 const LabelName = styled.h1`
     text-align: center;
     font-size: 12px;
+    font-family: 'Geomanist';
     margin: 0 0 16px;
     color: ${({theme}) => theme.colors.text};
     background-color: ${({theme}) => theme.colors.main200};
