@@ -28,6 +28,7 @@ const FooterStyled = styled(FlexContainer)`
     position: absolute;
     bottom: 0;
     color: ${({theme}) => theme.colors.text};
+    background-color: ${props => props.theme.colors.main};
     & a {
         font-weight: 400;
         margin-left: 5px;

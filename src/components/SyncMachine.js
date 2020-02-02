@@ -1,4 +1,4 @@
-import React, {Component, Fragment} from 'react'
+import React, {Component} from 'react'
 import { connect } from 'react-redux'
 import cloneDeep from 'lodash/cloneDeep'
 import Tone from 'tone';
@@ -32,8 +32,6 @@ const mapDispatchToProps = dispatch => ({
 })
 
 
-
-
 class SyncMachine extends Component {
     constructor(props) {
         super(props)
@@ -43,7 +41,7 @@ class SyncMachine extends Component {
             bpm: 120,
             masterVolume: -3,
             volumeKnob: 0,
-            defaultPatterns: null,
+            defaultPatterns,
             drumDist: null,
             drumPhaser: null,
             drumvol: null,
@@ -57,9 +55,7 @@ class SyncMachine extends Component {
     }
 
     componentDidMount (){
-        this.initSetup()
-        this.initFX()
-        this.setState({defaultPatterns, loading: false})
+        this.setState({loading: false})
     }
     
     componentDidUpdate(prevProps){
@@ -69,9 +65,6 @@ class SyncMachine extends Component {
             Tone.Transport.cancel() 
             this.startSequence()
         }
-
-        //if (Tone.context.state !== 'running') Tone.context.resume()
-        //if(this.state.indexSeq === 15) this.randomizeSequence()
     }
 
     randomizeSequence() {
@@ -108,16 +101,7 @@ class SyncMachine extends Component {
         const drumCrusher = new Tone.BitCrusher(initFX.fxBitCrusher)
         const drumPPDelay = new Tone.PingPongDelay(initFX.fxPPDelay)
     
-        this.setState({drumDist, drumPhaser, drumVol, drumCrusher, drumPPDelay}, 
-            () => this.drumSamples = drumSamples.chain(
-                this.state.drumDist, 
-                this.state.drumPhaser, 
-                this.state.drumCrusher, 
-                this.state.drumPPDelay, 
-                this.state.drumVol, 
-                Tone.Master
-            )
-        )
+        this.setState({drumDist, drumPhaser, drumVol, drumCrusher, drumPPDelay})
     }
 
     startSequence = (startAt=0) => {
@@ -214,8 +198,18 @@ class SyncMachine extends Component {
         this.setState({[effectKey]: effectValue })
     }
 
-    activateAudioContext = () => { 
-        Tone.start() 
+    activateAudioContext = async () => { 
+        await this.initSetup()
+        await this.initFX()
+        this.drumSamples = drumSamples.chain(
+            this.state.drumDist, 
+            this.state.drumPhaser, 
+            this.state.drumCrusher, 
+            this.state.drumPPDelay, 
+            this.state.drumVol, 
+            Tone.Master
+        )
+    
         this.setState({audioContextIsActive: true})
     }
 
@@ -246,7 +240,7 @@ class SyncMachine extends Component {
 
         return(
             loading ? <PureSpinner />
-            :   <Fragment>
+            :   <FlexContainer height='-webkit-fill-available' width='100%' backgroundColor='main' justifyContent='center'>
                     <DrumMachine 
                         play={play}
                         sequence={this.props.sequence}
@@ -269,7 +263,7 @@ class SyncMachine extends Component {
                                 <Button  onClick={this.activateAudioContext}>Enable Audio</Button>
                             </FlexContainer>} 
                     />
-                </Fragment>
+                </FlexContainer>
         )
 
     }

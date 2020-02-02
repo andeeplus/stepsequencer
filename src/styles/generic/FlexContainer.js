@@ -22,7 +22,7 @@ export const FlexContainer = styled.div`
     padding: ${props => props.padding};
     margin: ${props => props.margin};
     flex: ${props => props.flex};
-    background-color: ${props => props.backgroundColor};
+    background-color: ${props => props.theme.colors[props.backgroundColor]};
     @media ${device.midSize}{
         flex-direction: ${props => props.column ? 'column' : 'row'};
     }

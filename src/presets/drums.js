@@ -22,8 +22,7 @@ const drumSamples = new Tone.Players({
   "rm" : RIM,
   "cl" : CL,
   "tm" : TOM1
-}, () => console.log('loaded')
-)
+})
 
 const emptyPattern = {
   name: 'Empty',

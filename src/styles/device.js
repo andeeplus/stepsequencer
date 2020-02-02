@@ -12,8 +12,8 @@ const size = {
 * @desktop 1920px
 */
 export const device = {
-mobile: `(min-width: ${size.mobile})`,
-midSize: `(min-width: ${size.midSize})`,
-tablet: `(min-width: ${size.tablet})`,
-desktop: `(min-width: ${size.desktop})`,
+    mobile: `(min-width: ${size.mobile})`,
+    midSize: `(min-width: ${size.midSize})`,
+    tablet: `(min-width: ${size.tablet})`,
+    desktop: `(min-width: ${size.desktop})`,
 };

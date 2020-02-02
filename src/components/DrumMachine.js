@@ -1,5 +1,4 @@
 import React from 'react'
-import Toggle from 'react-toggle'
 
 import StepLine from './StepLine'
 import MasterControl from './MasterControl'

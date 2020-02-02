@@ -1,5 +1,4 @@
 import styled from 'styled-components'
-import imgMetal from '../../assets/img_metal.jpeg'
 
 const FullKnob = styled.div`
   display:flex;

@@ -15,7 +15,7 @@ const App = () => {
 
     return(
         <React.Fragment>
-        <GlobalStyle theme={styledTheme(theme)}/>
+        <GlobalStyle/>
             <Provider store={store}>
                 <ThemeProvider theme={styledTheme(theme)}>
                     <SyncMachine toggleTheme={toggleTheme}/>
