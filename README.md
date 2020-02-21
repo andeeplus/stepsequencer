@@ -1,6 +1,6 @@
 ## Drum sequencer
 Experimenting with Tone.js and React. Desktop only.
 
-- [Demo Live](http://www.pitchdownrecords.com/andeeplus/d-machine/)
+- [Demo Live](https://stepsequencer.now.sh/)
 
-![Screen](dmachine05.png)
+![Screen](screenshot.png)
