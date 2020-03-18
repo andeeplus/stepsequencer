@@ -31,9 +31,9 @@ const CheckBox = styled.input`
   border-radius: 15px;
   width: 42px;
   height: 26px;
-  background: ${({theme}) => theme.colors.main200};
+  background: ${({theme, disabled}) => disabled ? theme.colors.red100 : theme.colors.mustard100};
   &:checked + ${CheckBoxLabel} {
-    background: ${({theme}) => theme.colors.main200};
+    background: ${({theme, disabled}) => disabled ? theme.colors.main200 : theme.colors.mustard100};
     &::after {
       content: "";
       display: block;
@@ -47,12 +47,11 @@ const CheckBox = styled.input`
 `;
 
 
-export const ToggleSwitch = ({onChange}) => {
-console.log()
+export const ToggleSwitch = ({onChange, disabled}) => {
   return (
     <CheckBoxWrapper>
-      <CheckBox id="checkbox" type="checkbox" onChange={onChange} />
-      <CheckBoxLabel htmlFor="checkbox" />
+      <CheckBox id="checkbox" type="checkbox" onChange={onChange} disabled={disabled} />
+      <CheckBoxLabel htmlFor="checkbox" disabled={disabled}/>
     </CheckBoxWrapper>
 
   );

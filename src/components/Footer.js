@@ -3,7 +3,7 @@ import { FlexContainer } from '../styles'
 import styled, { keyframes } from 'styled-components'
 
 import "react-toggle/style.css"
-import { ToggleSwitch } from './Elements';
+// import { ToggleSwitch } from './Elements';
 
 const rotate = keyframes`
     from {
@@ -36,24 +36,27 @@ const FooterStyled = styled(FlexContainer)`
     }
 `
 
+/*
 const ToggleContainer = styled.div`
     position: absolute;
     top: 40px; 
     right: 40px;
 `
+*/
 
-const Footer = ({toggleTheme}) => 
+const Footer = ({toggleTheme, isPlaying}) => 
     <Fragment>
         <FooterStyled alignItems='center' justifyContent='center' margin='0 auto;' width='100%'>
             <p>made with</p>
             <Rotate>☯</Rotate>
             <p>by</p><a href='https://github.com/andeeplus' rel='noopener noreferrer' target="_blank">@andeeplus</a>
         </FooterStyled>
-        <ToggleContainer>
+        {/*<ToggleContainer>
             <ToggleSwitch
+                disabled={isPlaying}
                 onChange={toggleTheme} 
             />
-        </ToggleContainer>
+        </ToggleContainer>*/}
     </Fragment>
 
     

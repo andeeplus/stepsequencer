@@ -220,7 +220,7 @@ class SyncMachine extends Component {
 
         const Button = styled.button`
             padding: 11px 42px;
-            background-color: #E0E5EC;
+            background-color: ${({theme}) => theme.colors.main200};
             color: white;
             border-radius: 50px;
             cursor: pointer;
@@ -230,7 +230,6 @@ class SyncMachine extends Component {
             letter-spacing: 2px;
             font-weight: 500;
             transition: all 0.4s ease-in-out;
-            box-shadow: 0px 0px 12px rgb(163,177,198,0.6), -9px -9px 16px rgba(255,255,255, 0.5);
             :hover{
                 border: ${props => props.active && '2px solid antiquewhite'};
                 transform: scale(0.96, 0.96);
@@ -254,12 +253,12 @@ class SyncMachine extends Component {
                         patternIndex={this.props.index}
                         indexSeq={this.state.indexSeq}
                     />   
-                    <Footer toggleTheme={this.props.toggleTheme}/>
+                    <Footer toggleTheme={this.props.toggleTheme} isPlaying={play}/>
                     <ModalSetup
                         visible={!this.state.audioContextIsActive}
                         dismiss={this.activateAudioContext}
                         children={
-                            <FlexContainer justifyContent='center'>
+                            <FlexContainer backgroundColor='main' justifyContent='center'>
                                 <Button  onClick={this.activateAudioContext}>Enable Audio</Button>
                             </FlexContainer>} 
                     />

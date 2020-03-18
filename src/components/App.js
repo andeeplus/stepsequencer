@@ -11,8 +11,8 @@ import GlobalFont from '../styles/GlobalFont';
 
 const App = () => {
 
-    const [theme, setTheme] = useState('clear')
-    const toggleTheme = () => theme === 'clear' ?setTheme('dark') : setTheme('clear')
+    const [theme, setTheme] = useState('dark')
+    //const toggleTheme = () => theme === 'clear' ? setTheme('dark') : setTheme('clear')
 
     return(
         <React.Fragment>
@@ -20,7 +20,7 @@ const App = () => {
             <GlobalStyle/>
                 <Provider store={store}>
                     <ThemeProvider theme={styledTheme(theme)}>
-                        <SyncMachine toggleTheme={toggleTheme}/>
+                        <SyncMachine /*toggleTheme={toggleTheme}*//>
                     </ThemeProvider>
                 </Provider>
         </React.Fragment>
