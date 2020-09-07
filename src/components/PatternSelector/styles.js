@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 
-import { StepButton } from './SamplerChannel.style' 
+import { StepButton } from 'components/styles/SamplerChannel.style' 
 
 let PatternBlock = styled.div`
   width: 120px;

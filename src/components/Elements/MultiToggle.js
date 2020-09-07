@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
 
-import { PatternButton } from '../styles/PatternSelector.styles'
+import { PatternButton } from 'components/PatternSelector/styles'
 import { LabelName } from '../Fx/ModulePainter.styles'
 import { FlexContainer } from '../../styles';
 

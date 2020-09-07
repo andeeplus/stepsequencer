@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react';
 import ModulePainter from './ModulePainter'
-import { MultiToggle } from '../Elements/';
+import { MultiToggle } from '../Elements';
 
 const Smasher = (props) => {
 

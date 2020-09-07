@@ -47,8 +47,8 @@ const Inner =styled.div`
 
 const Grip = styled.div`
   position: absolute;
-  width: 5%;
-  height: 5%;
+  width: 20%;
+  height: 40%;
   bottom: 2%;
   left: 50%;
   transform: translateX(-50%);

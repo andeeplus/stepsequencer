@@ -1,3 +1,3 @@
-export { FlexContainer } from './generic/FlexContainer'
-export { styledTheme } from './theme'
-export { device } from './device'
+export { default } from "./theme";
+export { FlexContainer } from "./generic/FlexContainer";
+export { device } from "./device";

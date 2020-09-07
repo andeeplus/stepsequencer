@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react'
-import { FlexContainer } from '../styles'
 import styled, { keyframes } from 'styled-components'
+import { Box } from 'ui'
 
 import "react-toggle/style.css"
 // import { ToggleSwitch } from './Elements';
@@ -22,41 +22,27 @@ const Rotate = styled.div`
     color: ${({theme}) => theme.colors.mainInverted};
 `
 
-const FooterStyled = styled(FlexContainer)`
-    font-size: 10px;
-    font-weight: 100;
-    position: absolute;
-    bottom: 0;
-    color: ${({theme}) => theme.colors.text};
-    background-color: ${props => props.theme.colors.main};
-    & a {
-        font-weight: 400;
-        margin-left: 5px;
-        color: ${({theme}) => theme.colors.orange300};
-    }
-`
+const FooterStyled = styled(Box)`
+  font-size: 10px;
+  font-weight: 100;
+  margin: 16px;
+  bottom: 0;
+  color: ${({ theme }) => theme.colors.text};
+  & a {
+    font-weight: 400;
+    margin-left: 5px;
+    color: ${({ theme }) => theme.colors.orange300};
+  }
+`;
 
-/*
-const ToggleContainer = styled.div`
-    position: absolute;
-    top: 40px; 
-    right: 40px;
-`
-*/
 
-const Footer = ({toggleTheme, isPlaying}) => 
+const Footer = () => 
     <Fragment>
         <FooterStyled alignItems='center' justifyContent='center' margin='0 auto;' width='100%'>
             <p>made with</p>
             <Rotate>☯</Rotate>
             <p>by</p><a href='https://github.com/andeeplus' rel='noopener noreferrer' target="_blank">@andeeplus</a>
         </FooterStyled>
-        {/*<ToggleContainer>
-            <ToggleSwitch
-                disabled={isPlaying}
-                onChange={toggleTheme} 
-            />
-        </ToggleContainer>*/}
     </Fragment>
 
     

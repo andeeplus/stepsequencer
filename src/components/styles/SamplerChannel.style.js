@@ -1,4 +1,5 @@
 import styled from 'styled-components'
+import { Box } from 'ui'
 
 const TextLightInset = styled.p`
     text-align: center;
@@ -13,19 +14,15 @@ const TextLightInset = styled.p`
             background-clip: text;
 `
 
-const IndividualSeqActions = styled.div`
+const IndividualSeqActions = styled(Box)`
     display: flex;
     flex-direction: row;
     justify-content: center;
     align-items: center;
 `
 
-const StepButton = styled.div`
-    width: 25px;
-    height: 25px;
-    box-sizing: border-box;
-    border-radius: 4px;
-    margin: 4px;
+const StepButton = styled(Box)`
+
     box-shadow: ${({theme, isActive}) => !isActive ? theme.shadows.medium : theme.shadows.insetMedium};
     background-color: ${({theme, isActive}) => isActive ? theme.colors.main200 : theme.colors.main};
     transition: all .2s ease-out;
@@ -38,8 +35,15 @@ const StepButton = styled.div`
     
 `
 
+StepButton.defaultProps = {
+    width: '25px',
+    height: '25px',
+    boxSizing: 'border-box',
+    borderRadius: '4px',
+    margin: '4px',
+}
 
-const SquareButton = styled.div`
+const SquareButton = styled(Box)`
     margin: 5px; 
     color: ${({theme}) => theme.colors.text};
     background-color: ${({theme}) => theme.colors.mainContrast}30;
@@ -63,7 +67,7 @@ const SquareButton = styled.div`
     }
 `
 
-const SquareButtonLed = styled.div`
+const SquareButtonLed = styled(Box)`
     margin: 0 auto;
     width: 25px;
     height: 25px;
