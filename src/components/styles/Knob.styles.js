@@ -18,7 +18,7 @@ const KnobBase = styled.div `
 
 const Ticks = styled.div`
   position: absolute;
-  top: -1px;
+  top: -2px;
   z-index: 0;
 `
 const Tick = styled.div`
@@ -41,7 +41,7 @@ const Outer = styled.div`
 `
 const Inner =styled.div`
   border-radius: 50%;
-  background-color: ${({theme}) => theme.colors.main};
+  background-color: ${({theme}) => theme.colors.black};
   transition: all .4s ease-out;
 `
 
@@ -62,8 +62,8 @@ const KnobLabel = styled.p`
   text-align: center;
   font-size: 9px;
   min-width: 50px;
-  background-color: ${({theme}) => theme.colors.main200};
-  color: ${({theme}) => theme.colors.text};   
+  background-color: ${({theme}) => theme.colors.gray[8]};
+  color: ${({theme}) => theme.colors.gray[0]};   
   margin-top: 16px;
 `
 

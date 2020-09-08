@@ -21,7 +21,7 @@ export const PureSpinner = ({ size, color, strokeWidth = 6 }) => (
     height: ${props => props.size || '50px'};
   
     & .path {
-      stroke: ${props => props.color ? props.theme.colors[props.color] : props.theme.colors.main};
+      stroke: ${props => props.color ? props.theme.colors[props.color] : props.theme.colors.black};
       stroke-linecap: round;
       animation: dash 1.5s ease-in-out infinite;
     }

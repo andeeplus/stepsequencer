@@ -7,10 +7,10 @@ const Squared = styled(Button)`
   width: 24px;
   height: 24px;
   background-color: ${(props) =>
-    props.active ? props.theme.colors.main : props.theme.colors.main400};
+    props.active ? props.theme.colors.black : props.theme.colors.black400};
   box-shadow: ${({ theme }) => theme.shadows.small};
   border: ${(props) =>
-    props.active && `2px solid ${props.theme.colors.main400}`};
+    props.active && `2px solid ${props.theme.colors.black400}`};
   box-sizing: border-box;
   border-radius: 4px;
   display: flex;

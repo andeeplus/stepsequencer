@@ -3,7 +3,7 @@ import styled from 'styled-components'
 
 import { PatternButton } from 'components/PatternSelector/styles'
 import { LabelName } from '../Fx/ModulePainter.styles'
-import { FlexContainer } from '../../styles';
+import { Box } from 'ui';
 
 const ToggleButton = styled(PatternButton)`
     width:${props => `${props.size}px`};
@@ -29,11 +29,11 @@ export const MultiToggle = ({parameters, steps, perRow, handleValues, name, size
     let width = (maxWidth/rows) + (size * 2)
     
     return(
-        <FlexContainer column  alignItems='center'>
+        <Box column  alignItems='center'>
         <LabelName>{name.toUpperCase()}</LabelName>
-        <FlexContainer width={`${width}px`} flexWrap='wrap'>
+        <Box width={`${width}px`} flexWrap='wrap'>
             {parameters.map( (parameter, i) => parameter.steps.map((p, index) => 
-                <FlexContainer 
+                <Box 
                     key={i + index} 
                     flex={`0 1 ${100 / perRow}%`} 
                     alignItems='center' 
@@ -48,10 +48,10 @@ export const MultiToggle = ({parameters, steps, perRow, handleValues, name, size
                     >
                         <p>{index + 1}</p>
                     </ToggleButton>
-                </FlexContainer>
+                </Box>
                 ))
             }
-        </FlexContainer>
-        </FlexContainer>
+        </Box>
+        </Box>
     )
 }
