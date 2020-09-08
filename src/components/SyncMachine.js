@@ -5,7 +5,6 @@ import Tone from "tone";
 import {
   drumSamples,
   initFX,
-  defaultPatterns,
   drumIds,
 } from "../presets/drums";
 import DrumMachine from "./DrumMachine";
@@ -18,7 +17,6 @@ import {
   UPDATE_SEQUENCER_STATUS,
 } from "../store";
 import ModalSetup from "./tools/Modal";
-import styled from "styled-components";
 import { Box, Button } from "ui";
 
 const mapStateToProps = (store) => ({
@@ -27,6 +25,7 @@ const mapStateToProps = (store) => ({
   sequencer: store.sequencer,
   sequence: store.sequencer.sequence,
   patternName: store.sequencer.patternName,
+  masterVolume: store.sequencer.masterVolume,
   index: store.sequencer.index,
   play: store.sequencer.play,
   bpm: store.sequencer.bpm,
@@ -53,16 +52,12 @@ class SyncMachine extends Component {
       audioContextIsActive: false,
       indexSeq: 0,
     };
-    this.masterVolume = -3;
-    this.volumeKnob = 0;
     this.drumDist = null;
     this.drumPhaser = null;
     this.drumvol = null;
     this.drumCrusher = null;
     this.drumPPDelay = null;
     this.drumSeq = null;
-    this.defaultPatterns = defaultPatterns;
-    this.drumSamples = drumSamples;
     this.TONE = Tone;
   }
 
@@ -124,14 +119,13 @@ class SyncMachine extends Component {
   initFX = async () => {
     this.drumDist = new Tone.Distortion(initFX.fxDistortion);
     this.drumPhaser = new Tone.Phaser(initFX.fxPhaser);
-    this.drumVol = new Tone.Volume(this.state.masterVolume);
     this.drumCrusher = new Tone.BitCrusher(initFX.fxBitCrusher);
     this.drumPPDelay = new Tone.PingPongDelay(initFX.fxPPDelay);
+    this.drumVol = new Tone.Volume(this.props.masterVolume);
   };
 
   startSequence = (startAt = 0) => {
     this.drumSeq && this.drumSeq.cancel();
-    const { drumSamples } = this;
     const {
       sequence,
       sequencer: { steps },
@@ -198,7 +192,6 @@ class SyncMachine extends Component {
       : (newVolume = 0);
 
     this.TONE.Master.volume.value = newVolume;
-    this.volumeKnob = newVolume;
   };
 
   handleBpm = (newValue) => {
@@ -228,7 +221,7 @@ class SyncMachine extends Component {
   activateAudioContext = async () => {
     await this.initSetup();
     await this.initFX();
-    this.drumSamples.chain(
+    drumSamples.chain(
       this.drumDist,
       this.drumPhaser,
       this.drumCrusher,

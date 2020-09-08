@@ -2,14 +2,14 @@ import React from 'react';
 
 import Knob from '../Knob'
 import {ControlArea, LabelName} from './ModulePainter.styles'
-import { FlexContainer } from '../../styles';
+import { Box } from 'ui';
 
 
 const ModulePainter = ({name, multiToggle, parameters, knobColor, handleValues, moduleColor, toggleSwitch}) => {
     return (
         <ControlArea moduleColor={moduleColor} column>
         <LabelName>{name.toUpperCase()}</LabelName>  
-            <FlexContainer flexWrap='wrap' justifyContent ='space-evenly'> 
+            <Box flexWrap='wrap' justifyContent ='space-evenly'> 
                 { parameters.map((param,i) => (
                     <Knob 
                         key={i}
@@ -28,7 +28,7 @@ const ModulePainter = ({name, multiToggle, parameters, knobColor, handleValues, 
                     )
                 }
                 {multiToggle && multiToggle}
-            </FlexContainer>
+            </Box>
         </ControlArea>
     );
 };

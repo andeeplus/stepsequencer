@@ -20,7 +20,7 @@ export const ModalBoxSetup = styled.div`
     box-sizing:border-box;
     z-index:1;
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.04);
-    background:${({theme}) => theme.colors.main};
+    background:${({theme}) => theme.colors.black};
     border: 0.5px solid #E8E8E8;
     border-radius: 4px;
 `;
