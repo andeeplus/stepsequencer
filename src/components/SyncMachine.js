@@ -5,11 +5,10 @@ import { drumSamples, initFX, drumIds } from "../presets/drums";
 import DrumMachine from "./DrumMachine";
 import {
   UPDATE_SEQUENCE,
-  CHANGE_PATTERN_NAME,
+  CHANGE_BPM,
   CHANGE_PATTERN,
-  SET_INDEX,
   UPDATE_SEQUENCER_STATUS,
-} from "../store";
+} from "../store/actions/sequencerActions";
 import ModalSetup from "./tools/Modal";
 import { Box, Button } from "ui";
 
@@ -27,12 +26,9 @@ const mapStateToProps = (store) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   updateSequence: (sequence) => dispatch({ type: UPDATE_SEQUENCE, sequence }),
-  changePattern: ({ sequence, bpm }) =>
-    dispatch({ type: CHANGE_PATTERN, sequence, bpm }),
-  changePatternName: (patternName) =>
-    dispatch({ type: CHANGE_PATTERN_NAME, patternName }),
-  changeBpm: (bpm) => dispatch({ type: CHANGE_PATTERN_NAME, bpm }),
-  setIndex: (index) => dispatch({ type: SET_INDEX, index }),
+  changePattern: ({ sequence, bpm, name, index }) =>
+    dispatch({ type: CHANGE_PATTERN, sequence, bpm, name, index }),
+  changeBpm: (bpm) => dispatch({ type: CHANGE_BPM, bpm }),
   updateSequencerStatus: (payload) =>
     dispatch({ type: UPDATE_SEQUENCER_STATUS, payload }),
 });
@@ -131,13 +127,11 @@ class SyncMachine extends Component {
   };
 
   changePattern = (pattern) => {
-    const defaultPatterns = [...this.props.sequencer.defaultPatterns];
-    const patterns = { ...defaultPatterns };
+    const defaultPatterns = this.props.sequencer.defaultPatterns;
+    const patterns = defaultPatterns;
     const { timestamp, name, index, bpm, ...sequence } = patterns[pattern];
     this.sequence = sequence;
-    this.props.changePattern({ sequence, bpm });
-    this.props.changePatternName(name);
-    this.props.setIndex(index);
+    this.props.changePattern({ sequence, bpm, name, index });
   };
 
   updateChannelSequence = (action, sound, i) => {

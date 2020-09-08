@@ -58,12 +58,16 @@ const sequencer = (state = initialState(), action) => {
       };
 
     case CHANGE_PATTERN:
+
       return {
         ...state,
         sequence: {
           ...action.sequence,
         },
-        bpm: action.bpm
+        bpm: action.bpm,
+        patternName: action.name,
+        index: action.index
+
       };
 
     case CHANGE_PATTERN_NAME:
