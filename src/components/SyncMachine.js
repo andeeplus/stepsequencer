@@ -1,8 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import chalk from 'chalk'
 import Tone from "tone";
-import { drumSamples, initFX } from "../presets/drums";
+import { drumSamples, initFX, drumIds } from "../presets/drums";
 import DrumMachine from "./DrumMachine";
 import {
   UPDATE_SEQUENCE,
@@ -44,7 +43,7 @@ class SyncMachine extends Component {
     this.state = {
       timing: "16n",
       audioContextIsActive: false,
-      indexSeq:0
+      indexSeq: 0,
     };
     this.drumDist = null;
     this.sequence = props.sequence;
@@ -53,6 +52,7 @@ class SyncMachine extends Component {
     this.drumCrusher = null;
     this.drumPPDelay = null;
     this.Sequence = null;
+    this.indexSeq = 0;
   }
 
   componentDidUpdate(prevProps) {
@@ -67,12 +67,6 @@ class SyncMachine extends Component {
     if (prevProps.bpm !== this.props.bpm) {
       Tone.Transport.bpm.value = this.props.bpm;
     }
-  }
-
-  restart() {
-    this.setState({indexSeq : 0});
-    Tone.Transport.cancel();
-    this.startSequence();
   }
 
   initSetup = () => {
@@ -90,8 +84,6 @@ class SyncMachine extends Component {
   };
 
   activateAudioContext = async () => {
-    
-
     await this.initSetup();
     await this.initFX();
     drumSamples.chain(
@@ -104,7 +96,7 @@ class SyncMachine extends Component {
     );
 
     console.log(
-      "%c Audio Context has been loaded successfully!",
+      "%c :: Audio Context has been loaded successfully! :: ",
       "background: blue; color: white"
     );
     this.setState({ audioContextIsActive: true });
@@ -120,14 +112,16 @@ class SyncMachine extends Component {
 
     this.Sequence = new Tone.Sequence(
       (time, i) => {
+
         Tone.Draw.schedule(() => {
           this.setState({ indexSeq: i });
         }, time);
-        Object.keys(this.sequence).map(
-          (drum) =>
-            [...this.sequence[drum]].indexOf(i) >= 0 &&
-            drumSamples.get(drum).start()
-        );
+
+        let drum
+        for (drum of drumIds) {
+          if (this.sequence[drum].includes(i)) drumSamples.get(drum).start()
+        }
+
       },
       sequencerTrigs,
       "16n"
