@@ -25,6 +25,7 @@ const DrumMachine = ({
   indexSeq,
   patternIndex,
 }) => {
+
   return (
     <Box column justifyContent="center" minHeight="100vh" alignItems="center">
       <Box

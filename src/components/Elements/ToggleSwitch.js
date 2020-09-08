@@ -46,7 +46,6 @@ const CheckBox = styled.input`
   }
 `;
 
-
 export const ToggleSwitch = ({onChange, disabled}) => {
   return (
     <CheckBoxWrapper>

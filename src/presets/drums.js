@@ -40,19 +40,19 @@ const emptyPattern = {
 
 const defaultPatterns = [
   {
-    bpm: 120,
+    bd: [5, 6, 14, 15],
+    sn: [4, 13],
+    hh: [3, 12],
+    oh: [2, 11],
+    cb: [1, 10],
+    cn: [0, 6, 2, 1, 3, 4, 5, 9, 7, 8, 10],
+    rm: [0, 5, 10],
+    cl: [1, 4, 9, 6],
+    tm: [2, 3, 8, 7],
+    name: "Glasses",
+    timestamp: "19:1:14",
     index: 0,
-    name: "Default1",
-    timestamp: "default",
-    bd: [0, 10],
-    sn: [4, 12],
-    hh: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15],
-    oh: [14],
-    cb: [],
-    cn: [],
-    rm: [],
-    cl: [],
-    tm: [],
+    bpm: 120,
   },
   {
     bpm: 120,
@@ -202,3 +202,5 @@ const initFX = {
 export {
   drumSamples, initFX, emptyPattern, defaultPatterns, drumIds
 }
+
+

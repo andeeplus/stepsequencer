@@ -1,14 +1,9 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import cloneDeep from "lodash/cloneDeep";
+import chalk from 'chalk'
 import Tone from "tone";
-import {
-  drumSamples,
-  initFX,
-  drumIds,
-} from "../presets/drums";
+import { drumSamples, initFX } from "../presets/drums";
 import DrumMachine from "./DrumMachine";
-import { PureSpinner } from "./htmlElements/PureSpinner";
 import {
   UPDATE_SEQUENCE,
   CHANGE_PATTERN_NAME,
@@ -47,22 +42,17 @@ class SyncMachine extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      loading: true,
       timing: "16n",
       audioContextIsActive: false,
-      indexSeq: 0,
+      indexSeq:0
     };
     this.drumDist = null;
+    this.sequence = props.sequence;
     this.drumPhaser = null;
     this.drumvol = null;
     this.drumCrusher = null;
     this.drumPPDelay = null;
-    this.drumSeq = null;
-    this.TONE = Tone;
-  }
-
-  componentDidMount() {
-    this.setState({ loading: false });
+    this.Sequence = null;
   }
 
   componentDidUpdate(prevProps) {
@@ -70,50 +60,25 @@ class SyncMachine extends Component {
       this.props.play && prevProps.index !== this.props.index;
 
     if (patternHasChanged) {
-      this.TONE.Transport.cancel();
+      Tone.Transport.cancel();
       this.startSequence();
     }
 
     if (prevProps.bpm !== this.props.bpm) {
-      this.TONE.Transport.bpm.value = this.props.bpm;
+      Tone.Transport.bpm.value = this.props.bpm;
     }
-    /* Randomizer - randomizeSequence => TODO
-        if(this.state.indexSeq === 15) {
-            this.randomizeSequence(defaultPatterns)
-        }
-    */
-  }
-
-  randomizeSequence() {
-    let randomizer = (patterns) => {
-      const _shuffle = (array) => array.sort(() => Math.random() - 0.5);
-
-      let patternsToShuffle = cloneDeep(patterns);
-      let soundsKey = [...drumIds];
-      let shuffledOrder = _shuffle([0, 1, 2, 3, 4, 5, 6, 7, 8]);
-      let shuffledValues = Object.values(patternsToShuffle);
-      let newSequence = {};
-      soundsKey.map(
-        (key, index) =>
-          (newSequence[key] = shuffledValues[shuffledOrder[index]][key])
-      );
-      return newSequence;
-    };
-
-    let sequence = randomizer([...this.props.sequencer.defaultPatterns]);
-    this.props.changePattern({ sequence });
   }
 
   restart() {
-    this.setState({ indexSeq: 0 });
-    this.TONE.Transport.cancel();
+    this.setState({indexSeq : 0});
+    Tone.Transport.cancel();
     this.startSequence();
   }
 
   initSetup = () => {
-    this.TONE.Transport.bpm.value = this.props.bpm;
-    this.TONE.context.latencyHint = "fastest";
-    this.TONE.Transport.start("+0.2");
+    Tone.Transport.bpm.value = this.props.bpm;
+    Tone.context.latencyHint = "fastest";
+    Tone.Transport.start("+0.2");
   };
 
   initFX = async () => {
@@ -124,36 +89,58 @@ class SyncMachine extends Component {
     this.drumVol = new Tone.Volume(this.props.masterVolume);
   };
 
+  activateAudioContext = async () => {
+    
+
+    await this.initSetup();
+    await this.initFX();
+    drumSamples.chain(
+      this.drumDist,
+      this.drumPhaser,
+      this.drumCrusher,
+      this.drumPPDelay,
+      this.drumVol,
+      Tone.Master
+    );
+
+    console.log(
+      "%c Audio Context has been loaded successfully!",
+      "background: blue; color: white"
+    );
+    this.setState({ audioContextIsActive: true });
+  };
+
   startSequence = (startAt = 0) => {
-    this.drumSeq && this.drumSeq.cancel();
+    this.Sequence && this.Sequence.cancel();
     const {
-      sequence,
       sequencer: { steps },
     } = this.props;
 
     const sequencerTrigs = [...Array(steps).keys()];
 
-    this.drumSeq = new Tone.Sequence(
+    this.Sequence = new Tone.Sequence(
       (time, i) => {
-        this.TONE.Draw.schedule(() => {
+        Tone.Draw.schedule(() => {
           this.setState({ indexSeq: i });
         }, time);
-        Object.keys(sequence).map(
+        Object.keys(this.sequence).map(
           (drum) =>
-            [...sequence[drum]].indexOf(i) >= 0 && drumSamples.get(drum).start()
+            [...this.sequence[drum]].indexOf(i) >= 0 &&
+            drumSamples.get(drum).start()
         );
       },
       sequencerTrigs,
       "16n"
     );
 
-    this.drumSeq.start(startAt);
+    this.Sequence.start(startAt);
   };
 
   changePattern = (pattern) => {
     const defaultPatterns = [...this.props.sequencer.defaultPatterns];
     const patterns = { ...defaultPatterns };
     const { timestamp, name, index, bpm, ...sequence } = patterns[pattern];
+    this.sequence = sequence;
     this.props.changePattern({ sequence, bpm });
     this.props.changePatternName(name);
     this.props.setIndex(index);
@@ -161,7 +148,7 @@ class SyncMachine extends Component {
 
   updateChannelSequence = (action, sound, i) => {
     const { sequence } = this.props;
-    let individualSeq = sequence[sound];
+    let individualSeq = [...sequence[sound]];
 
     if (action === "ADD") {
       individualSeq.push(i);
@@ -171,6 +158,11 @@ class SyncMachine extends Component {
     } else {
       individualSeq.length = 0;
     }
+
+    this.sequence = {
+      ...this.sequence,
+      [sound]: individualSeq,
+    };
 
     this.props.updateSequence({
       key: sound,
@@ -191,7 +183,7 @@ class SyncMachine extends Component {
       ? (newVolume = parseInt((-50 / (newVolume + 1)) * 10, 10))
       : (newVolume = 0);
 
-    this.TONE.Master.volume.value = newVolume;
+    Tone.Master.volume.value = newVolume;
   };
 
   handleBpm = (newValue) => {
@@ -218,28 +210,8 @@ class SyncMachine extends Component {
     this[effectKey] = effectValue;
   };
 
-  activateAudioContext = async () => {
-    await this.initSetup();
-    await this.initFX();
-    drumSamples.chain(
-      this.drumDist,
-      this.drumPhaser,
-      this.drumCrusher,
-      this.drumPPDelay,
-      this.drumVol,
-      this.TONE.Master
-    );
-
-    this.setState({ audioContextIsActive: true });
-  };
-
   render() {
-    const { loading } = this.state;
-    const { play, patternName } = this.props;
-
-    return loading ? (
-      <PureSpinner />
-    ) : (
+    return (
       <Box
         height="-webkit-fill-available"
         alignItems="center"
@@ -248,9 +220,9 @@ class SyncMachine extends Component {
         justifyContent="center"
       >
         <DrumMachine
-          play={play}
+          play={this.props.play}
           sequence={this.props.sequence}
-          patternName={patternName}
+          patternName={this.props.patternName}
           changePattern={this.changePattern}
           updateChannelSequence={this.updateChannelSequence}
           playStop={this.playStop}
@@ -260,6 +232,7 @@ class SyncMachine extends Component {
           patternIndex={this.props.index}
           indexSeq={this.state.indexSeq}
         />
+
         <ModalSetup
           visible={!this.state.audioContextIsActive}
           dismiss={this.activateAudioContext}
