@@ -1,10 +1,10 @@
 import React from "react";
 import ModulePainter from "./ModulePainter";
 
-const Distorsion = (props) => {
+const distortion = (props) => {
   const { instrument, init, handleValues, knobColor } = props;
 
-  const smasherParameters = [
+  const distParameters = [
     {
       shortName: "dist",
       parameters: ["distortion", instrument],
@@ -23,12 +23,12 @@ const Distorsion = (props) => {
 
   return (
     <ModulePainter
-      parameters={smasherParameters}
+      parameters={distParameters}
       handleValues={handleValues}
-      name={"dist"}
+      name={"distortion"}
       knobColor={knobColor}
     />
   );
 };
 
-export default Distorsion;
+export default distortion;

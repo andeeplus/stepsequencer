@@ -43,11 +43,11 @@ class SyncMachine extends Component {
       audioContextIsActive: false,
       indexSeq: 0,
     };
-    this.distorsion = null;
+    this.distortion = null;
     this.sequence = props.sequence;
     this.phaser = null;
     this.drumvol = null;
-    this.bitCrusher = null;
+    this.bitReducer = null;
     this.ppDelay = null;
     this.reverb = null;
     this.Sequence = null;
@@ -79,19 +79,20 @@ class SyncMachine extends Component {
       } else this.ppDelay.wet.value = 0;
     }
 
-    if (this.props.fxStatus.distorsion !== prevProps.fxStatus.distorsion) {
-      if (this.props.fxStatus.distorsion) {
-        this.distorsion.wet.value = 1;
+    if (this.props.fxStatus.distortion !== prevProps.fxStatus.distortion) {
+      if (this.props.fxStatus.distortion) {
+        this.distortion.wet.value = 1;
       } else {
-        this.distorsion.wet.value = 0;
+        this.distortion.wet.value = 0;
       }
     }
 
-    if (this.props.fxStatus.distorsion !== prevProps.fxStatus.distorsion) {
-      if (this.props.fxStatus.distorsion) {
-        this.bitCrusher.wet.value = 1;
+    console.log("HERE", this.props.fxStatus, prevProps.fxStatus);
+    if (this.props.fxStatus.reducer !== prevProps.fxStatus.reducer) {
+      if (this.props.fxStatus.reducer) {
+        this.bitReducer.wet.value = 1;
       } else {
-        this.bitCrusher.wet.value = 0;
+        this.bitReducer.wet.value = 0;
       }
     }
 
@@ -117,16 +118,16 @@ class SyncMachine extends Component {
   };
 
   initFX = async () => {
-    this.distorsion = new Tone.Distortion(initFX.distortion);
+    this.distortion = new Tone.Distortion(initFX.distortion);
     this.phaser = new Tone.Phaser(initFX.phaser);
-    this.bitCrusher = new Tone.BitCrusher(initFX.bitCrusher);
+    this.bitReducer = new Tone.BitCrusher(initFX.bitReducer);
     this.ppDelay = new Tone.PingPongDelay(initFX.ppDelay);
     this.reverb = new Tone.Freeverb(initFX.reverb);
     this.drumVol = new Tone.Volume(this.props.masterVolume);
 
-    this.distorsion.wet.value = this.props.fxStatus.distorsion ? 1 : 0;
+    this.distortion.wet.value = this.props.fxStatus.distortion ? 1 : 0;
     this.phaser.wet.value = this.props.fxStatus.phaser ? 1 : 0;
-    this.bitCrusher.wet.value = this.props.fxStatus.bitCrusher ? 1 : 0;
+    this.bitReducer.wet.value = this.props.fxStatus.reducer ? 1 : 0;
     this.ppDelay.wet.value = this.props.fxStatus.ppDelay ? 1 : 0;
     this.reverb.wet.value = this.props.fxStatus.reverb ? 1 : 0;
   };
@@ -135,9 +136,9 @@ class SyncMachine extends Component {
     await this.initSetup();
     await this.initFX();
     this.drumSamples.chain(
-      this.distorsion,
+      this.distortion,
       this.phaser,
-      this.bitCrusher,
+      this.bitReducer,
       this.ppDelay,
       this.reverb,
       this.drumVol,
