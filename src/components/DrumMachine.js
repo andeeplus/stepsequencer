@@ -78,13 +78,13 @@ const DrumMachine = ({
           <Box column>
             <Distorsion
               handleValues={handleValues}
-              instrument={"distorsion"}
+              instrument={"distortion"}
               init={initFX.distortion}
             />
             <BitReducer
               handleValues={handleValues}
-              instrument={"bitCrusher"}
-              init={initFX.bitCrusher}
+              instrument={"bitReducer"}
+              init={initFX.bitReducer}
             />
           </Box>
           <Box column>

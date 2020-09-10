@@ -194,7 +194,7 @@ const initFX = {
     maxDelayTime: 10,
     wet: 0,
   },
-  bitCrusher: {
+  bitReducer: {
     bits: 8,
     wet: 0,
   },

@@ -19,7 +19,7 @@ ControlArea.defaultProps = {
 
 const LabelName = styled(Text)`
   text-align: center;
-  font-size: 12px;
+  font-size: 10px;
   font-family: "Geomanist";
   border-radius: 4px;
   background-clip: text;
