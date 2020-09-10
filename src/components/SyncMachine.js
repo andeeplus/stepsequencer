@@ -49,6 +49,8 @@ class SyncMachine extends Component {
     this.drumPPDelay = null;
     this.Sequence = null;
     this.indexSeq = 0;
+    this.Tone = Tone
+    this.drumSamples = drumSamples
   }
 
   componentDidUpdate(prevProps) {
@@ -56,19 +58,19 @@ class SyncMachine extends Component {
       this.props.play && prevProps.index !== this.props.index;
 
     if (patternHasChanged) {
-      Tone.Transport.cancel();
+      this.Tone.Transport.cancel();
       this.startSequence();
     }
 
     if (prevProps.bpm !== this.props.bpm) {
-      Tone.Transport.bpm.value = this.props.bpm;
+      this.Tone.Transport.bpm.value = this.props.bpm;
     }
   }
 
   initSetup = () => {
-    Tone.Transport.bpm.value = this.props.bpm;
-    Tone.context.latencyHint = "fastest";
-    Tone.Transport.start("+0.2");
+    this.Tone.Transport.bpm.value = this.props.bpm;
+    this.Tone.context.latencyHint = "fastest";
+    this.Tone.Transport.start("+0.2");
   };
 
   initFX = async () => {
@@ -88,7 +90,7 @@ class SyncMachine extends Component {
       this.drumCrusher,
       this.drumPPDelay,
       this.drumVol,
-      Tone.Master
+      this.Tone.Master
     );
 
     console.log(
@@ -109,7 +111,7 @@ class SyncMachine extends Component {
     this.Sequence = new Tone.Sequence(
       (time, i) => {
 
-        Tone.Draw.schedule(() => {
+        this.Tone.Draw.schedule(() => {
           this.setState({ indexSeq: i });
         }, time);
 
@@ -160,7 +162,7 @@ class SyncMachine extends Component {
 
   playStop = () => {
     this.startSequence();
-    !this.props.play ? Tone.Transport.start() : Tone.Transport.stop();
+    !this.props.play ? this.Tone.Transport.start() : this.Tone.Transport.stop();
     this.props.updateSequencerStatus({ play: !this.props.play });
   };
 
@@ -171,7 +173,7 @@ class SyncMachine extends Component {
       ? (newVolume = parseInt((-50 / (newVolume + 1)) * 10, 10))
       : (newVolume = 0);
 
-    Tone.Master.volume.value = newVolume;
+    this.Tone.Master.volume.value = newVolume;
   };
 
   handleBpm = (newValue) => {
