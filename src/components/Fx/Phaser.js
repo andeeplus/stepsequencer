@@ -37,7 +37,7 @@ const Phaser = (props) => {
         {
             shortName: 'bfreq',
             parameters: ['baseFrequency', instrument],
-            minMax: [0,1000],
+            minMax: [0,10000],
             ticks: 0,
             initValue: init.baseFrequency
         },

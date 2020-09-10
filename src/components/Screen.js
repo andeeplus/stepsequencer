@@ -2,30 +2,36 @@ import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   SAVE_PATTERN,
-	CHANGE_PATTERN_NAME,
-	CHANGE_BPM
+  CHANGE_PATTERN_NAME,
+  CHANGE_BPM,
 } from "../store/actions/sequencerActions";
 import { Box, InputField } from "ui";
 import Icon from "./ActionButton/svg";
+import styled from "styled-components";
+
+const LightedScreen = styled(Box)`
+  box-shadow: rgba(0, 0, 0, 0.2) 0 0px 1px 2px, inset #e1e4e8 0 -1px 7px,
+    #fff 0 2px 6px;
+`;
 
 const Screen = () => {
-	const bpm = useSelector((store) => store.sequencer.bpm);
+  const bpm = useSelector((store) => store.sequencer.bpm);
   const actualPattern = useSelector((store) => store.sequencer.sequence);
   const patternName = useSelector((state) => state.sequencer.patternName);
   const index = useSelector((state) => state.sequencer.index);
 
-	const [isEdit, setEdit] = useState(false);
-	const [isEditBpm, setEditBpm] = useState(false);
-	const [newName, setNewName] = useState(patternName);
-	const [newBpm, setNewBpm] = useState(bpm);
+  const [isEdit, setEdit] = useState(false);
+  const [isEditBpm, setEditBpm] = useState(false);
+  const [newName, setNewName] = useState(patternName);
+  const [newBpm, setNewBpm] = useState(bpm);
 
   useEffect(() => {
     setNewName(patternName);
-	}, [patternName]);
-	
-	useEffect(() => {
-		setNewBpm(bpm)
-	},[bpm])
+  }, [patternName]);
+
+  useEffect(() => {
+    setNewBpm(bpm);
+  }, [bpm]);
 
   const now = new Date();
   const timestamp =
@@ -35,42 +41,40 @@ const Screen = () => {
     ...actualPattern,
     name: patternName,
     timestamp,
-		index,
-		bpm
+    index,
+    bpm,
   };
 
-	const dispatch = useDispatch();
-	
-	const savePattern = () => dispatch({ type: SAVE_PATTERN, patternToSave });
-	
+  const dispatch = useDispatch();
+
+  const savePattern = () => dispatch({ type: SAVE_PATTERN, patternToSave });
+
   const changePatternName = () =>
-		dispatch({ type: CHANGE_PATTERN_NAME, patternName: newName });
-		
-	const changeBpm = () =>
-    dispatch({ type: CHANGE_BPM, bpm: parseInt(newBpm) });
+    dispatch({ type: CHANGE_PATTERN_NAME, patternName: newName });
+
+  const changeBpm = () => dispatch({ type: CHANGE_BPM, bpm: parseInt(newBpm) });
 
   const keyPressed = (event) => {
-		const inputName = event.target.name;
-		
-		if (event.key === "Enter") {
-			switch(inputName) {
-				case 'name':
-					changePatternName(newName) 
-					setEdit(false);
-					break;
-				case 'bpm':
-					changeBpm(newName)
-					setEditBpm(false);
-					break;
-				default:
-					console.error('Please review your code')
-			}
-		}
-		
+    const inputName = event.target.name;
+
+    if (event.key === "Enter") {
+      switch (inputName) {
+        case "name":
+          changePatternName(newName);
+          setEdit(false);
+          break;
+        case "bpm":
+          changeBpm(newName);
+          setEditBpm(false);
+          break;
+        default:
+          console.error("Please review your code");
+      }
+    }
   };
 
   return (
-    <Box
+    <LightedScreen
       column
       justifyContent="flex-start"
       bg="gray.4"
@@ -133,8 +137,8 @@ const Screen = () => {
         editing={isEdit}
         onClick={isEdit ? changePatternName : savePattern}
       />
-    </Box>
+    </LightedScreen>
   );
 };
 
-export default Screen
+export default Screen;

@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import { FullKnob, KnobBase, KnobLabel, Ticks, Tick, Outer, Inner, Grip } from './styles/Knob.styles'
+import { FullKnob, KnobBase, KnobLabel, Ticks, Tick, Outer, Inner, Grip } from './styles'
 
 class Knob extends Component {
 	constructor(props) {

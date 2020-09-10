@@ -19,7 +19,7 @@ const MainController = ({
     <Box
       Box
       column
-      justifyContent="center"
+      justifyContent="flex-start"
       alignItems="center"
       borderRadius={8}
       p={2}

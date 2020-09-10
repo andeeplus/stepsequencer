@@ -3,18 +3,18 @@ import React from "react";
 import StepLine from "components/StepLine";
 import Phaser from "./Fx/Phaser";
 import PingPongDelay from "./Fx/PingPongDelay";
-import Smasher from "./Fx/Smasher";
-import { initFX } from "../presets/drums";
+import Distorsion from "./Fx/Distorsion";
+import BitReducer from "./Fx/BitReducer";
+import Reverb from "./Fx/Reverb";
+import { initFX } from "../tone/effects";
 
+import { Box } from "ui";
 import { Timeline } from "components/Timeline";
 import MainController from "components/MainController";
-import { Box } from "ui";
 import Footer from "./Footer";
-
 
 const DrumMachine = ({
   sequence,
-  patternName,
   changePattern,
   play,
   updateChannelSequence,
@@ -25,7 +25,6 @@ const DrumMachine = ({
   indexSeq,
   patternIndex,
 }) => {
-
   return (
     <Box column justifyContent="center" minHeight="100vh" alignItems="center">
       <Box
@@ -76,20 +75,34 @@ const DrumMachine = ({
             handleBpm={handleBpm}
             patternIndex={patternIndex}
           />
-          <Smasher
-            handleValues={handleValues}
-            instrument={["drumDist", "drumCrusher"]}
-            init={{ ...initFX.fxDist, ...initFX.fxBitCrusher }}
-          />
-          <PingPongDelay
-            handleValues={handleValues}
-            instrument={"drumPPDelay"}
-            init={initFX.fxPPDelay}
-          />
+          <Box column>
+            <Distorsion
+              handleValues={handleValues}
+              instrument={"distorsion"}
+              init={initFX.distortion}
+            />
+            <BitReducer
+              handleValues={handleValues}
+              instrument={"bitCrusher"}
+              init={initFX.bitCrusher}
+            />
+          </Box>
+          <Box column>
+            <Reverb
+              handleValues={handleValues}
+              instrument={"reverb"}
+              init={initFX.reverb}
+            />
+            <PingPongDelay
+              handleValues={handleValues}
+              instrument={"ppDelay"}
+              init={initFX.ppDelay}
+            />
+          </Box>
           <Phaser
             handleValues={handleValues}
-            instrument={"drumPhaser"}
-            init={initFX.fxPhaser}
+            instrument={"phaser"}
+            init={initFX.phaser}
           />
         </Box>
       </Box>

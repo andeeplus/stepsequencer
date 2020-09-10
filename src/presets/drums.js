@@ -1,42 +1,42 @@
-import Tone from 'tone';
-import BD from '../sounds/BD_808_01.wav'
-import SN from '../sounds/Snare_808_01.wav'
-import HH from '../sounds/CH_808_01.wav'
-import OH from '../sounds/OH_A_808_03.wav'
-import CB from '../sounds/Cowbell_808_01.wav'
-import CNG1 from '../sounds/Conga_808_01.wav'
-import RIM from '../sounds/Rim_808_01.wav'
-import CL from '../sounds/Clap_808_01.wav'
-import TOM1 from '../sounds/Tom_808_01.wav'
+import Tone from "tone";
+import BD from "../sounds/808/BD_808_01.wav";
+import SN from "../sounds/808/Snare_808_01.wav";
+import HH from "../sounds/808/CH_808_01.wav";
+import OH from "../sounds/808/OH_A_808_03.wav";
+import CB from "../sounds/808/Cowbell_808_01.wav";
+import CNG1 from "../sounds/808/Conga_808_01.wav";
+import RIM from "../sounds/808/Rim_808_01.wav";
+import CL from "../sounds/808/Clap_808_01.wav";
+import TOM1 from "../sounds/808/Tom_808_01.wav";
 
-
-let drumIds = ["bd", "sn", "hh", "oh", "cb", "cn", "rm", "cl", "tm"]
+let drumIds = ["bd", "sn", "hh", "oh", "cb", "cn", "rm", "cl", "tm"];
 
 const drumSamples = new Tone.Players({
-  "bd" : BD,
-  "sn" : SN,
-  "hh" : HH,
-  "oh" : OH,
-  "cb" : CB,
-  "cn" : CNG1,
-  "rm" : RIM,
-  "cl" : CL,
-  "tm" : TOM1
-})
+  bd: BD,
+  sn: SN,
+  hh: HH,
+  oh: OH,
+  cb: CB,
+  cn: CNG1,
+  rm: RIM,
+  cl: CL,
+  tm: TOM1,
+});
 
 const emptyPattern = {
-  name: 'Empty',
+  name: "Empty",
   timestamp: new Date(),
-  "bd":[],
-  "sn":[],
-  "hh":[],
-  "oh":[],
-  "cb":[],
-  "cn":[],
-  "rm":[],
-  "cl":[],
-  "tm":[]
-}
+  bpm: 120,
+  bd: [],
+  sn: [],
+  hh: [],
+  oh: [],
+  cb: [],
+  cn: [],
+  rm: [],
+  cl: [],
+  tm: [],
+};
 
 const defaultPatterns = [
   {
@@ -177,30 +177,27 @@ const defaultPatterns = [
 ];
 
 const initFX = {
-  fxPhaser: {
+  phaser: {
     frequency: 15,
     octaves: 3,
     stages: 5,
-    Q: 10 ,
-    baseFrequency  : 350
+    Q: 10,
+    baseFrequency: 350,
   },
-  fxDistortion: {
+  distortion: {
     distortion: 0.1,
-    oversample: 'none' // The oversampling of the effect. Can either be “none”, “2x” or “4x”.
+    wet: 0,
+    oversample: "none", // The oversampling of the effect. Can either be “none”, “2x” or “4x”.
   },
-  fxPPDelay: {
+  ppDelay: {
     delayTime: 0.25,
     maxDelayTime: 10,
     wet: 0,
   },
-  fxBitCrusher: {
+  bitCrusher: {
     bits: 8,
-    wet: 0
-  }
-}
+    wet: 0,
+  },
+};
 
-export {
-  drumSamples, initFX, emptyPattern, defaultPatterns, drumIds
-}
-
-
+export { drumSamples, initFX, emptyPattern, defaultPatterns, drumIds };

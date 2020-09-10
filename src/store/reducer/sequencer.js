@@ -6,9 +6,12 @@ import {
   CHANGE_PATTERN_NAME,
   CHANGE_BPM,
   UPDATE_SEQUENCER_STATUS,
+  UPDATE_EFFECT_STATUS,
 } from "../actions/sequencerActions";
 import { defaultPatterns } from "../../presets/drums";
 import cloneDeep from "lodash/cloneDeep";
+
+// TODO Fix initial state and split state
 
 const initialState = () => {
   let userPatterns = localStorage.getItem("userPatterns");
@@ -24,12 +27,21 @@ const initialState = () => {
     bpm: userPatterns
       ? userPatterns && userPatterns[0] && userPatterns[0].bpm
       : defaultPatterns.length && defaultPatterns[0].bpm,
-    masterVolume: -3,
-    volumeKnob: 0,
+    masterVolume: -6,
+    volumeKnob: -6,
     index,
     sequence: cloneDeep(sequence),
     patternName: name,
     defaultPatterns: userPatterns ? userPatterns : defaultPatterns,
+    effects: {
+      status: {
+        ppDelay: false,
+        phaser: false,
+        dist: true,
+        reducer: false,
+        reverb: false
+      },
+    },
   };
 };
 
@@ -48,6 +60,18 @@ const sequencer = (state = initialState(), action) => {
         ...action.payload,
       };
 
+    case UPDATE_EFFECT_STATUS:
+      return {
+        ...state,
+        effects: {
+          ...state.effects,
+          status: {
+            ...state.effects.status,
+            [action.name]: action.status
+          }
+        }
+      };
+
     case UPDATE_SEQUENCE:
       return {
         ...state,
@@ -58,7 +82,6 @@ const sequencer = (state = initialState(), action) => {
       };
 
     case CHANGE_PATTERN:
-
       return {
         ...state,
         sequence: {
@@ -66,8 +89,7 @@ const sequencer = (state = initialState(), action) => {
         },
         bpm: action.bpm,
         patternName: action.name,
-        index: action.index
-
+        index: action.index,
       };
 
     case CHANGE_PATTERN_NAME:
