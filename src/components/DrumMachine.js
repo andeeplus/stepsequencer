@@ -5,7 +5,8 @@ import Phaser from "./Fx/Phaser";
 import PingPongDelay from "./Fx/PingPongDelay";
 import Distorsion from "./Fx/Distorsion";
 import BitReducer from "./Fx/BitReducer";
-import { initFX } from "../presets/drums";
+import Reverb from "./Fx/Reverb";
+import { initFX } from "../tone/effects";
 
 import { Box } from "ui";
 import { Timeline } from "components/Timeline";
@@ -77,24 +78,31 @@ const DrumMachine = ({
           <Box column>
             <Distorsion
               handleValues={handleValues}
-              instrument={"drumDist"}
-              init={initFX.fxDistortion}
+              instrument={"distorsion"}
+              init={initFX.distortion}
             />
             <BitReducer
               handleValues={handleValues}
-              instrument={"drumCrusher"}
-              init={initFX.fxBitCrusher}
+              instrument={"bitCrusher"}
+              init={initFX.bitCrusher}
             />
           </Box>
-          <PingPongDelay
-            handleValues={handleValues}
-            instrument={"drumPPDelay"}
-            init={initFX.fxPPDelay}
-          />
+          <Box column>
+            <Reverb
+              handleValues={handleValues}
+              instrument={"reverb"}
+              init={initFX.reverb}
+            />
+            <PingPongDelay
+              handleValues={handleValues}
+              instrument={"ppDelay"}
+              init={initFX.ppDelay}
+            />
+          </Box>
           <Phaser
             handleValues={handleValues}
-            instrument={"drumPhaser"}
-            init={initFX.fxPhaser}
+            instrument={"phaser"}
+            init={initFX.phaser}
           />
         </Box>
       </Box>

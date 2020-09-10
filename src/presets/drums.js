@@ -177,24 +177,24 @@ const defaultPatterns = [
 ];
 
 const initFX = {
-  fxPhaser: {
+  phaser: {
     frequency: 15,
     octaves: 3,
     stages: 5,
     Q: 10,
     baseFrequency: 350,
   },
-  fxDistortion: {
+  distortion: {
     distortion: 0.1,
     wet: 0,
     oversample: "none", // The oversampling of the effect. Can either be “none”, “2x” or “4x”.
   },
-  fxPPDelay: {
+  ppDelay: {
     delayTime: 0.25,
     maxDelayTime: 10,
     wet: 0,
   },
-  fxBitCrusher: {
+  bitCrusher: {
     bits: 8,
     wet: 0,
   },

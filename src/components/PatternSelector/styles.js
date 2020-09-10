@@ -21,6 +21,7 @@ let PatternButton = styled(StepButton)`
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  cursor: pointer;
   &:hover{
     background-color: #f5954270;
   }

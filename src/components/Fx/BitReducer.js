@@ -2,8 +2,13 @@ import React from "react";
 import ModulePainter from "./ModulePainter";
 import { MultiToggle } from "../Elements";
 
-const BitReducer = ({ instrument, init, handleValues, knobColor, ...props }) => {
-
+const BitReducer = ({
+  instrument,
+  init,
+  handleValues,
+  knobColor,
+  ...props
+}) => {
   const bitReducer = [
     {
       shortName: "bits",
@@ -11,9 +16,11 @@ const BitReducer = ({ instrument, init, handleValues, knobColor, ...props }) => 
       minMax: [1, 8],
       steps: [8, 7, 6, 5, 4, 3, 2, 1],
       initValue: init.bits,
-    }]
-    
-  const main  = [{
+    },
+  ];
+
+  const main = [
+    {
       shortName: "wet",
       parameters: ["wet", instrument],
       minMax: [0, 100],
@@ -28,17 +35,16 @@ const BitReducer = ({ instrument, init, handleValues, knobColor, ...props }) => 
       handleValues={handleValues}
       name={"reducer"}
       knobColor={knobColor}
-      multiToggle={
-        <MultiToggle
-          parameters={bitReducer}
-          handleValues={handleValues}
-          steps={[8, 7, 6, 5, 4, 3, 2, 1]}
-          perRow={4}
-          name={"Reducer"}
-        />
-      }
       {...props}
-    />
+    >
+      <MultiToggle
+        parameters={bitReducer}
+        handleValues={handleValues}
+        steps={[8, 7, 6, 5, 4, 3, 2, 1]}
+        perRow={4}
+        name={"Reducer"}
+      />
+    </ModulePainter>
   );
 };
 

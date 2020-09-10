@@ -10,6 +10,7 @@ const FullKnob = styled.div`
   margin-bottom: 5px;
   justify-content: center;
   align-items: center;
+  cursor: grabbing;
 `;
 
 const KnobBase = styled.div`

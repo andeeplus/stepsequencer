@@ -11,6 +11,8 @@ import {
 import { defaultPatterns } from "../../presets/drums";
 import cloneDeep from "lodash/cloneDeep";
 
+// TODO Fix initial state and split state
+
 const initialState = () => {
   let userPatterns = localStorage.getItem("userPatterns");
   userPatterns = JSON.parse(userPatterns);
@@ -25,19 +27,21 @@ const initialState = () => {
     bpm: userPatterns
       ? userPatterns && userPatterns[0] && userPatterns[0].bpm
       : defaultPatterns.length && defaultPatterns[0].bpm,
-    masterVolume: -3,
-    volumeKnob: 0,
+    masterVolume: -6,
+    volumeKnob: -6,
     index,
     sequence: cloneDeep(sequence),
     patternName: name,
     defaultPatterns: userPatterns ? userPatterns : defaultPatterns,
     effects: {
       status: {
-        'ppDelay': true,
-        'phaser': true,
-        'smasher': true,
-      }
-    }
+        ppDelay: false,
+        phaser: false,
+        dist: true,
+        reducer: false,
+        reverb: false
+      },
+    },
   };
 };
 

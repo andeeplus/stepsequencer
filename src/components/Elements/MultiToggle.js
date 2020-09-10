@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import styled from "styled-components";
 
 import { PatternButton } from "components/PatternSelector/styles";
-import { LabelName } from "../Fx/ModulePainter.styles";
 import { Box } from "ui"
 import { KnobLabel } from "components/Knob/styles";
 

@@ -13,7 +13,7 @@ const PowerButton = styled(PatternButton)``
 
 const ModulePainter = ({
   name,
-  multiToggle,
+  children,
   parameters,
   knobColor,
   handleValues,
@@ -30,7 +30,7 @@ const ModulePainter = ({
     <ControlArea moduleColor={moduleColor} column>
       <Box alignItems="center">
         <LabelName>{name.toUpperCase()}</LabelName>
-        <PowerButton bg="gray.8" borderRadius={4} cursor="pointer">
+        <PowerButton>
           <Icon
             onClick={togglePower}
             fill={isPowered ? "yellow" : "gray"}
@@ -57,8 +57,8 @@ const ModulePainter = ({
             {param.shortName}
           </Knob>
         ))}
-        {multiToggle && multiToggle}
       </Box>
+      {children}
     </ControlArea>
   );
 };

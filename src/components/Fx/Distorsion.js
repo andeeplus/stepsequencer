@@ -3,7 +3,7 @@ import ModulePainter from "./ModulePainter";
 
 const Distorsion = (props) => {
   const { instrument, init, handleValues, knobColor } = props;
-console.log(props)
+
   const smasherParameters = [
     {
       shortName: "dist",

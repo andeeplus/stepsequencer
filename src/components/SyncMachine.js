@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import Tone from "tone";
-import { drumSamples, initFX, drumIds } from "../presets/drums";
+import { initFX, drumIds } from "../presets/drums";
 import { eightOeight } from "../tone/samples/drums";
 import DrumMachine from "./DrumMachine";
 import {
@@ -43,15 +43,15 @@ class SyncMachine extends Component {
       audioContextIsActive: false,
       indexSeq: 0,
     };
-    this.drumDist = null;
+    this.distorsion = null;
     this.sequence = props.sequence;
-    this.drumPhaser = null;
+    this.phaser = null;
     this.drumvol = null;
-    this.drumCrusher = null;
-    this.drumPPDelay = null;
+    this.bitCrusher = null;
+    this.ppDelay = null;
+    this.reverb = null;
     this.Sequence = null;
     this.indexSeq = 0;
-    this.Tone = Tone;
     this.drumSamples = eightOeight;
   }
 
@@ -68,58 +68,78 @@ class SyncMachine extends Component {
       this.Tone.Transport.bpm.value = this.props.bpm;
     }
 
+    this.reviewEffectStatus(prevProps);
+  }
+
+  reviewEffectStatus = (prevProps) => {
+
     if (this.props.fxStatus.ppDelay !== prevProps.fxStatus.ppDelay) {
       if (this.props.fxStatus.ppDelay) {
-        this.drumPPDelay.wet.value = 1;
-      } else this.drumPPDelay.wet.value = 0;
+        this.ppDelay.wet.value = 1;
+      } else this.ppDelay.wet.value = 0;
     }
 
     if (this.props.fxStatus.distorsion !== prevProps.fxStatus.distorsion) {
       if (this.props.fxStatus.distorsion) {
-        this.drumDist.wet.value = 1;
+        this.distorsion.wet.value = 1;
       } else {
-        this.drumDist.wet.value = 0;
+        this.distorsion.wet.value = 0;
       }
     }
 
-
     if (this.props.fxStatus.distorsion !== prevProps.fxStatus.distorsion) {
       if (this.props.fxStatus.distorsion) {
-        this.drumCrusher.wet.value = 1;
+        this.bitCrusher.wet.value = 1;
       } else {
-        this.drumCrusher.wet.value = 0;
+        this.bitCrusher.wet.value = 0;
       }
     }
 
     if (this.props.fxStatus.phaser !== prevProps.fxStatus.phaser) {
       if (this.props.fxStatus.phaser) {
-        this.drumPhaser.wet.value = 1;
-      } else this.drumPhaser.wet.value = 0;
+        this.phaser.wet.value = 1;
+      } else this.phaser.wet.value = 0;
     }
-  }
+
+    if (this.props.fxStatus.reverb !== prevProps.fxStatus.reverb) {
+      if (this.props.fxStatus.reverb) {
+        this.reverb.wet.value = 1;
+      } else this.reverb.wet.value = 0;
+    }
+  };
 
   initSetup = () => {
+    this.Tone = Tone;
     this.Tone.Transport.bpm.value = this.props.bpm;
+    this.Tone.Master.volume.value = this.props.masterVolume;
     this.Tone.context.latencyHint = "fastest";
     this.Tone.Transport.start("+0.2");
   };
 
   initFX = async () => {
-    this.drumDist = new Tone.Distortion(initFX.fxDistortion);
-    this.drumPhaser = new Tone.Phaser(initFX.fxPhaser);
-    this.drumCrusher = new Tone.BitCrusher(initFX.fxBitCrusher);
-    this.drumPPDelay = new Tone.PingPongDelay(initFX.fxPPDelay);
+    this.distorsion = new Tone.Distortion(initFX.distortion);
+    this.phaser = new Tone.Phaser(initFX.phaser);
+    this.bitCrusher = new Tone.BitCrusher(initFX.bitCrusher);
+    this.ppDelay = new Tone.PingPongDelay(initFX.ppDelay);
+    this.reverb = new Tone.Freeverb(initFX.reverb);
     this.drumVol = new Tone.Volume(this.props.masterVolume);
+
+    this.distorsion.wet.value = this.props.fxStatus.distorsion ? 1 : 0;
+    this.phaser.wet.value = this.props.fxStatus.phaser ? 1 : 0;
+    this.bitCrusher.wet.value = this.props.fxStatus.bitCrusher ? 1 : 0;
+    this.ppDelay.wet.value = this.props.fxStatus.ppDelay ? 1 : 0;
+    this.reverb.wet.value = this.props.fxStatus.reverb ? 1 : 0;
   };
 
   activateAudioContext = async () => {
     await this.initSetup();
     await this.initFX();
     this.drumSamples.chain(
-      this.drumDist,
-      this.drumPhaser,
-      this.drumCrusher,
-      this.drumPPDelay,
+      this.distorsion,
+      this.phaser,
+      this.bitCrusher,
+      this.ppDelay,
+      this.reverb,
       this.drumVol,
       this.Tone.Master
     );
@@ -147,7 +167,8 @@ class SyncMachine extends Component {
 
         let drum;
         for (drum of drumIds) {
-          if (this.sequence[drum].includes(i)) this.drumSamples.get(drum).start();
+          if (this.sequence[drum].includes(i))
+            this.drumSamples.get(drum).start();
         }
       },
       sequencerTrigs,
@@ -213,8 +234,14 @@ class SyncMachine extends Component {
     const effectKey = parameters[0];
     const effectValue = this[parameters[1]];
 
-    const valuedParameters = ["frequency", "Q", "wet", "feedback", "delayTime"];
-    const centValue = ["distortion", "wet", "feedback", "delayTime"];
+    const valuedParameters = ["frequency", "Q", "wet", "feedback", "delayTime", "dampening","roomSize"];
+    const centValue = [
+      "distortion",
+      "wet",
+      "feedback",
+      "delayTime",
+      "roomSize",
+    ];
 
     if (centValue.includes(effectKey)) {
       newValue = newValue / 100;
