@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import Tone from "tone";
 import { drumSamples, initFX, drumIds } from "../presets/drums";
+import { eightOeight } from "../tone/samples/drums";
 import DrumMachine from "./DrumMachine";
 import {
   UPDATE_SEQUENCE,
@@ -22,6 +23,7 @@ const mapStateToProps = (store) => ({
   index: store.sequencer.index,
   play: store.sequencer.play,
   bpm: store.sequencer.bpm,
+  fxStatus: store.sequencer.effects.status,
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -49,8 +51,8 @@ class SyncMachine extends Component {
     this.drumPPDelay = null;
     this.Sequence = null;
     this.indexSeq = 0;
-    this.Tone = Tone
-    this.drumSamples = drumSamples
+    this.Tone = Tone;
+    this.drumSamples = eightOeight;
   }
 
   componentDidUpdate(prevProps) {
@@ -64,6 +66,35 @@ class SyncMachine extends Component {
 
     if (prevProps.bpm !== this.props.bpm) {
       this.Tone.Transport.bpm.value = this.props.bpm;
+    }
+
+    if (this.props.fxStatus.ppDelay !== prevProps.fxStatus.ppDelay) {
+      if (this.props.fxStatus.ppDelay) {
+        this.drumPPDelay.wet.value = 1;
+      } else this.drumPPDelay.wet.value = 0;
+    }
+
+    if (this.props.fxStatus.distorsion !== prevProps.fxStatus.distorsion) {
+      if (this.props.fxStatus.distorsion) {
+        this.drumDist.wet.value = 1;
+      } else {
+        this.drumDist.wet.value = 0;
+      }
+    }
+
+
+    if (this.props.fxStatus.distorsion !== prevProps.fxStatus.distorsion) {
+      if (this.props.fxStatus.distorsion) {
+        this.drumCrusher.wet.value = 1;
+      } else {
+        this.drumCrusher.wet.value = 0;
+      }
+    }
+
+    if (this.props.fxStatus.phaser !== prevProps.fxStatus.phaser) {
+      if (this.props.fxStatus.phaser) {
+        this.drumPhaser.wet.value = 1;
+      } else this.drumPhaser.wet.value = 0;
     }
   }
 
@@ -84,7 +115,7 @@ class SyncMachine extends Component {
   activateAudioContext = async () => {
     await this.initSetup();
     await this.initFX();
-    drumSamples.chain(
+    this.drumSamples.chain(
       this.drumDist,
       this.drumPhaser,
       this.drumCrusher,
@@ -110,16 +141,14 @@ class SyncMachine extends Component {
 
     this.Sequence = new Tone.Sequence(
       (time, i) => {
-
         this.Tone.Draw.schedule(() => {
           this.setState({ indexSeq: i });
         }, time);
 
-        let drum
+        let drum;
         for (drum of drumIds) {
-          if (this.sequence[drum].includes(i)) drumSamples.get(drum).start()
+          if (this.sequence[drum].includes(i)) this.drumSamples.get(drum).start();
         }
-
       },
       sequencerTrigs,
       "16n"

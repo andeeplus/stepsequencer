@@ -45,7 +45,8 @@ import {
   facebook,
   twitter,
   save,
-  bpm
+  bpm,
+  power
 } from "./paths";
 
 const paths = {
@@ -92,7 +93,8 @@ const paths = {
   facebook,
   twitter,
   save,
-  bpm
+  bpm,
+  power
 };
 
 const svgCreator = ({ path, icon }) => ({

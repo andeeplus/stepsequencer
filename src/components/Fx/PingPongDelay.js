@@ -32,7 +32,7 @@ const PingPongDelay = (props) => {
         <ModulePainter 
             parameters={pingPongParameters} 
             handleValues={handleValues} 
-            name={'pp-delay'} 
+            name={'ppDelay'} 
             knobColor={knobColor}
         />
     )

@@ -1,5 +1,5 @@
 import React from "react";
-import Knob from "../Knob";
+import Knob from "../Knob/Knob";
 import { Box } from "ui";
 
 const MasterControl = ({ handleBpm, handleVolume }) => (
