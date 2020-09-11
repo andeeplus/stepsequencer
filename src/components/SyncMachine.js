@@ -64,7 +64,7 @@ class SyncMachine extends Component {
   componentDidMount() {
     let local = localStorage.getItem("dmachine");
     const data = local && JSON.parse(local);
-    const dmachine = data.dmachine;
+    const dmachine = data && data.dmachine;
     if (dmachine) {
       const defaultPatterns = dmachine.defaultPatterns;
       const effects = dmachine.effects;
