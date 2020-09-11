@@ -59,6 +59,7 @@ class SyncMachine extends Component {
     this.Sequence = null;
     this.indexSeq = 0;
     this.drumSamples = eightOeight;
+    this.changesListener = 0;
   }
 
   componentDidMount() {
@@ -230,6 +231,10 @@ class SyncMachine extends Component {
     this.props.changePattern({ sequence, bpm, name, index });
   };
 
+  storeEffectState = (effectKey) => {
+    this.props.updateFxState(effectKey, this[effectKey].get());
+  };
+
   updateChannelSequence = (action, sound, i) => {
     const { sequence } = this.props;
     let individualSeq = [...sequence[sound]];
@@ -274,9 +279,14 @@ class SyncMachine extends Component {
     this.props.changeBpbm(newValue);
   };
 
-  handleValues = (newValue, parameters = []) => {
+  handleValues = async (newValue, parameters = []) => {
     const effectKey = parameters[0];
     const effectValue = this[parameters[1]];
+
+    this.changesListener = {
+      ...this.changesListener,
+      [effectKey]: this.changesListener[effectKey] + 1,
+    };
 
     const valuedParameters = [
       "frequency",
@@ -319,7 +329,7 @@ class SyncMachine extends Component {
       >
         <DrumMachine
           play={this.props.play}
-          sequence={this.props.sequence}
+          sequence={this.sequence}
           patternName={this.props.patternName}
           changePattern={this.changePattern}
           updateChannelSequence={this.updateChannelSequence}
@@ -329,6 +339,7 @@ class SyncMachine extends Component {
           handleValues={this.handleValues}
           patternIndex={this.props.index}
           indexSeq={this.state.indexSeq}
+          storeEffectState={this.storeEffectState}
         />
 
         <ModalSetup

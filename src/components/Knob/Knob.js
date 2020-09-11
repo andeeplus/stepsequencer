@@ -101,29 +101,34 @@ class Knob extends Component {
 		iStyle.transform = "rotate(" + this.state.deg + "deg)";
 
 		return (
-			<FullKnob>
-			<KnobBase>
-				<Ticks>
-				{this.props.numTicks
-					? this.renderTicks().map((tick, i) => (
-						<Tick
-						key={i}
-						isActive={tick.deg <= this.currentDeg && true }
-						style={tick.tickStyle}
-						/>
-					))
-					: null}
-				</Ticks>
-				<Outer style={oStyle} onMouseDown={this.startDrag}>
-				<Inner style={iStyle}>
-					<Grip/>
-				</Inner>
-				</Outer>
-			</KnobBase>
-			<KnobLabel>{this.props.children}</KnobLabel>
-			</FullKnob>
-
-	)}
+      <FullKnob>
+        <KnobBase>
+          <Ticks>
+            {this.props.numTicks
+              ? this.renderTicks().map((tick, i) => (
+                  <Tick
+                    key={i}
+                    disabled={this.props.disabled}
+                    isActive={tick.deg <= this.currentDeg && true}
+                    style={tick.tickStyle}
+                  />
+                ))
+              : null}
+          </Ticks>
+          <Outer
+            style={oStyle}
+            onMouseDown={this.props.disabled ? undefined : this.startDrag}
+          >
+            <Inner disabled={this.props.disabled} style={iStyle}>
+              <Grip />
+            </Inner>
+          </Outer>
+        </KnobBase>
+        <KnobLabel disabled={this.props.disabled}>
+          {this.props.children}
+        </KnobLabel>
+      </FullKnob>
+    );}
 }
 Knob.defaultProps = {
 	size: 150,

@@ -1,9 +1,15 @@
 import React from 'react'
 import ModulePainter from './ModulePainter'
 
-const Phaser = (props) => {
+const Phaser = ({
+      instrument,
+      init,
+      handleValues,
+      knobColor,
+      storeEffectState,
+      ...props
+    }) => {
 
-    const {instrument, init, handleValues, knobColor} = props
 
     const phaserParameters = [
         {
@@ -53,14 +59,14 @@ const Phaser = (props) => {
 
 
     return (
-        <ModulePainter 
-            parameters={phaserParameters} 
-            handleValues={handleValues} 
-            name={'phaser'} 
-            knobColor={knobColor}
-            moduleColor='linear-gradient(135deg, rgba(30,87,153,1) 0%,rgba(136,252,238,1) 100%)'
-        />
-    )
+      <ModulePainter
+        parameters={phaserParameters}
+        handleValues={handleValues}
+        name={"phaser"}
+        knobColor={knobColor}
+        storeEffectState={storeEffectState}
+      />
+    );
 }
 
 export default Phaser

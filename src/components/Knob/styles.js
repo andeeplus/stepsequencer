@@ -1,17 +1,21 @@
 import styled from "styled-components";
-import { Text } from "ui";
+import { Box, Text } from "ui";
 
-const FullKnob = styled.div`
+const FullKnob = styled(Box)`
   display: flex;
   flex-direction: column;
   width: 30px;
   height: 60px;
-  margin: 15px;
-  margin-bottom: 5px;
+
   justify-content: center;
   align-items: center;
   cursor: grabbing;
 `;
+
+FullKnob.defaultProps = {
+  m: 3,
+  mb: 1
+}
 
 const KnobBase = styled.div`
   display: flex;
@@ -27,7 +31,7 @@ const Tick = styled.div`
   position: absolute;
   background: black;
   box-shadow: ${(props) =>
-    props.isActive
+    props.isActive && !props.disabled
       ? "inset 0 0 5px 2px #deff49, 0 0 0 1px rgb(194, 193, 186)"
       : "inset 0 0 0 0 black"};
   width: 3px;
@@ -43,7 +47,8 @@ const Outer = styled.div`
 `;
 const Inner = styled.div`
   border-radius: 50%;
-  background-color: ${({ theme }) => theme.colors.black};
+  background-color: ${(props) =>
+    props.disabled ? props.theme.colors.gray[8] : props.theme.colors.black};
 `;
 
 const Grip = styled.div`
@@ -65,7 +70,7 @@ const KnobLabel = styled(Text)`
   font-size: 9px;
   min-width: 50px;
   background-color: ${({ theme }) => theme.colors.gray[8]};
-  color: ${({ theme }) => theme.colors.gray[0]};
+  color: ${({ theme, disabled }) => disabled ? theme.colors.gray[4] : theme.colors.gray[0]};
 `;
 
 KnobLabel.defaultProps = {

@@ -4,6 +4,7 @@
   "homepage": "https://stepsequencer.now.sh/",
   "private": true,
   "dependencies": {
+    "awesome-debounce-promise": "^2.1.0",
     "framer-motion": "^2.6.6",
     "node-sass": "^4.14.1",
     "react": "^16.13.1",

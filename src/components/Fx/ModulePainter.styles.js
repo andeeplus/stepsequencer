@@ -10,9 +10,9 @@ ControlArea.defaultProps = {
   m: 1,
   mb: 4,
   alignItems: "center",
-  p: "8px 4px",
+  p: 2,
   justifyContent: "flex-start",
-  width: 130,
+  width: 150,
   borderRadius: 1
 };
 

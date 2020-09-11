@@ -2,7 +2,7 @@ import React from "react";
 import ModulePainter from "./ModulePainter";
 
 const distortion = (props) => {
-  const { instrument, init, handleValues, knobColor } = props;
+  const { instrument, init, handleValues, knobColor, storeEffectState } = props;
 
   const distParameters = [
     {
@@ -27,6 +27,7 @@ const distortion = (props) => {
       handleValues={handleValues}
       name={"distortion"}
       knobColor={knobColor}
+      storeEffectState={storeEffectState}
     />
   );
 };

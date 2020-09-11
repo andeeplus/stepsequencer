@@ -18,6 +18,7 @@ const DrumMachine = ({
   changePattern,
   play,
   updateChannelSequence,
+  storeEffectState,
   playStop,
   handleVolume,
   handleBpm,
@@ -80,11 +81,13 @@ const DrumMachine = ({
               handleValues={handleValues}
               instrument={"distortion"}
               init={initFX.distortion}
+              storeEffectState={storeEffectState}
             />
             <BitReducer
               handleValues={handleValues}
               instrument={"bitReducer"}
               init={initFX.bitReducer}
+              storeEffectState={storeEffectState}
             />
           </Box>
           <Box column>
@@ -92,17 +95,20 @@ const DrumMachine = ({
               handleValues={handleValues}
               instrument={"reverb"}
               init={initFX.reverb}
+              storeEffectState={storeEffectState}
             />
             <PingPongDelay
               handleValues={handleValues}
               instrument={"ppDelay"}
               init={initFX.ppDelay}
+              storeEffectState={storeEffectState}
             />
           </Box>
           <Phaser
             handleValues={handleValues}
             instrument={"phaser"}
             init={initFX.phaser}
+            storeEffectState={storeEffectState}
           />
         </Box>
       </Box>

@@ -1,8 +1,13 @@
 import React from "react";
 import ModulePainter from "./ModulePainter";
 
-const Reverb = ({ instrument, init, handleValues, knobColor }) => {
-
+const Reverb = ({
+  instrument,
+  init,
+  handleValues,
+  knobColor,
+  storeEffectState,
+}) => {
   const reverb = [
     {
       shortName: "room",
@@ -32,6 +37,7 @@ const Reverb = ({ instrument, init, handleValues, knobColor }) => {
       handleValues={handleValues}
       name={"reverb"}
       knobColor={knobColor}
+      storeEffectState={storeEffectState}
     />
   );
 };

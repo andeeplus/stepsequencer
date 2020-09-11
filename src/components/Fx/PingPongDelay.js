@@ -3,7 +3,13 @@ import ModulePainter from './ModulePainter'
 
 const PingPongDelay = (props) => {
 
-    const {instrument, init, handleValues, knobColor} = props
+    const {
+      instrument,
+      init,
+      handleValues,
+      knobColor,
+      storeEffectState,
+    } = props;
 
     const pingPongParameters = [
         { 
@@ -29,13 +35,14 @@ const PingPongDelay = (props) => {
         }
     ]
     return (
-        <ModulePainter 
-            parameters={pingPongParameters} 
-            handleValues={handleValues} 
-            name={'ppDelay'} 
-            knobColor={knobColor}
-        />
-    )
+      <ModulePainter
+        parameters={pingPongParameters}
+        handleValues={handleValues}
+        name={"ppDelay"}
+        knobColor={knobColor}
+        storeEffectState={storeEffectState}
+      />
+    );
 };
 
 export default PingPongDelay;

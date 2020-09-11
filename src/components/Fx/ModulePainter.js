@@ -1,15 +1,15 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 import Knob from "../Knob/Knob";
 import { ControlArea, LabelName } from "./ModulePainter.styles";
-import { Box } from "ui";
+import { Box, Button } from "ui";
 import { useSelector, useDispatch } from "react-redux";
 import { UPDATE_EFFECT_STATUS } from "store/actions/sequencerActions";
 import Icon from "components/ActionButton/svg";
 import { PatternButton } from "components/PatternSelector/styles";
 import styled from "styled-components";
 
-const PowerButton = styled(PatternButton)``
+const PowerButton = styled(PatternButton)``;
 
 const ModulePainter = ({
   name,
@@ -18,25 +18,40 @@ const ModulePainter = ({
   knobColor,
   handleValues,
   moduleColor,
+  storeEffectState,
 }) => {
   const dispatch = useDispatch();
   const isPowered = useSelector(
     (state) => state.sequencer.effects.status[name]
   );
+
   const togglePower = () =>
     dispatch({ type: UPDATE_EFFECT_STATUS, name, status: !isPowered });
 
   return (
     <ControlArea moduleColor={moduleColor} column>
-      <Box alignItems="center">
+      <Box alignItems="center" mb={2}>
         <LabelName>{name.toUpperCase()}</LabelName>
-        <PowerButton>
+        <PowerButton title="power off">
           <Icon
             onClick={togglePower}
             fill={isPowered ? "yellow" : "gray"}
             tint={4}
             icon="power"
-            size={12}
+            size={10}
+            p={2}
+          />
+        </PowerButton>
+        <PowerButton
+          title="save fx"
+          height="16px"
+          onClick={() => storeEffectState(name)}
+        >
+          <Icon
+            fill="orange"
+            tint={2}
+            icon="save"
+            size={10}
             p={2}
           />
         </PowerButton>
@@ -53,6 +68,7 @@ const ModulePainter = ({
             color={knobColor ? knobColor : "darkgrey"}
             onChange={handleValues}
             typeValue={param.parameters}
+            disabled={!isPowered}
           >
             {param.shortName}
           </Knob>
