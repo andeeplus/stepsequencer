@@ -1,21 +1,24 @@
-import React, { useState } from "react";
+import React from "react";
 import styled from "styled-components";
 
 import { PatternButton } from "components/PatternSelector/styles";
 import { Box } from "ui"
 import { KnobLabel } from "components/Knob/styles";
+import { useSelector, useDispatch } from "react-redux";
+import { UPDATE_EFFECT_VALUE } from "store/actions/sequencerActions";
 
 const ToggleButton = styled(PatternButton)`
   width: ${(props) => `${props.size}px`};
   height: ${(props) => `${props.size}px`};
   p {
     margin: 2px;
-    font-size: ${(props) => (props.isActive ? "12px" : "12px")};
+    font-size: ${(props) => (props.active ? "12px" : "12px")};
   }
 `;
 
 export const MultiToggle = ({
   parameters,
+  paramName,
   steps,
   perRow,
   handleValues,
@@ -23,11 +26,15 @@ export const MultiToggle = ({
   size = 20,
   ...props
 }) => {
-  const [isActive, setActive] = useState(5);
+  const dispatch = useDispatch()
+
+  const active = useSelector(
+    (state) => state.sequencer.effects.state[name][paramName]
+  );
 
   const action = (value, parameters, index) => {
     handleValues(value, parameters);
-    setActive(index);
+    dispatch({ type: UPDATE_EFFECT_VALUE, name, paramName, value });
   };
 
   let maxWidth = size * steps.length;
@@ -38,28 +45,25 @@ export const MultiToggle = ({
   return (
     <Box column alignItems="center" {...props}>
       <Box width={`${width}px`} flexWrap="wrap" justifyContent="Center">
-        {parameters.map((parameter, i) =>
-          parameter.steps.map((p, index) => (
-            <Box
-              key={i + index}
-              flex={`0 1 ${100 / perRow}%`}
-              alignItems="center"
-              justifyContent="center"
+        {parameters.steps.map((parameter, index) => (
+          <Box
+            key={"bits" + index}
+            flex={`0 1 ${100 / perRow}%`}
+            alignItems="center"
+            justifyContent="center"
+          >
+            <ToggleButton
+              size={size}
+              perRow={perRow}
+              onClick={() =>{
+                action(parameter, parameters.parameters, index);
+              }}
+              isActive={active === parameter}
             >
-              <ToggleButton
-                key={`${parameter.value}-ToggleButton`}
-                size={size}
-                perRow={perRow}
-                onClick={() =>
-                  action(steps[index], parameters[i].parameters, index)
-                }
-                isActive={isActive === index}
-              >
-                <p>{index + 1}</p>
-              </ToggleButton>
-            </Box>
-          ))
-        )}
+              <p>{index + 1}</p>
+            </ToggleButton>
+          </Box>
+        ))}
         <KnobLabel mt={1}>Bits</KnobLabel>
       </Box>
     </Box>

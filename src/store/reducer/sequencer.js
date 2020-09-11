@@ -7,47 +7,50 @@ import {
   CHANGE_BPM,
   UPDATE_SEQUENCER_STATUS,
   UPDATE_EFFECT_STATUS,
+  UPDATE_EFFECT_STATE,
+  UPDATE_EFFECT_VALUE,
+  SET_INITIAL_STATE,
 } from "../actions/sequencerActions";
 import { defaultPatterns } from "../../presets/drums";
-import cloneDeep from "lodash/cloneDeep";
+import { initFX } from "tone/effects";
 
 // TODO Fix initial state and split state
 
 const initialState = () => {
-  let userPatterns = localStorage.getItem("userPatterns");
-  userPatterns = JSON.parse(userPatterns);
-
-  const { name, timestamp, index, bpm, ...sequence } =
-    (userPatterns && userPatterns[0]) || defaultPatterns[0];
+  const initialPattern = defaultPatterns[0];
+  const { name, timestamp, index, bpm, ...sequence } = initialPattern;
 
   return {
     steps: 16,
     play: false,
     timing: "16n",
-    bpm: userPatterns
-      ? userPatterns && userPatterns[0] && userPatterns[0].bpm
-      : defaultPatterns.length && defaultPatterns[0].bpm,
+    bpm: defaultPatterns[0].bpm,
     masterVolume: -6,
     volumeKnob: -6,
     index,
-    sequence: cloneDeep(sequence),
+    sequence: sequence,
     patternName: name,
-    defaultPatterns: userPatterns ? userPatterns : defaultPatterns,
+    defaultPatterns: defaultPatterns,
     effects: {
+      state: initFX,
       status: {
         ppDelay: false,
         phaser: false,
         distortion: true,
-        reducer: false,
-        reverb: false,
+        bitReducer: false,
+        reverb: true,
       },
     },
   };
 };
 
 const sequencer = (state = initialState(), action) => {
-
   switch (action.type) {
+    case SET_INITIAL_STATE:
+      return {
+        ...state,
+        ...action.state,
+      };
     case SET_INDEX:
       return {
         ...state,
@@ -67,9 +70,36 @@ const sequencer = (state = initialState(), action) => {
           ...state.effects,
           status: {
             ...state.effects.status,
-            [action.name]: action.status
-          }
-        }
+            [action.name]: action.status,
+          },
+        },
+      };
+
+    case UPDATE_EFFECT_STATE:
+      return {
+        ...state,
+        effects: {
+          ...state.effects,
+          state: {
+            ...state.effects.state,
+            [action.name]: action.fxState,
+          },
+        },
+      };
+
+    case UPDATE_EFFECT_VALUE:
+     return {
+        ...state,
+        effects: {
+          ...state.effects,
+          state: {
+            ...state.effects.state,
+            [action.name]: {
+              ...state.effects.state[action.name],
+              [action.paramName]: action.value
+            },
+          },
+        },
       };
 
     case UPDATE_SEQUENCE:
@@ -111,11 +141,14 @@ const sequencer = (state = initialState(), action) => {
         defaultPatterns: defaultPatternsUpdatedBpm,
       };
     case SAVE_PATTERN:
-      let defaultPatterns = state.defaultPatterns;
-      defaultPatterns[state.index] = action.patternToSave;
+      const updatedPatterns = state.defaultPatterns;
+      let effects = state.effects;
+      updatedPatterns[state.index] = action.patternToSave;
 
-      const userData = JSON.stringify(defaultPatterns);
-      localStorage.setItem("userPatterns", userData);
+      const dmachine = JSON.stringify({
+        dmachine: { defaultPatterns: updatedPatterns, effects },
+      });
+      localStorage.setItem("dmachine", dmachine);
 
       return {
         ...state,
