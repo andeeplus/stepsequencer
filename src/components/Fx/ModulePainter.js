@@ -1,8 +1,8 @@
-import React, { useEffect } from "react";
+import React from "react";
 
 import Knob from "../Knob/Knob";
 import { ControlArea, LabelName } from "./ModulePainter.styles";
-import { Box, Button } from "ui";
+import { Box } from "ui";
 import { useSelector, useDispatch } from "react-redux";
 import { UPDATE_EFFECT_STATUS } from "store/actions/sequencerActions";
 import Icon from "components/ActionButton/svg";
@@ -15,7 +15,6 @@ const ModulePainter = ({
   name,
   children,
   parameters,
-  knobColor,
   handleValues,
   moduleColor,
   storeEffectState,
@@ -31,7 +30,7 @@ const ModulePainter = ({
   return (
     <ControlArea moduleColor={moduleColor} column>
       <Box alignItems="center" mb={2}>
-        <LabelName>{name.toUpperCase()}</LabelName>
+        <LabelName disabled={!isPowered}>{name.toUpperCase()}</LabelName>
         <PowerButton title="power off">
           <Icon
             onClick={togglePower}
@@ -47,13 +46,7 @@ const ModulePainter = ({
           height="16px"
           onClick={() => storeEffectState(name)}
         >
-          <Icon
-            fill="orange"
-            tint={2}
-            icon="save"
-            size={10}
-            p={2}
-          />
+          <Icon fill="orange" tint={2} icon="save" size={10} p={2} />
         </PowerButton>
       </Box>
       <Box flexWrap="wrap" justifyContent="space-evenly">
@@ -65,7 +58,7 @@ const ModulePainter = ({
             min={param.minMax[0]}
             max={param.minMax[1]}
             value={param.initValue}
-            color={knobColor ? knobColor : "darkgrey"}
+            color="darkgrey"
             onChange={handleValues}
             typeValue={param.parameters}
             disabled={!isPowered}

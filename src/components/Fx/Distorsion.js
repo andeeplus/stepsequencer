@@ -10,14 +10,14 @@ const distortion = (props) => {
       parameters: ["distortion", instrument],
       minMax: [1, 100],
       ticks: 0,
-      initValue: init.distortion,
+      initValue: init.distortion * 100,
     },
     {
       shortName: "wet",
       parameters: ["wet", instrument],
       minMax: [0, 100],
       ticks: 0,
-      initValue: init.wet,
+      initValue: init.wet * 100,
     },
   ];
 

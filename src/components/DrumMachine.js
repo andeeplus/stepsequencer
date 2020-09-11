@@ -6,12 +6,12 @@ import PingPongDelay from "./Fx/PingPongDelay";
 import Distorsion from "./Fx/Distorsion";
 import BitReducer from "./Fx/BitReducer";
 import Reverb from "./Fx/Reverb";
-import { initFX } from "../tone/effects";
 
 import { Box } from "ui";
 import { Timeline } from "components/Timeline";
 import MainController from "components/MainController";
 import Footer from "./Footer";
+import { useSelector } from "react-redux";
 
 const DrumMachine = ({
   sequence,
@@ -26,6 +26,9 @@ const DrumMachine = ({
   indexSeq,
   patternIndex,
 }) => {
+
+  const fxState = useSelector(state => state.sequencer.effects.state)
+
   return (
     <Box column justifyContent="center" minHeight="100vh" alignItems="center">
       <Box
@@ -80,13 +83,13 @@ const DrumMachine = ({
             <Distorsion
               handleValues={handleValues}
               instrument={"distortion"}
-              init={initFX.distortion}
+              init={fxState.distortion}
               storeEffectState={storeEffectState}
             />
             <BitReducer
               handleValues={handleValues}
               instrument={"bitReducer"}
-              init={initFX.bitReducer}
+              init={fxState.bitReducer}
               storeEffectState={storeEffectState}
             />
           </Box>
@@ -94,20 +97,20 @@ const DrumMachine = ({
             <Reverb
               handleValues={handleValues}
               instrument={"reverb"}
-              init={initFX.reverb}
+              init={fxState.reverb}
               storeEffectState={storeEffectState}
             />
             <PingPongDelay
               handleValues={handleValues}
               instrument={"ppDelay"}
-              init={initFX.ppDelay}
+              init={fxState.ppDelay}
               storeEffectState={storeEffectState}
             />
           </Box>
           <Phaser
             handleValues={handleValues}
             instrument={"phaser"}
-            init={initFX.phaser}
+            init={fxState.phaser}
             storeEffectState={storeEffectState}
           />
         </Box>

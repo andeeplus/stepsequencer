@@ -84,7 +84,7 @@ class SyncMachine extends Component {
     }
   }
 
-  componentDidUpdate(prevProps) {
+  componentDidUpdate(prevProps, prevState) {
     const patternHasChanged =
       this.props.play && prevProps.index !== this.props.index;
 
@@ -97,56 +97,60 @@ class SyncMachine extends Component {
       this.Tone.Transport.bpm.value = this.props.bpm;
     }
 
-    if (this.state.audioContextIsActive) this.reviewEffectStatus(prevProps);
+    if (this.state.audioContextIsActive !== prevState.audioContextIsActive) {
+      this.reviewEffectStatus(prevProps);
+    }
+    if (
+      this.state.audioContextIsActive &&
+      (this.props.fxStatus.ppDelay !== prevProps.fxStatus.ppDelay ||
+        this.props.fxStatus.distortion !== prevProps.fxStatus.distortion ||
+        this.props.fxStatus.bitReducer !== prevProps.fxStatus.bitReducer ||
+        this.props.fxStatus.phaser !== prevProps.fxStatus.phaser ||
+        this.props.fxStatus.reverb !== prevProps.fxStatus.reverb)
+    ) {
+      this.reviewEffectStatus(prevProps);
+    }
   }
 
+  updateIndividualEffectValue = ({ prevProps, name, key }) => {
+    if (
+      this.props.fxStatus[name] !== prevProps.fxStatus[name] ||
+      !this.props.fxStatus[name]
+    ) {
+      if (this.props.fxStatus[name]) {
+        this[name][key].value = this.props.fxState[name][key];
+      } else {
+        this[name][key].value = 0;
+      }
+    }
+  };
+
   reviewEffectStatus = (prevProps) => {
-    //TODO: Helper for all kind of values update and save effect state to redux. Need to have the possibility to store debounced values for effects.
-
-    if (this.props.fxStatus.ppDelay !== prevProps.fxStatus.ppDelay) {
-      if (this.props.fxStatus.ppDelay) {
-        this.ppDelay.wet.value = this.props.fxState.ppDelay.wet;
-      } else {
-        this.props.updateFxState("ppDelay", this.ppDelay.get());
-        this.ppDelay.wet.value = 0;
-      }
-    }
-
-    if (this.props.fxStatus.distortion !== prevProps.fxStatus.distortion) {
-      if (this.props.fxStatus.bitReducer) {
-        this.distortion.wet.value = this.props.fxState.distortion.wet;
-      } else {
-        this.props.updateFxState("distortion", this.distortion.get());
-        this.distortion.wet.value = 0;
-      }
-    }
-
-    if (this.props.fxStatus.bitReducer !== prevProps.fxStatus.bitReducer) {
-      if (this.props.fxStatus.bitReducer) {
-        this.bitReducer.wet.value = this.props.fxState.bitReducer.wet;
-      } else {
-        this.props.updateFxState("bitReducer", this.bitReducer.get());
-        this.bitReducer.wet.value = 0;
-      }
-    }
-
-    if (this.props.fxStatus.phaser !== prevProps.fxStatus.phaser) {
-      if (this.props.fxStatus.phaser) {
-        this.phaser.wet.value = this.props.fxState.phaser.wet;
-      } else {
-        this.props.updateFxState("phaser", this.phaser.get());
-        this.phaser.wet.value = 0;
-      }
-    }
-
-    if (this.props.fxStatus.reverb !== prevProps.fxStatus.reverb) {
-      if (this.props.fxStatus.reverb) {
-        this.reverb.wet.value = this.props.fxState.reverb.wet;
-      } else {
-        this.props.updateFxState("reverb", this.reverb.get());
-        this.reverb.wet.value = 0;
-      }
-    }
+    this.updateIndividualEffectValue({
+      prevProps,
+      name: "ppDelay",
+      key: "wet",
+    });
+    this.updateIndividualEffectValue({
+      prevProps,
+      name: "distortion",
+      key: "wet",
+    });
+    this.updateIndividualEffectValue({
+      prevProps,
+      name: "reverb",
+      key: "wet",
+    });
+    this.updateIndividualEffectValue({
+      prevProps,
+      name: "phaser",
+      key: "wet",
+    });
+    this.updateIndividualEffectValue({
+      prevProps,
+      name: "bitReducer",
+      key: "wet",
+    });
   };
 
   initSetup = () => {
@@ -164,16 +168,6 @@ class SyncMachine extends Component {
     this.ppDelay = new Tone.PingPongDelay(this.props.fxState.ppDelay);
     this.reverb = new Tone.Freeverb(this.props.fxState.reverb);
     this.drumVol = new Tone.Volume(this.props.masterVolume);
-
-    this.distortion.wet.value = this.props.fxState.distortion.wet || 0;
-
-    this.phaser.wet.value = this.props.fxState.phaser.wet || 0;
-
-    this.bitReducer.wet.value = this.props.fxState.bitReducer.wet || 0;
-
-    this.ppDelay.wet.value = this.props.fxState.ppDelay.wet || 0;
-
-    this.reverb.wet.value = this.props.fxState.reverb.wet || 0;
   };
 
   activateAudioContext = async () => {

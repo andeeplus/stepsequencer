@@ -24,15 +24,19 @@ const LabelName = styled(Text)`
   border-radius: 4px;
   background-clip: text;
   box-shadow: ${({ theme }) => theme.shadows.small};
+  color: ${(props) =>
+    props.disabled
+      ? props.theme.colors.gray[4]
+      : props.color || props.theme.colors.gray[1]};
 `;
 
 LabelName.defaultProps = {
   bg: theme.colors.gray[9],
-  color: theme.colors.gray[2],
   mx: 1,
   my: 1,
-  p: '2px',
-  width: '75px'
+  p: "2px",
+  width: "75px",
+  color: theme.colors.gray[1],
 };
 
 export {

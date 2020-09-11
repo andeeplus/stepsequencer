@@ -135,6 +135,7 @@ const Screen = () => {
         size={12}
         p={1}
         editing={isEdit}
+        cursor="pointer"
         onClick={isEdit ? changePatternName : savePattern}
       />
     </LightedScreen>
