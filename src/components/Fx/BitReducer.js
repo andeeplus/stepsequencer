@@ -9,15 +9,14 @@ const BitReducer = ({
   knobColor,
   ...props
 }) => {
-  const bitReducer = [
-    {
+  const bitReducer = {
       shortName: "bits",
       parameters: ["bits", instrument],
       minMax: [1, 8],
       steps: [8, 7, 6, 5, 4, 3, 2, 1],
       initValue: init.bits,
-    },
-  ];
+    }
+
 
   const main = [
     {
@@ -33,7 +32,7 @@ const BitReducer = ({
     <ModulePainter
       parameters={main}
       handleValues={handleValues}
-      name={"reducer"}
+      name={"bitReducer"}
       knobColor={knobColor}
       {...props}
     >
@@ -42,7 +41,8 @@ const BitReducer = ({
         handleValues={handleValues}
         steps={[8, 7, 6, 5, 4, 3, 2, 1]}
         perRow={4}
-        name={"Reducer"}
+        name={'bitReducer'}
+        paramName="bits"
       />
     </ModulePainter>
   );
