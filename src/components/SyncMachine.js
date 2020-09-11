@@ -38,8 +38,7 @@ const mapDispatchToProps = (dispatch) => ({
     dispatch({ type: UPDATE_SEQUENCER_STATUS, payload }),
   updateFxState: (name, fxState) =>
     dispatch({ type: UPDATE_EFFECT_STATE, name, fxState }),
-  setUserState: (state) =>
-    dispatch({ type: SET_INITIAL_STATE, state }),
+  setUserState: (state) => dispatch({ type: SET_INITIAL_STATE, state }),
 });
 
 class SyncMachine extends Component {
@@ -62,10 +61,11 @@ class SyncMachine extends Component {
     this.drumSamples = eightOeight;
   }
 
-  componentDidMount(){
-      let local = localStorage.getItem("dmachine");
-      const data = local && JSON.parse(local);
-      const dmachine = data.dmachine;
+  componentDidMount() {
+    let local = localStorage.getItem("dmachine");
+    const data = local && JSON.parse(local);
+    const dmachine = data.dmachine;
+    if (dmachine) {
       const defaultPatterns = dmachine.defaultPatterns;
       const effects = dmachine.effects;
       const initialPattern = defaultPatterns[0];
@@ -80,7 +80,7 @@ class SyncMachine extends Component {
         index,
         bpm,
       });
-
+    }
   }
 
   componentDidUpdate(prevProps) {
@@ -166,7 +166,7 @@ class SyncMachine extends Component {
 
     this.distortion.wet.value = this.props.fxState.distortion.wet || 0;
 
-    this.phaser.wet.value = this.props.fxState.phaser.wet ||  0;
+    this.phaser.wet.value = this.props.fxState.phaser.wet || 0;
 
     this.bitReducer.wet.value = this.props.fxState.bitReducer.wet || 0;
 
