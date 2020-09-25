@@ -1,5 +1,7 @@
 ## Drum sequencer
-WIP - Experimenting with Tone.js and React.
+
+Work in progress.
+Experimenting with Tone.js and React and Electron.
 
 - [Demo Live](https://stepsequencer.now.sh/)
 
