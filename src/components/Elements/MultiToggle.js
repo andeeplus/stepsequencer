@@ -28,8 +28,12 @@ export const MultiToggle = ({
 }) => {
   const dispatch = useDispatch()
 
-  const active = useSelector(
+  const activeStep = useSelector(
     (state) => state.sequencer.effects.state[name][paramName]
+  );
+
+  const isPowered = useSelector(
+    (state) => state.sequencer.effects.status[name]
   );
 
   const action = (value, parameters, index) => {
@@ -55,10 +59,10 @@ export const MultiToggle = ({
             <ToggleButton
               size={size}
               perRow={perRow}
-              onClick={() =>{
+              onClick={isPowered ? () => {
                 action(parameter, parameters.parameters, index);
-              }}
-              isActive={active === parameter}
+              }: undefined}
+              isActive={isPowered && activeStep === parameter}
             >
               <p>{index + 1}</p>
             </ToggleButton>

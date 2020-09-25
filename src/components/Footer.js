@@ -1,9 +1,12 @@
 import React, { Fragment } from "react";
 import styled, { keyframes } from "styled-components";
-import { Box } from "ui";
+import { Box, Text } from "ui";
+import packageJson from "../../package.json";
 
 import "react-toggle/style.css";
 // import { ToggleSwitch } from './Elements';
+
+
 
 const rotate = keyframes`
     from {
@@ -25,7 +28,6 @@ const Rotate = styled.div`
 const FooterStyled = styled(Box)`
   font-size: 10px;
   font-weight: 100;
-  bottom: 0;
   color: ${({ theme }) => theme.colors.gray[0]};
   & a {
     font-weight: 400;
@@ -37,6 +39,9 @@ const FooterStyled = styled(Box)`
 const Footer = () => (
   <Fragment>
     <FooterStyled
+      position="absolute"
+      bottom={2}
+      right={0}
       shadow
       alignItems="center"
       justifyContent="center"
@@ -45,18 +50,30 @@ const Footer = () => (
       borderRadius={1}
       bg="gray.8"
       px={3}
-      m={2}
     >
-      <p>made with</p>
+      <Text textSize="xxs">made with </Text>
       <Rotate>☯</Rotate>
-      <p>by</p>
-      <a
+      <Text textSize="xxs">by </Text>
+      <Text
+        as="a"
+        textSize="xxs"
         href="https://github.com/andeeplus"
         rel="noopener noreferrer"
         target="_blank"
+        color="yellow.4"
       >
         @andeeplus
-      </a>
+      </Text>
+      <Text
+        borderRadius={4}
+        bg="red.7"
+        color="yellow.4"
+        p="3px"
+        textSize="xxs"
+        ml={2}
+      >
+        v.{packageJson.version}
+      </Text>
     </FooterStyled>
   </Fragment>
 );

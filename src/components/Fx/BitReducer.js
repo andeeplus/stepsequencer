@@ -7,6 +7,7 @@ const BitReducer = ({
   init,
   handleValues,
   knobColor,
+  storeEffectState,
   ...props
 }) => {
   const bitReducer = {
@@ -34,14 +35,16 @@ const BitReducer = ({
       handleValues={handleValues}
       name={"bitReducer"}
       knobColor={knobColor}
+      storeEffectState={storeEffectState}
       {...props}
     >
       <MultiToggle
+        my={2}
         parameters={bitReducer}
         handleValues={handleValues}
         steps={[8, 7, 6, 5, 4, 3, 2, 1]}
         perRow={4}
-        name={'bitReducer'}
+        name={"bitReducer"}
         paramName="bits"
       />
     </ModulePainter>

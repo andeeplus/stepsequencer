@@ -36,8 +36,8 @@ const StepButton = styled(Box)`
 `
 
 StepButton.defaultProps = {
-    width: '25px',
-    height: '25px',
+    width: '28px',
+    height: '28px',
     boxSizing: 'border-box',
     borderRadius: '4px',
     margin: '4px',
@@ -69,8 +69,8 @@ const SquareButton = styled(Box)`
 
 const SquareButtonLed = styled(Box)`
     margin: 0 auto;
-    width: 25px;
-    height: 25px;
+    width: 28px;
+    height: 28px;
     background-color: ${({theme, isActive}) => isActive ? `${theme.colors.yellow[2]}40` : null };
     border-radius: 2px;
     box-shadow: ${({theme, isActive}) => isActive ? `rgba(0, 0, 0, 0.2) 0 -1px 7px 1px, #304701 0 -1px 9px ${theme.colors.yellow[7]}` : null};
