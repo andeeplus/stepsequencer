@@ -12,8 +12,39 @@ import {
   UPDATE_EFFECT_STATE,
   SET_INITIAL_STATE,
 } from "../store/actions/sequencerActions";
-// import ModalSetup from "./tools/Modal";
-import { Box } from "ui";
+import ModalSetup from "./tools/Modal";
+import { Box, Button } from "ui";
+
+function isElectron() {
+  // Renderer process
+  if (
+    typeof window !== "undefined" &&
+    typeof window.process === "object" &&
+    window.process.type === "renderer"
+  ) {
+    return true;
+  }
+
+  // Main process
+  if (
+    typeof process !== "undefined" &&
+    typeof process.versions === "object" &&
+    !!process.versions.electron
+  ) {
+    return true;
+  }
+
+  // Detect the user agent when the `nodeIntegration` option is set to true
+  if (
+    typeof navigator === "object" &&
+    typeof navigator.userAgent === "string" &&
+    navigator.userAgent.indexOf("Electron") >= 0
+  ) {
+    return true;
+  }
+
+  return false;
+}
 
 const mapStateToProps = (store) => ({
   store: store,
@@ -83,7 +114,9 @@ class SyncMachine extends Component {
       });
     }
 
-    this.activateAudioContext()
+    this.setState({ isElectron: isElectron() }, () => {
+      if (this.state.isElectron) this.activateAudioContext()
+    });
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -337,7 +370,7 @@ class SyncMachine extends Component {
           indexSeq={this.state.indexSeq}
           storeEffectState={this.storeEffectState}
         />
-        {/*<ModalSetup
+        {!this.state.isElectron && <ModalSetup
           visible={!this.state.audioContextIsActive}
           dismiss={this.activateAudioContext}
           children={
@@ -345,7 +378,7 @@ class SyncMachine extends Component {
               <Button onClick={this.activateAudioContext}>Enable Audio</Button>
             </Box>
           }
-        />*/}
+        />}
       </Box>
     );
   }
