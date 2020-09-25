@@ -12,8 +12,8 @@ import {
   UPDATE_EFFECT_STATE,
   SET_INITIAL_STATE,
 } from "../store/actions/sequencerActions";
-import ModalSetup from "./tools/Modal";
-import { Box, Button } from "ui";
+// import ModalSetup from "./tools/Modal";
+import { Box } from "ui";
 
 const mapStateToProps = (store) => ({
   store: store,
@@ -82,6 +82,8 @@ class SyncMachine extends Component {
         bpm,
       });
     }
+
+    this.activateAudioContext()
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -335,8 +337,7 @@ class SyncMachine extends Component {
           indexSeq={this.state.indexSeq}
           storeEffectState={this.storeEffectState}
         />
-
-        <ModalSetup
+        {/*<ModalSetup
           visible={!this.state.audioContextIsActive}
           dismiss={this.activateAudioContext}
           children={
@@ -344,7 +345,7 @@ class SyncMachine extends Component {
               <Button onClick={this.activateAudioContext}>Enable Audio</Button>
             </Box>
           }
-        />
+        />*/}
       </Box>
     );
   }
