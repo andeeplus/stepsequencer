@@ -20,7 +20,6 @@
     "styled-components": "^5.2.0",
     "styled-system": "^5.1.5",
     "tone": "^13.8.34",
-    "update-electron-app": "^1.5.0",
     "wait-on": "^5.2.0"
   },
   "build": {
@@ -35,13 +34,13 @@
     }
   },
   "scripts": {
+    "build": "react-scripts build",
     "react-start": "react-scripts start",
-    "react-build": "react-scripts build",
     "react-test": "react-scripts test --env=jsdom",
     "react-eject": "react-scripts eject",
     "electron-build": "electron-builder",
     "release": "yarn react-build && electron-builder --publish=always",
-    "build": "yarn react-build && yarn electron-build",
+    "build-package": "yarn react-build && yarn electron-build",
     "start": "concurrently \"cross-env BROWSER=none yarn react-start\" \"wait-on http://localhost:3000 && electron .\""
   },
   "eslintConfig": {
