@@ -87,6 +87,7 @@ class SyncMachine extends Component {
     const isElectron = detectIsElectron();
 
     if (isElectron) {
+      console.log({isElectron})
       this.setState({ isElectron: isElectron }, () =>
         this.activateAudioContext()
       );
