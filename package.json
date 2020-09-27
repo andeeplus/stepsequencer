@@ -1,12 +1,11 @@
 {
   "name": "andeeplus-drum-machine",
   "version": "0.2.0",
-  "homepage": "https://stepsequencer.now.sh/",
-  "private": true,
+  "author": "andeeplus@gmail.com",
+  "description": "Step sequencer based on Tone Js",
+  "homepage": "https://stepsequencer.now.sh",
   "dependencies": {
-    "awesome-debounce-promise": "^2.1.0",
     "framer-motion": "^2.6.6",
-    "node-sass": "^4.14.1",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-redux": "^7.2.1",
@@ -20,10 +19,8 @@
     "tone": "^13.8.34"
   },
   "scripts": {
-    "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "start": "react-scripts start"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -33,6 +30,5 @@
     "not dead",
     "not ie <= 11",
     "not op_mini all"
-  ],
-  "devDependencies": {}
+  ]
 }
