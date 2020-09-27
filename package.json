@@ -5,6 +5,7 @@
   "description": "Step sequencer based on Tone Js",
   "homepage": "https://stepsequencer.now.sh/",
   "private": true,
+  "main": "src/index.js",
   "dependencies": {
     "electron-is-dev": "^1.2.0",
     "framer-motion": "^2.6.6",

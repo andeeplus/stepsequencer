@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import { connect } from "react-redux";
 import Tone from "tone";
+import { connect } from "react-redux";
 import { drumIds } from "../presets/drums";
 import { eightOeight } from "../tone/samples/drums";
 import DrumMachine from "./DrumMachine";
