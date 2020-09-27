@@ -3,7 +3,7 @@
   "version": "0.2.0",
   "author": "andeeplus@gmail.com",
   "description": "Step sequencer based on Tone Js",
-  "homepage": "https://stepsequencer.now.sh/",
+  "homepage": "./",
   "main": "public/electron.js",
   "dependencies": {
     "framer-motion": "^2.6.6",
