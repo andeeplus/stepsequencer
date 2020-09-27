@@ -87,6 +87,7 @@ class SyncMachine extends Component {
     const isElectron = detectIsElectron();
 
     if (isElectron) {
+      console.log({isElectron})
       this.setState({ isElectron: isElectron }, () =>
         this.activateAudioContext()
       );
@@ -94,7 +95,7 @@ class SyncMachine extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    if (this.state.audioContextIsActive) {
+    if (this.state.audioContextIsActive && prevState.audioContextIsActive) {
       const patternHasChanged =
         this.props.play && prevProps.index !== this.props.index;
 
