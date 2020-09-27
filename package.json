@@ -3,11 +3,8 @@
   "version": "0.2.0",
   "author": "andeeplus@gmail.com",
   "description": "Step sequencer based on Tone Js",
-  "homepage": "./",
-  "private": true,
-  "main": "public/electron.js",
+  "homepage": ".",
   "dependencies": {
-    "electron-is-dev": "^1.2.0",
     "framer-motion": "^2.6.6",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
@@ -19,29 +16,11 @@
     "redux-saga": "^1.1.3",
     "styled-components": "^5.2.0",
     "styled-system": "^5.1.5",
-    "tone": "^13.8.34",
-    "wait-on": "^5.2.0"
-  },
-  "build": {
-    "extends": null,
-    "appId": "com.armyoursampler.drums",
-    "files": [
-      "./build/**/*",
-      "./public/electron.js"
-    ],
-    "directories": {
-      "buildResources": "assets"
-    }
+    "tone": "^13.8.34"
   },
   "scripts": {
     "build": "react-scripts build",
-    "react-start": "react-scripts start",
-    "react-test": "react-scripts test --env=jsdom",
-    "react-eject": "react-scripts eject",
-    "electron-build": "electron-builder",
-    "release": "yarn react-build && electron-builder --publish=always",
-    "build-package": "yarn react-build && yarn electron-build",
-    "start": "concurrently \"cross-env BROWSER=none yarn react-start\" \"wait-on http://localhost:3000 && electron .\""
+    "start": "react-scripts start"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -51,10 +30,5 @@
     "not dead",
     "not ie <= 11",
     "not op_mini all"
-  ],
-  "devDependencies": {
-    "concurrently": "^5.3.0",
-    "electron": "^10.1.2",
-    "electron-builder": "^22.8.1"
-  }
+  ]
 }
