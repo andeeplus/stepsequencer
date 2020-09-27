@@ -5,7 +5,6 @@
   "description": "Step sequencer based on Tone Js",
   "homepage": "https://stepsequencer.now.sh/",
   "private": true,
-  "main": "public/electron.js",
   "dependencies": {
     "electron-is-dev": "^1.2.0",
     "framer-motion": "^2.6.6",
@@ -34,14 +33,14 @@
     }
   },
   "scripts": {
-    "build": "react-scripts build",
+    "react-build": "react-scripts build",
     "react-start": "react-scripts start",
     "react-test": "react-scripts test --env=jsdom",
     "react-eject": "react-scripts eject",
-    "electron-build": "yarn build && electron-builder",
-    "release": "yarn build && electron-builder --publish=always",
-    "concurrent-start": "concurrently \"cross-env BROWSER=none yarn react-start\" \"wait-on http://localhost:3000 && electron .\"",
-    "start": "yarn react-start"
+    "electron-build": "electron-builder",
+    "release": "yarn react-build && electron-builder --publish=always",
+    "build": "yarn react-build && yarn electron-build",
+    "start": "concurrently \"cross-env BROWSER=none yarn react-start\" \"wait-on http://localhost:3000 && electron .\""
   },
   "eslintConfig": {
     "extends": "react-app"
