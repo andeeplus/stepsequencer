@@ -9,7 +9,7 @@ import RIM from "sounds/808/Rim_808_01.wav";
 import CL from "sounds/808/Clap_808_01.wav";
 import TOM1 from "sounds/808/Tom_808_01.wav";
 
-const eightOeight = new Tone.Players({
+const eightOeight = () => new Tone.Players({
   bd: BD,
   sn: SN,
   hh: HH,

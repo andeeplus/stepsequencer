@@ -59,7 +59,7 @@ class SyncMachine extends Component {
     this.reverb = null;
     this.Sequence = null;
     this.indexSeq = 0;
-    this.drumSamples = eightOeight;
+    this.drumSamples = null;
     this.changesListener = 0;
   }
 
@@ -87,7 +87,6 @@ class SyncMachine extends Component {
     const isElectron = detectIsElectron();
 
     if (isElectron) {
-      console.log({isElectron})
       this.setState({ isElectron: isElectron }, () =>
         this.activateAudioContext()
       );
@@ -95,28 +94,29 @@ class SyncMachine extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    const patternHasChanged =
-      this.props.play && prevProps.index !== this.props.index;
+    if (this.state.audioContextIsActive) {
+      const patternHasChanged =
+        this.props.play && prevProps.index !== this.props.index;
 
-    if (patternHasChanged) {
-      this.Tone.Transport.cancel();
-      this.startSequence();
-    }
+      if (patternHasChanged) {
+        this.Tone.Transport.cancel();
+        this.startSequence();
+      }
 
-    if (prevProps.bpm !== this.props.bpm) {
-      this.Tone.Transport.bpm.value = this.props.bpm;
-    }
+      if (prevProps.bpm !== this.props.bpm) {
+        this.Tone.Transport.bpm.value = this.props.bpm;
+      }
 
-    if (
-      this.state.audioContextIsActive &&
-      ((this.state.audioContextIsActive !== prevState.audioContextIsActive ||
-        this.props.fxStatus.ppDelay) !== prevProps.fxStatus.ppDelay ||
+      if (
+        this.state.audioContextIsActive !== prevState.audioContextIsActive ||
+        this.props.fxStatus.ppDelay !== prevProps.fxStatus.ppDelay ||
         this.props.fxStatus.distortion !== prevProps.fxStatus.distortion ||
         this.props.fxStatus.bitReducer !== prevProps.fxStatus.bitReducer ||
         this.props.fxStatus.phaser !== prevProps.fxStatus.phaser ||
-        this.props.fxStatus.reverb !== prevProps.fxStatus.reverb)
-    ) {
-      this.reviewEffectStatus(prevProps);
+        this.props.fxStatus.reverb !== prevProps.fxStatus.reverb
+      ) {
+        this.reviewEffectStatus(prevProps);
+      }
     }
   }
 
@@ -181,6 +181,7 @@ class SyncMachine extends Component {
   activateAudioContext = async () => {
     await this.initSetup();
     await this.initFX();
+    this.drumSamples = eightOeight();
     this.drumSamples.chain(
       this.distortion,
       this.phaser,
@@ -343,20 +344,19 @@ class SyncMachine extends Component {
           indexSeq={this.state.indexSeq}
           storeEffectState={this.storeEffectState}
         />
-        {!this.state.isElectron &&
-          !this.state.audioContextIsActive && (
-            <ModalSetup
-              visible={!this.state.audioContextIsActive}
-              dismiss={this.activateAudioContext}
-              children={
-                <Box bg="gray.9" p={4} justifyContent="center">
-                  <Button onClick={this.activateAudioContext}>
-                    Enable Audio
-                  </Button>
-                </Box>
-              }
-            />
-          )}
+        {!this.state.isElectron && !this.state.audioContextIsActive && (
+          <ModalSetup
+            visible={!this.state.audioContextIsActive}
+            dismiss={this.activateAudioContext}
+            children={
+              <Box bg="gray.9" p={4} justifyContent="center">
+                <Button onClick={this.activateAudioContext}>
+                  Enable Audio
+                </Button>
+              </Box>
+            }
+          />
+        )}
       </Box>
     );
   }
