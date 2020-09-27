@@ -36,9 +36,9 @@ const initialState = () => {
       status: {
         ppDelay: false,
         phaser: false,
-        distortion: true,
+        distortion: false,
         bitReducer: false,
-        reverb: true,
+        reverb: false,
       },
     },
   };

@@ -114,8 +114,8 @@ const DrumMachine = ({
             storeEffectState={storeEffectState}
           />
         </Box>
+        <Footer />
       </Box>
-      <Footer />
     </Box>
   );
 };

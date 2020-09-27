@@ -19,6 +19,9 @@ const textSize = {
   xs: {
     fontSize: theme.fontSizes[0],
   },
+  xxs: {
+    fontSize: '10px',
+  },
 };
 const textStyle = {
   thin: {
