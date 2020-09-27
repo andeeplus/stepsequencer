@@ -42,16 +42,14 @@ const Footer = () => (
       position="absolute"
       bottom={2}
       right={0}
-      shadow
       alignItems="center"
       justifyContent="center"
       margin="0 auto;"
       width="fit-content"
-      borderRadius={1}
       bg="gray.8"
       px={3}
     >
-      <Text textSize="xxs">made with </Text>
+      <Text style={{whiteSpace: "nowrap"}} textSize="xxs">made with </Text>
       <Rotate>☯</Rotate>
       <Text textSize="xxs">by </Text>
       <Text

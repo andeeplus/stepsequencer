@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import { connect } from "react-redux";
 import Tone from "tone";
+import { connect } from "react-redux";
 import { drumIds } from "../presets/drums";
 import { eightOeight } from "../tone/samples/drums";
 import DrumMachine from "./DrumMachine";
@@ -14,37 +14,7 @@ import {
 } from "../store/actions/sequencerActions";
 import ModalSetup from "./tools/Modal";
 import { Box, Button } from "ui";
-
-function isElectron() {
-  // Renderer process
-  if (
-    typeof window !== "undefined" &&
-    typeof window.process === "object" &&
-    window.process.type === "renderer"
-  ) {
-    return true;
-  }
-
-  // Main process
-  if (
-    typeof process !== "undefined" &&
-    typeof process.versions === "object" &&
-    !!process.versions.electron
-  ) {
-    return true;
-  }
-
-  // Detect the user agent when the `nodeIntegration` option is set to true
-  if (
-    typeof navigator === "object" &&
-    typeof navigator.userAgent === "string" &&
-    navigator.userAgent.indexOf("Electron") >= 0
-  ) {
-    return true;
-  }
-
-  return false;
-}
+import { detectIsElectron } from "utils/electron";
 
 const mapStateToProps = (store) => ({
   store: store,
@@ -89,7 +59,7 @@ class SyncMachine extends Component {
     this.reverb = null;
     this.Sequence = null;
     this.indexSeq = 0;
-    this.drumSamples = eightOeight;
+    this.drumSamples = null;
     this.changesListener = 0;
   }
 
@@ -114,36 +84,36 @@ class SyncMachine extends Component {
       });
     }
 
-    this.setState({ isElectron: isElectron() }, () => {
-      if (this.state.isElectron) this.activateAudioContext()
+    const isElectron = detectIsElectron()
+    if (isElectron) this.setState({ isElectron }, () => {
+      if (this.state.isElectron) this.activateAudioContext();
     });
   }
 
   componentDidUpdate(prevProps, prevState) {
-    const patternHasChanged =
-      this.props.play && prevProps.index !== this.props.index;
+    if (this.state.audioContextIsActive && prevState.audioContextIsActive) {
+      const patternHasChanged =
+        this.props.play && prevProps.index !== this.props.index;
 
-    if (patternHasChanged) {
-      this.Tone.Transport.cancel();
-      this.startSequence();
-    }
+      if (patternHasChanged) {
+        this.Tone.Transport.cancel();
+        this.startSequence();
+      }
 
-    if (prevProps.bpm !== this.props.bpm) {
-      this.Tone.Transport.bpm.value = this.props.bpm;
-    }
+      if (prevProps.bpm !== this.props.bpm) {
+        this.Tone.Transport.bpm.value = this.props.bpm;
+      }
 
-    if (this.state.audioContextIsActive !== prevState.audioContextIsActive) {
-      this.reviewEffectStatus(prevProps);
-    }
-    if (
-      this.state.audioContextIsActive &&
-      (this.props.fxStatus.ppDelay !== prevProps.fxStatus.ppDelay ||
+      if (
+        this.state.audioContextIsActive !== prevState.audioContextIsActive ||
+        this.props.fxStatus.ppDelay !== prevProps.fxStatus.ppDelay ||
         this.props.fxStatus.distortion !== prevProps.fxStatus.distortion ||
         this.props.fxStatus.bitReducer !== prevProps.fxStatus.bitReducer ||
         this.props.fxStatus.phaser !== prevProps.fxStatus.phaser ||
-        this.props.fxStatus.reverb !== prevProps.fxStatus.reverb)
-    ) {
-      this.reviewEffectStatus(prevProps);
+        this.props.fxStatus.reverb !== prevProps.fxStatus.reverb
+      ) {
+        this.reviewEffectStatus(prevProps);
+      }
     }
   }
 
@@ -208,6 +178,7 @@ class SyncMachine extends Component {
   activateAudioContext = async () => {
     await this.initSetup();
     await this.initFX();
+    this.drumSamples = eightOeight();
     this.drumSamples.chain(
       this.distortion,
       this.phaser,
@@ -370,15 +341,17 @@ class SyncMachine extends Component {
           indexSeq={this.state.indexSeq}
           storeEffectState={this.storeEffectState}
         />
-        {!this.state.isElectron && <ModalSetup
-          visible={!this.state.audioContextIsActive}
-          dismiss={this.activateAudioContext}
-          children={
-            <Box bg="gray.9" p={4} justifyContent="center">
-              <Button onClick={this.activateAudioContext}>Enable Audio</Button>
-            </Box>
-          }
-        />}
+          {!this.state.isElectron && <ModalSetup
+            visible={!this.state.audioContextIsActive}
+            dismiss={this.activateAudioContext}
+            children={
+              <Box alignItems="center" column bg="gray.9" p={4} justifyContent="center">
+                <Button onClick={this.activateAudioContext}>
+                  Play with it
+                </Button>
+              </Box>
+            }
+          />}
       </Box>
     );
   }

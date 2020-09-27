@@ -31,7 +31,7 @@ const GlobalStyles = createGlobalStyle`
   dd {
     margin: 0;
     font-size: 100%;
-    font-family: 'Geomanist';
+    font-family: -apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,'Geomanist';
   }
 
   /* Set core body defaults */
