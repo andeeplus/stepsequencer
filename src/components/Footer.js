@@ -51,7 +51,7 @@ const Footer = () => (
       bg="gray.8"
       px={3}
     >
-      <Text textSize="xxs">made with </Text>
+      <Text css="white-space: nowrap;" textSize="xxs">made with </Text>
       <Rotate>☯</Rotate>
       <Text textSize="xxs">by </Text>
       <Text

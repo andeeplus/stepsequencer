@@ -34,13 +34,13 @@
     }
   },
   "scripts": {
-    "build": "react-scripts build",
+    "react-build": "react-scripts build",
     "react-start": "react-scripts start",
     "react-test": "react-scripts test --env=jsdom",
     "react-eject": "react-scripts eject",
-    "electron-build": "electron-builder",
+    "electron-build": "yarn react-build && electron-builder",
     "release": "yarn react-build && electron-builder --publish=always",
-    "build-package": "yarn react-build && yarn electron-build",
+    "build": "yarn react-build",
     "start": "concurrently \"cross-env BROWSER=none yarn react-start\" \"wait-on http://localhost:3000 && electron .\""
   },
   "eslintConfig": {
