@@ -13,8 +13,7 @@ import {
   SET_INITIAL_STATE,
 } from "../store/actions/sequencerActions";
 import ModalSetup from "./tools/Modal";
-import { Box, Button } from "ui";
-import { detectIsElectron } from "../utils/electron";
+import { Box, Button, Text } from "ui";
 
 const mapStateToProps = (store) => ({
   store: store,
@@ -82,15 +81,6 @@ class SyncMachine extends Component {
         index,
         bpm,
       });
-    }
-
-    const isElectron = detectIsElectron();
-
-    if (isElectron) {
-      console.log({isElectron})
-      this.setState({ isElectron: isElectron }, () =>
-        this.activateAudioContext()
-      );
     }
   }
 
@@ -345,19 +335,18 @@ class SyncMachine extends Component {
           indexSeq={this.state.indexSeq}
           storeEffectState={this.storeEffectState}
         />
-        {!this.state.isElectron && !this.state.audioContextIsActive && (
           <ModalSetup
             visible={!this.state.audioContextIsActive}
             dismiss={this.activateAudioContext}
             children={
-              <Box bg="gray.9" p={4} justifyContent="center">
+              <Box alignItems="center" column bg="gray.9" p={4} justifyContent="center">
+                <Text mb={2} color="white" textSize="xs">This is a beta version</Text>
                 <Button onClick={this.activateAudioContext}>
-                  Enable Audio
+                  Play with it
                 </Button>
               </Box>
             }
           />
-        )}
       </Box>
     );
   }
