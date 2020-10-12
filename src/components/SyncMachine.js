@@ -14,7 +14,6 @@ import {
 } from "../store/actions/sequencerActions";
 import ModalSetup from "./tools/Modal";
 import { Box, Button } from "ui";
-import { detectIsElectron } from "utils/electron";
 
 const mapStateToProps = (store) => ({
   store: store,
@@ -83,11 +82,6 @@ class SyncMachine extends Component {
         bpm,
       });
     }
-
-    const isElectron = detectIsElectron()
-    if (isElectron) this.setState({ isElectron }, () => {
-      if (this.state.isElectron) this.activateAudioContext();
-    });
   }
 
   componentDidUpdate(prevProps, prevState) {
